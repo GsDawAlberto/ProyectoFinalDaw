@@ -1,0 +1,116 @@
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #e0f7fa;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 30px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 15px 15px 15px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    color: #0077b6;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #023e8a;
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+/* BOTONES GRANDES LOBBY */
+.lobby-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.lobby-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    padding: 20px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    color: #fff;
+    outline: none;
+}
+
+.lobby-btn i {
+    font-size: 2rem;
+}
+
+/* BOTONES POR TIPO */
+.btn-admin {
+    background-color: #0077b6;
+}
+
+.btn-admin:hover,
+.btn-admin:focus {
+    background-color: #005f87;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,119,182,0.4);
+}
+
+.btn-clinica {
+    background-color: #00b894;
+}
+
+.btn-clinica:hover,
+.btn-clinica:focus {
+    background-color: #008f6e;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,184,148,0.4);
+}
+
+.btn-usuario {
+    background-color: #ff7f50;
+}
+
+.btn-usuario:hover,
+.btn-usuario:focus {
+    background-color: #e65c33;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255,127,80,0.4);
+}
+
+/* RESPONSIVE */
+/* @media (max-width: 500px) {
+    .container {
+        padding: 30px 20px;
+    }
+
+    .lobby-btn {
+        font-size: 1.2rem;
+        padding: 18px;
+    }
+
+    .lobby-btn i {
+        font-size: 1.5rem;
+    }
+} */

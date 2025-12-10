@@ -1,0 +1,17 @@
+{
+    "name": "mediagend/app",
+    "description": "Gestor de citas para clinicas pequeñas",
+    "type": "project",
+     "autoload": {
+        "psr-4": {
+            "Mediagend\\App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alberto Rodríguez Bustos"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {}
+}
