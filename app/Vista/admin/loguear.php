@@ -1,35 +1,60 @@
+<?php
+
+use Mediagend\App\Config\Enlaces;
+?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Registrar Administrador</title>
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
 </head>
+
 <body>
 
-    <h2>Registrar Nuevo Administrador</h2>
+    <div class="container">
+        <header>
+            <h2>Registrar Nuevo Administrador</h2>
+        </header>
 
-    <form action="<?= \Mediagend\App\Config\Enlaces::BASE_URL ?>admin/registrar" method="POST">
 
-        <label>Nombre:</label>
-        <input type="text" name="nombre" required><br><br>
+        <form action="<?= Enlaces::BASE_URL ?>admin/registrar" method="POST" class="form">
 
-        <label>Email:</label>
-        <input type="email" name="email" required><br><br>
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" name="nombre" required>
+            </div>
 
-        <label>Usuario:</label>
-        <input type="text" name="usuario" required><br><br>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
 
-        <label>Contraseña:</label>
-        <input type="password" name="password" required><br><br>
+            <div class="form-group">
+                <label>Usuario:</label>
+                <input type="text" name="usuario" required>
+            </div>
 
-        <label>Repetir Contraseña:</label>
-        <input type="password" name="password_2" required><br><br>
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" name="password" required>
+            </div>
 
-        <button type="submit">Registrar</button>
-    </form>
+            <div class="form-group">
+                <label>Repetir Contraseña:</label>
+                <input type="password" name="password_2" required>
+            </div>
 
-    <br>
-    <a href="<?= \Mediagend\App\Config\Enlaces::BASE_URL ?>admin/login">Volver al login</a>
+            <button type="submit" class="btn-submit">Registrar</button>
+        </form>
 
+        <div class="extra-links">
+            <a href="<?= Enlaces::BASE_URL ?>admin/login">Volver al login</a>
+        </div>
+
+    </div>
 </body>
 </html>

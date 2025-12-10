@@ -2,30 +2,46 @@
 use Mediagend\App\Config\Enlaces;
 ?>
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Login Administrador</title>
+
+        <!-- Estilos propios -->
+    <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
+
 </head>
 <body>
 
-    <h2>Acceso Administrador</h2>
+<div class="container">
 
-    <form action="<?= Enlaces::BASE_URL ?>admin/acceder" method="POST">
+    <header>
+        <h1>Administrador</h1>
+        <p>Acceso al panel de control</p>
+    </header>
 
-        <label>Usuario:</label>
-        <input type="text" name="usuario" required><br><br>
+    <form action="<?= Enlaces::BASE_URL ?>admin/acceder" method="POST" class="form">
 
-        <label>Contraseña:</label>
-        <input type="password" name="password" required><br><br>
+        <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" name="usuario" required>
+        </div>
 
-        <button type="submit">Ingresar</button>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Ingresar</button>
+
     </form>
 
-    <br>
-    <a href="<?=Enlaces::BASE_URL ?>admin/loguear">Crear cuenta</a>
+    <div class="extra-links">
+        <a href="<?= Enlaces::BASE_URL ?>admin/loguear">Crear cuenta</a>
+    </div>
+
+</div>
 
 </body>
 </html>
