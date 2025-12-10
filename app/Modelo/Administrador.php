@@ -6,62 +6,95 @@ use PDOException;
 
 class Administrador
 {
+    // Propiedades
     private ?int $id_admin = null;
     private ?string $nombre_admin = null;
     private ?string $email_admin = null;
     private ?string $usuario_admin = null;
     private ?string $password_admin = null;
 
-    /* ============================
-       GETTERS
-       ============================ */
+    // Getters
+    /**
+     * método para obtener el ID del administrador
+     * @return int|null
+     */
     public function getIdAdmin(): ?int {
         return $this->id_admin;
     }
-
+    /**
+     * método para obtener el nombre del administrador
+     * @return string|null
+     */
     public function getNombreAdmin(): ?string {
         return $this->nombre_admin;
     }
-
+    /**
+     * método para obtener el email del administrador
+     * @return string|null
+     */
     public function getEmailAdmin(): ?string {
         return $this->email_admin;
     }
-
+    /**
+     * método para obtener el usuario del administrador
+     * @return string|null
+     */
     public function getUsuarioAdmin(): ?string {
         return $this->usuario_admin;
     }
-
+    /**
+     * método para obtener la contraseña del administrador
+     * @return string|null
+     */
     public function getPasswordAdmin(): ?string {
         return $this->password_admin;
     }
 
-    /* ============================
-       SETTERS
-       ============================ */
+    // Setters
+    /**
+     * método para establecer el ID del administrador
+     * @param int $id_admin
+     */
     public function setIdAdmin(int $id_admin): void {
         $this->id_admin = $id_admin;
     }
-
+    /**
+     * método para establecer el nombre del administrador
+     * @param string $nombre_admin
+     */
     public function setNombreAdmin(string $nombre_admin): void {
         $this->nombre_admin = $nombre_admin;
     }
-
+    /**
+     * método para establecer el email del administrador
+     * @param string $email_admin
+     */
     public function setEmailAdmin(string $email_admin): void {
         $this->email_admin = $email_admin;
     }
-
+    /**
+     * método para establecer el usuario del administrador
+     * @param string $usuario_admin
+     */
     public function setUsuarioAdmin(string $usuario_admin): void {
         $this->usuario_admin = $usuario_admin;
     }
-
+    /**
+     * método para establecer la contraseña del administrador
+     * @param string $password_admin
+     */
     public function setPasswordAdmin(string $password_admin): void {
         $this->password_admin = $password_admin;
     }
 
-    /* ============================
-       GUARDAR ADMINISTRADOR
-       ============================ */
-    public function guardarAdmin(PDO $pdo): bool
+    // MÉTODOS DE BASE DE DATOS
+
+    /**
+     * Método para guardar un nuevo administrador en la base de datos
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @return string|int Retorna el ID del nuevo administrador o ERR_ADMIN_01, error al guardar administrador
+     */
+    public function guardarAdmin(PDO $pdo): string|int
     {
         try {
             $sql = "INSERT INTO administrador 
@@ -71,19 +104,21 @@ class Administrador
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
-                ':nombre_admin'   => $this->getNombreAdmin(),
-                ':email_admin'    => $this->getEmailAdmin(),
-                ':usuario_admin'  => $this->getUsuarioAdmin(),
-                ':password_admin' => password_hash($this->getPasswordAdmin(), PASSWORD_BCRYPT)
+                ':nombre_admin'  => $this->nombre_admin,
+                ':email_admin'   => $this->email_admin,
+                ':usuario_admin' => $this->usuario_admin,
+                ':password_admin' => password_hash($this->password_admin, PASSWORD_BCRYPT)
             ]);
 
             // Guardamos el ID autogenerado
-            $this->id_admin = intval($pdo->lastInsertId());
+            $this->id_admin = $pdo->lastInsertId();
 
-            return true;
+            // Retornamos la cantidad de filas afectadas
+            return $stmt->rowCount();
 
         } catch (PDOException $e) {
-            return false;
+            $error = 'ERR_ADMIN_01'; // Error al guardar administrador
+            return $error;
         }
     }
 
