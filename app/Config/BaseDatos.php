@@ -25,7 +25,7 @@ class BaseDatos {
                     ]
                 );
             } catch (PDOException $e) {
-                die("❌ Error de conexión a la BD: " . $e->getMessage());
+                die("Error de conexión a la BD: " . $e->getMessage());
             }
         }
 
