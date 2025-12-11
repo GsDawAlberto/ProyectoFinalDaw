@@ -7,11 +7,14 @@
 body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background: #e0f7fa;
+    background-image: url("../img/Logo.png");
+    background-repeat: repeat;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     color: #333;
+
 }
 
 /* CONTENEDOR */

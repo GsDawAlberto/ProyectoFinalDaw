@@ -1,0 +1,13 @@
+/* HEADER */
+.main-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-header .logo {
+    width: 300px;
+    cursor: pointer;
+    margin: -50px;
+}
+

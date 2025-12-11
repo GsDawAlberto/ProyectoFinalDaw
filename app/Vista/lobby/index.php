@@ -19,8 +19,10 @@ use Mediagend\App\Config\Enlaces;
 <body>
 
 <div class="container">
+    
     <header>
-        <h1>Bienvenido a Mediagend</h1>
+        <h1>Bienvenido a</h1>
+        <?php include_once Enlaces::LAYOUT_PATH . 'header.php';?>
         <p>Gestiona tu clínica y pacientes de forma segura y rápida</p>
     </header>
 

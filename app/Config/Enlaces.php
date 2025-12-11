@@ -13,6 +13,9 @@ class Enlaces
     // Ruta a las vistas
     public const VIEW_PATH = self::BASE_PATH . "app/vista/";
 
+    // Ruta layouts
+    public const LAYOUT_PATH = self::VIEW_PATH . "layout/";
+
     // Ruta a los controladores (si la necesitas)
     public const CONTROLLER_PATH = self::BASE_PATH . "app/controlador/";
 }
