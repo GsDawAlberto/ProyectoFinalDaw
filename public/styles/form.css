@@ -7,8 +7,9 @@
 body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background: #e0f7fa;
-    background-image: url("../img/Logo.png");
+    background-image: url("../img/Solo_logo.png");
     background-repeat: repeat;
+    background-size: 50px 50px; /* Tamaño que tú quieras */
     display: flex;
     justify-content: center;
     align-items: center;

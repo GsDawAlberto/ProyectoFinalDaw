@@ -47,7 +47,7 @@ class AdminController
 
         // Validar contraseñas
         if ($pass1 !== $pass2) {
-            die("❌ Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "admin/loguear'>Volver</a>");
+            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "admin/loguear'>Volver</a>");
         }
 
         // Conexión BD
@@ -64,7 +64,7 @@ class AdminController
         $guardado = $admin->guardarAdmin($pdo);
 
         if (!$guardado) {
-            die("❌ Error al registrar el administrador.<br><a href='" . Enlaces::BASE_URL . "admin/loguear'>Volver</a>");
+            die("Error al registrar el administrador.<br><a href='" . Enlaces::BASE_URL . "admin/loguear'>Volver</a>");
         }
 
         // Redirigir
@@ -78,7 +78,6 @@ class AdminController
      *  ============================================================ */
     public function acceder()
     {
-        session_start();
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header("Location: " . Enlaces::BASE_URL . "admin/login");
@@ -94,10 +93,12 @@ class AdminController
         $resultado = $admin->autenticarAdmin($pdo, $usuario, $password);
 
         if (!$resultado) {
-            echo "❌ Credenciales incorrectas<br>";
+            echo "Credenciales incorrectas<br>";
             echo "<a href='" . Enlaces::BASE_URL . "admin/login'>Volver</a>";
             exit;
         }
+
+        session_start();
 
         // Guardar sesión
         $_SESSION['admin'] = [
@@ -131,8 +132,9 @@ class AdminController
      *  ============================================================ */
     public function logout()
     {
-        session_start();
-        session_destroy();
+        session_start(); // Reanudar sesión
+        session_unset(); // Eliminar todas las variables de sesión
+        session_destroy(); // Destruir la sesión
         header("Location: " . Enlaces::BASE_URL . "admin/login");
         exit;
     }
