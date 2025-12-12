@@ -1,4 +1,5 @@
 <?php
+
 namespace Mediagend\App\Controlador;
 
 use Mediagend\App\Config\Enlaces;
@@ -7,28 +8,43 @@ use Mediagend\App\Config\BaseDatos;
 
 class AdminController
 {
+    /**********************   RUTA DE VISTAS ***********************************/
 
-    /** ============================================================
-     *  FORMULARIO LOGIN
-     *  ============================================================ */
+    public function home_citas()
+    {
+        require Enlaces::VIEW_CONTENT_PATH . "citas.php";
+    }
+
+    public function home_clinicas()
+    {
+        require Enlaces::VIEW_CONTENT_PATH . "clinicas.php";
+    }
+
+    public function home_configuracion()
+    {
+        require Enlaces::VIEW_CONTENT_PATH . "configuracion.php";
+    }
+
+    public function home_insertar()
+    {
+        require Enlaces::VIEW_CONTENT_PATH . "insertar.php";
+    }
+
+    /********************  FORMULARIO LOGIN *******************/
     public function login()
     {
         require Enlaces::VIEW_PATH . "admin/login.php";
     }
 
 
-    /** ============================================================
-     *  FORMULARIO REGISTRO
-     *  ============================================================ */
+    /******************** FORMULARIO REGISTRO *******************/
     public function loguear()
     {
         require Enlaces::VIEW_PATH . "admin/loguear.php";
     }
 
 
-    /** ============================================================
-     *  PROCESAR REGISTRO
-     *  ============================================================ */
+    /********************* PROCESAR REGISTRO *********************/
     public function registrar()
     {
         session_start();
@@ -73,9 +89,7 @@ class AdminController
     }
 
 
-    /** ============================================================
-     *  PROCESAR LOGIN
-     *  ============================================================ */
+    /********************************* PROCESAR LOGIN *********************************/
     public function acceder()
     {
 
@@ -112,9 +126,7 @@ class AdminController
     }
 
 
-    /** ============================================================
-     *  HOME ADMIN
-     *  ============================================================ */
+    /*************************  HOME ADMINISTRADOR *************************/
     public function home()
     {
         session_start();
@@ -127,9 +139,7 @@ class AdminController
     }
 
 
-    /** ============================================================
-     *  LOGOUT
-     *  ============================================================ */
+    /************************* CERRAR SESIÓN ******************************/
     public function logout()
     {
         session_start(); // Reanudar sesión
@@ -139,4 +149,3 @@ class AdminController
         exit;
     }
 }
-

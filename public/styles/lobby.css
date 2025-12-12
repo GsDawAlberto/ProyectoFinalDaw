@@ -5,11 +5,12 @@
     box-sizing: border-box;
 }
 
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url("../img/Solo_logo.png");
+    background-image: url("../img/Logo_translucido_2.png");
     background-repeat: repeat;
-    background-size: 50px 50px; /* Tamaño que tú quieras */
+    background-size: 500px 500px; /* Tamaño que tú quieras */
     color: #333;
     display: flex;
     justify-content: center;

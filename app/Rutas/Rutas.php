@@ -50,7 +50,28 @@ class Rutas
                 $controller->acceder();
                 break;
 
-            
+            // ---------- VISTAS ADMIN HOME ----------
+
+            case 'admin/home/citas':
+                $controller = new AdminController();
+                $controller->home_citas();
+                break;
+
+            case 'admin/home/clinicas':
+                $controller = new AdminController();
+                $controller->home_clinicas();
+                break;
+
+            case 'admin/home/configuracion':
+                $controller = new AdminController();
+                $controller->home_configuracion();
+                break;
+
+            case 'admin/home/insertar':
+                $controller = new AdminController();
+                $controller->home_insertar();
+                break;
+                
 
 
             // ---------- CLINICA ----------

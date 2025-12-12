@@ -13,6 +13,9 @@ class Enlaces
     // Ruta a las vistas
     public const VIEW_PATH = self::BASE_PATH . "app/vista/";
 
+    // Ruta a contenidos de las vistas
+    public const VIEW_CONTENT_PATH = self::VIEW_PATH . "admin/contenido_home/";
+
     // Ruta layouts
     public const LAYOUT_PATH = self::VIEW_PATH . "layout/";
 
