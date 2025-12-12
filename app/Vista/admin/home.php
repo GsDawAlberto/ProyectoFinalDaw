@@ -33,15 +33,15 @@ $nombreUsuario = $_SESSION['admin']['nombre'];
     <aside class="sidebar">
         <h2>Clínica</h2>
         
-        <button class="menu-btn" onclick="cargar('contenido_home/clinicas.php')">🏥 Clínicas</button>
-        <button class="menu-btn" onclick="cargar('contenido_home/citas.php')">📅 Citas</button>
-        <button class="menu-btn" onclick="cargar('contenido_home/configuracion.php')">⚙️ Configuración</button>
-        <button class="menu-btn" onclick="cargar('contenido_home/insertar.php')">➕ Insertar</button>
+    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/clinicas')">🏥 Clínicas</button>
+    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/citas')">📅 Citas</button>
+    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/configuracion')">⚙️ Configuración</button>
+    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/insertar')">➕ Insertar</button>
     </aside>
 
     <!-- Contenedor derecho -->
     <main class="contenido">
-        <iframe id="visor" src="contenido_home/citas.php" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+        <iframe id="visor" src="<?= Enlaces::BASE_URL ?>admin/home/clinicas" frameborder="0" style="width: 100%; height: 100%;"></iframe>
     </main>
 
 </div>

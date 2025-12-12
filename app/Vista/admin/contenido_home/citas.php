@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1> Este es si que si que si el listado de pacientes</h1>
+    <h1> HOME DE CITAS.PHP</h1>
 </body>
 </html>
