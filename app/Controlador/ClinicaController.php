@@ -51,7 +51,7 @@ class ClinicaController
         $pdo = BaseDatos::getConexion();
 
         // Crear modelo
-        $clinica = new Clinica($pdo);
+        $clinica = new Clinica();
         $clinica->setNombreClinica($nombre);
         $clinica->setDireccionClinica($direccion);
         $clinica->setTelefonoClinica($telefono);
@@ -93,7 +93,8 @@ class ClinicaController
         $resultado = $clinica->autenticarClinica($pdo, $usuario, $password);
 
         if (!$resultado) {
-            die("Usuario o contraseña incorrectos.<br><a href='" . Enlaces::BASE_URL . "clinica/login'>Volver</a>");
+            echo "Credenciales incorrectas<br>";
+            echo "<a href='" . Enlaces::BASE_URL . "clinica/login'>Volver</a>";
             exit;
         }
         
