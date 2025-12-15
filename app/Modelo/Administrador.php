@@ -103,7 +103,7 @@ class Administrador
     /**
      * Método para guardar un nuevo administrador en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
-     * @return string|int Retorna el ID del nuevo administrador o ERR_ADMIN_01, error al guardar administrador
+     * @return string|int Retorna el ID del nuevo administrador o ERR_ADMIN_01, error al no guardar administrador
      */
     public function guardarAdmin(PDO $pdo): string|int
     {
@@ -194,9 +194,7 @@ class Administrador
         // Intentamos capturar errores de PDO
         try {
             // Consulta para obtener el administrador por su ID
-            $sql = "SELECT id_admin, nombre_admin, email_admin, usuario_admin 
-                    FROM administrador 
-                    WHERE id_admin = :id_admin";
+            $sql = "SELECT * FROM administrador WHERE id_admin = :id_admin";
 
             // Preparar y ejecutar la consulta
             $stmt = $pdo->prepare($sql);
@@ -207,7 +205,8 @@ class Administrador
 
             // Obtener el resultado como un array asociativo
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-
+            
+            // Retornar el array o null si no existe
             return $admin ?: null;
         } catch (PDOException $e) {
             $error = 'ERR_ADMIN_03'; // Error al mostrar administrador
