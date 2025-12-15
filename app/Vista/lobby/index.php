@@ -42,6 +42,11 @@ use Mediagend\App\Config\Enlaces;
             Usuarios
         </a>
     </nav>
+
+    <footer>
+        <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
+    </footer>
+    
 </div>
 
 </body>

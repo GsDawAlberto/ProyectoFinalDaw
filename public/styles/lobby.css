@@ -101,19 +101,3 @@ header p {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(255,127,80,0.4);
 }
-
-/* RESPONSIVE */
-/* @media (max-width: 500px) {
-    .container {
-        padding: 30px 20px;
-    }
-
-    .lobby-btn {
-        font-size: 1.2rem;
-        padding: 18px;
-    }
-
-    .lobby-btn i {
-        font-size: 1.5rem;
-    }
-} */

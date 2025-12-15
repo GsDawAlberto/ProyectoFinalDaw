@@ -55,6 +55,10 @@ use Mediagend\App\Config\Enlaces;
             <a href="<?= Enlaces::BASE_URL ?>admin/login">Volver al login</a>
         </div>
 
+        <footer>
+        <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
+    </footer>
+    
     </div>
 </body>
 </html>
