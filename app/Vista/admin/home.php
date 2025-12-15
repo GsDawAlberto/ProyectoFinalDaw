@@ -15,42 +15,48 @@ $nombreUsuario = $_SESSION['admin']['nombre'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/homeAdmin.css">
+
     <title>Document</title>
 </head>
 
 <body>
-    <?php include_once Enlaces::LAYOUT_PATH . 'header.php'; ?>
-    <h1>Panel de Administrador</h1>
-    <p>Bienvenido, <?= htmlspecialchars($nombreUsuario) ?>!</p>
-
-    <a href="<?= Enlaces::BASE_URL ?>admin/login">Cerrar sesión</a>
-
-    <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
 
     <div class="layout">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2>Clínica</h2>
-        
-    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/clinicas')">🏥 Clínicas</button>
-    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/citas')">📅 Citas</button>
-    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/configuracion')">⚙️ Configuración</button>
-    <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/insertar')">➕ Insertar</button>
-    </aside>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h1>PANEL DE ADMINISTRADOR</h1>
+            <h2>Bienvenido, <?= htmlspecialchars($nombreUsuario) ?></h2>
+            <div class="layout_header"><?php include_once Enlaces::LAYOUT_PATH . 'header.php'; ?></div>
+            
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/clinicas')"><i class="fa-solid fa-truck-medical"></i>Clínicas</button>
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/citas')"><i class="fa-solid fa-calendar"></i> Citas</button>
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/insertar')"><i class="fa-solid fa-file-import"></i>Insertar</button>
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/configuracion')"><i class="fa-solid fa-gears"></i>Configuración</button>
+            <button class="menu-btn"><a href="<?= Enlaces::BASE_URL ?>admin/login"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a></button>
+        </aside>
 
-    <!-- Contenedor derecho -->
-    <main class="contenido">
-        <iframe id="visor" src="<?= Enlaces::BASE_URL ?>admin/home/clinicas" frameborder="0" style="width: 100%; height: 100%;"></iframe>
-    </main>
+        <!-- Contenedor derecho -->
+        <main class="contenido">
+            <iframe id="visor" src="<?= Enlaces::BASE_URL ?>admin/home/clinicas" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+        </main>
 
-</div>
+    </div>
 
-<script>
-    function cargar(url) {
-    document.getElementById("visor").src = url;
-}
-</script>
+    <footer>
+        <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
+    </footer>
+
+    <script>
+        function cargar(url) {
+            document.getElementById("visor").src = url;
+        }
+    </script>
 
 </body>
 
