@@ -235,10 +235,18 @@ class Clinica
      * @param int $id_clinica. ID de la clínica a mostrar
      * @return string|array|null Retorna un array con los datos de la clínica, null si no existe, ERR_CLINICA_03 en caso de error al mostrar clínica
      */
-    public function mostrarClinica(PDO $pdo, int $id_clinica): string|array|null
+    public function mostrarClinica(PDO $pdo, ?int $id_clinica = null): string|array|null
     {
         // Intentamos capturar errores de PDO
         try {
+            if($id_clinica === null) {
+                // si no se indica id, obtenemos TODAS las clínicas
+            $sql = "SELECT * FROM clinica";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
             // Consulta SQL para obtener la clínica por su ID
             $sql = "SELECT * FROM clinica WHERE id_clinica = :id_clinica";
             // Preparar y ejecutar la consulta
@@ -253,6 +261,7 @@ class Clinica
 
             //Retonamos el array o null si no existe
             return $clinica ?: null;
+        }
         } catch (PDOException $e) {
             $error = 'ERR_CLINICA_03'; // Error al mostrar clínica
             return $error;

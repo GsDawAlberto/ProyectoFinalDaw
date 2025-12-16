@@ -80,21 +80,46 @@ class Rutas
                 $controller->login();
                 break;
 
-            /*  case 'empresa/home':
-                $controller = new EmpresaController();
+            case 'clinica/home':
+                $controller = new ClinicaController();
                 $controller->home();
-                break; */
+                break;
+
+            case 'clinica/registrar':
+                $controller = new ClinicaController();
+                $controller->registrar();
+                break;
+
+            case 'clinica/acceder':
+                $controller = new ClinicaController();  
+                $controller->acceder();
+                break;
 
 
             // ---------- USUARIO ----------
             case 'usuario/login':
                 $controller = new UsuarioController();
                 $controller->login();
-                break;/* 
-
-            case 'usuario/home':
+                break;
+                
+            /* case 'usuario/home':
                 $controller = new UsuarioController();
                 $controller->home();
+                break;
+
+            case 'usuario/loguear':
+                $controller = new UsuarioController();
+                $controller->loguear();
+                break;
+
+            case 'usuario/registrar':
+                $controller = new UsuarioController();
+                $controller->registrar();
+                break;
+
+            case 'usuario/acceder':
+                $controller = new UsuarioController();
+                $controller->acceder();
                 break; */
 
 
