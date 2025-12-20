@@ -12,35 +12,35 @@ class AdminController
 
     public function home_citas()
     {
-        require Enlaces::VIEW_CONTENT_PATH . "citas.php";
+        require Enlaces::VIEW_CONTENT_ADMIN_PATH . "citas.php";
     }
 
     public function home_clinicas()
     {
-        require Enlaces::VIEW_CONTENT_PATH . "clinicas.php";
+        require Enlaces::VIEW_CONTENT_ADMIN_PATH . "clinicas.php";
     }
 
     public function home_configuracion()
     {
-        require Enlaces::VIEW_CONTENT_PATH . "configuracion.php";
+        require Enlaces::VIEW_CONTENT_ADMIN_PATH . "configuracion.php";
     }
 
     public function home_insertar()
     {
-        require Enlaces::VIEW_CONTENT_PATH . "insertar.php";
+        require Enlaces::VIEW_CONTENT_ADMIN_PATH . "insertar.php";
     }
 
     /********************  FORMULARIO LOGIN *******************/
     public function login()
     {
-        require Enlaces::VIEW_PATH . "admin/login.php";
+        require Enlaces::VIEW_PATH . "admin/login_admin.php";
     }
 
 
     /******************** FORMULARIO REGISTRO *******************/
     public function loguear()
     {
-        require Enlaces::VIEW_PATH . "admin/loguear.php";
+        require Enlaces::VIEW_PATH . "admin/loguear_admin.php";
     }
 
 
@@ -50,7 +50,7 @@ class AdminController
         session_start();
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            header("Location: " . Enlaces::BASE_URL . "admin/loguear");
+            header("Location: " . Enlaces::BASE_URL . "admin/loguear_admin");
             exit;
         }
 
@@ -63,7 +63,7 @@ class AdminController
 
         // Validar contraseñas
         if ($pass1 !== $pass2) {
-            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "admin/loguear'>Volver</a>");
+            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
         }
 
         // Conexión BD
@@ -80,11 +80,11 @@ class AdminController
         $guardado = $admin->guardarAdmin($pdo);
 
         if (!$guardado) {
-            die("Error al registrar el administrador.<br><a href='" . Enlaces::BASE_URL . "admin/loguear'>Volver</a>");
+            die("Error al registrar el administrador.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
         }
 
         // Redirigir
-        header("Location: " . Enlaces::BASE_URL . "admin/login");
+        header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
         exit;
     }
 
@@ -94,7 +94,7 @@ class AdminController
     {
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            header("Location: " . Enlaces::BASE_URL . "admin/login");
+            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
             exit;
         }
 
@@ -111,7 +111,7 @@ class AdminController
 
         if (!$resultado) {
             echo "Credenciales incorrectas<br>";
-            echo "<a href='" . Enlaces::BASE_URL . "admin/login'>Volver</a>";
+            echo "<a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>";
             exit;
         }
 
@@ -124,7 +124,7 @@ class AdminController
             "email"     => $resultado['email_admin']
         ];
 
-        header("Location: " . Enlaces::BASE_URL . "admin/home");
+        header("Location: " . Enlaces::BASE_URL . "admin/home_admin");
         exit;
     }
 
@@ -134,11 +134,11 @@ class AdminController
     {
         session_start();
         if (!isset($_SESSION['admin'])) {
-            header("Location: " . Enlaces::BASE_URL . "admin/login");
+            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
             exit;
         }
 
-        require Enlaces::VIEW_PATH . "admin/home.php";
+        require Enlaces::VIEW_PATH . "admin/home_admin.php";
     }
 
 
@@ -148,7 +148,7 @@ class AdminController
         session_start(); // Reanudar sesión
         session_unset(); // Eliminar todas las variables de sesión
         session_destroy(); // Destruir la sesión
-        header("Location: " . Enlaces::BASE_URL . "admin/login");
+        header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
         exit;
     }
 

@@ -5,6 +5,7 @@ namespace Mediagend\App\Rutas;
 use Mediagend\App\Controlador\LobbyController;
 use Mediagend\App\Controlador\AdminController;
 use Mediagend\App\Controlador\ClinicaController;
+use Mediagend\App\Controlador\PacienteController;
 use Mediagend\App\Controlador\UsuarioController;
 
 class Rutas
@@ -17,25 +18,27 @@ class Rutas
 
         switch ($url) {
 
-            // ---------- LOBBY ----------
+            // ---------- LOBBY ---------- //
+            //***********************************************************************************************//
             case 'lobby/index':
                 $controller = new LobbyController();
                 $controller->index();
                 break;
 
 
-            // ---------- ADMINISTRADOR ----------
-            case 'admin/login':
+            // ---------- ADMINISTRADOR ----------//
+            //***********************************************************************************************//
+            case 'admin/login_admin':
                 $controller = new AdminController();
                 $controller->login();
                 break;
 
-             case 'admin/home':
+             case 'admin/home_admin':
                 $controller = new AdminController();
                 $controller->home();
                 break;
 
-            case 'admin/loguear':
+            case 'admin/loguear_admin':
                 $controller = new AdminController();
                 $controller->loguear();
                 break;
@@ -80,7 +83,8 @@ class Rutas
                 
 
 
-            // ---------- CLINICA ----------
+            // ---------- CLINICA ---------- //
+            //***********************************************************************************************//
             case 'clinica/login':
                 $controller = new ClinicaController();
                 $controller->login();
@@ -107,9 +111,10 @@ class Rutas
                 break;
 
 
-            // ---------- USUARIO ----------
+            // ---------- USUARIO ---------- //
+            //***********************************************************************************************//
             case 'usuario/login':
-                $controller = new UsuarioController();
+                $controller = new PacienteController();
                 $controller->login();
                 break;
                 
@@ -134,7 +139,8 @@ class Rutas
                 break; */
 
 
-            // ---------- ERROR ----------
+            // ---------- ERROR ---------- //
+            //***********************************************************************************************//
             default:
                 http_response_code(404);
                 echo "Página no encontrada: $url";

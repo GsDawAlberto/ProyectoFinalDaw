@@ -14,13 +14,13 @@ class ClinicaController
 
     public function login()
     {
-        require Enlaces::VIEW_PATH . "clinica/login.php";
+        require Enlaces::VIEW_PATH . "clinica/login_clinica.php";
     }
 
     /********************* FORMULARIO REGISTRO *********************/
     public function loguear()
     {
-        require Enlaces::VIEW_PATH . "clinica/loguear.php";
+        require Enlaces::VIEW_PATH . "clinica/loguear_clinica.php";
     }
 
     /********************* PROCESAR REGISTRO *********************/
@@ -29,14 +29,14 @@ class ClinicaController
         session_start();
 
         if (!isset($_SESSION['admin'])) {
-            header("Location: " . Enlaces::BASE_URL . "admin/login");
+            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
             exit;
         }
 
         $idAdmin = $_SESSION['admin']['id_admin'];
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            header("Location: " . Enlaces::BASE_URL . "clinica/loguear");
+            header("Location: " . Enlaces::BASE_URL . "clinica/loguear_clinica");
             exit;
         }
 
@@ -51,7 +51,7 @@ class ClinicaController
 
         // Validar contraseñas
         if ($pass1 !== $pass2) {
-            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear'>Volver</a>");
+            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
         }
 
         // Conexión BD
@@ -71,11 +71,11 @@ class ClinicaController
         $guardado = $clinica->guardarClinica($pdo);
 
         if (!$guardado) {
-            die("Error al registrar la clínica.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear'>Volver</a>");
+            die("Error al registrar la clínica.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
         }
 
         // Redirigir
-        header("Location: " . Enlaces::BASE_URL . "clinica/login");
+        header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
         exit;
     }
 
@@ -85,7 +85,7 @@ class ClinicaController
         session_start();
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            header("Location: " . Enlaces::BASE_URL . "clinica/login");
+            header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
             exit;
         }
 
@@ -102,7 +102,7 @@ class ClinicaController
 
         if (!$resultado) {
             echo "Credenciales incorrectas<br>";
-            echo "<a href='" . Enlaces::BASE_URL . "clinica/login'>Volver</a>";
+            echo "<a href='" . Enlaces::BASE_URL . "clinica/login_clinica'>Volver</a>";
             exit;
         }
 
@@ -116,7 +116,7 @@ class ClinicaController
             'email'    => $resultado['email_clinica']
         ];
 
-        header("Location: " . Enlaces::BASE_URL . "clinica/home");
+        header("Location: " . Enlaces::BASE_URL . "clinica/home_clinica");
         exit;
     }
 
@@ -127,11 +127,11 @@ class ClinicaController
 
         // Verificar sesión
         if (!isset($_SESSION['clinica'])) {
-            header("Location: " . Enlaces::BASE_URL . "clinica/login");
+            header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
             exit;
         }
 
-        require Enlaces::VIEW_PATH . "clinica/home.php";
+        require Enlaces::VIEW_PATH . "clinica/home_clinica.php";
     }
 
     /*************************  CERRAR SESIÓN *************************/
@@ -141,7 +141,7 @@ class ClinicaController
         session_unset();
         session_destroy();
 
-        header("Location: " . Enlaces::BASE_URL . "clinica/login");
+        header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
         exit;
     }
 }
