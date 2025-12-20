@@ -90,8 +90,8 @@ class ClinicaController
         }
 
         // Sanitizar entrada
-        $usuario = trim(filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_STRING));
-        $password = trim($_POST['password'] ?? '');
+        $usuario = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING));
+        $password = trim($_POST['password_clinica'] ?? '');
 
         // Conexión BD
         $pdo = BaseDatos::getConexion();

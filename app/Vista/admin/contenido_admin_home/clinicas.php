@@ -1,6 +1,6 @@
 <?php
 
-namespace Mediagend\App\Vista\admin\contenido_home;
+namespace Mediagend\App\Vista\admin\contenido_admin_home;
 
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Clinica;

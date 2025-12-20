@@ -6,9 +6,10 @@ use Mediagend\App\Config\Enlaces;
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Administrador</title>
 
-        <!-- Estilos propios -->
+    <!-- Estilos propios -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
 
 </head>
@@ -25,12 +26,12 @@ use Mediagend\App\Config\Enlaces;
 
         <div class="form-group">
             <label>Usuario</label>
-            <input type="text" name="usuario" required>
+            <input type="text" name="usuario_admin" required>
         </div>
 
         <div class="form-group">
             <label>Contraseña</label>
-            <input type="password" name="password" required>
+            <input type="password" name="password_admin" required>
         </div>
 
         <button type="submit" class="btn-submit">Ingresar</button>

@@ -99,8 +99,8 @@ class AdminController
         }
 
         // Sanitizar entrada
-        $usuario = trim(filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_STRING));
-        $password = trim($_POST['password'] ?? '');
+        $usuario = trim(filter_input(INPUT_POST, 'usuario_admin', FILTER_SANITIZE_STRING));
+        $password = trim($_POST['password_admin'] ?? '');
 
         // Conexión BD
         $pdo = BaseDatos::getConexion();

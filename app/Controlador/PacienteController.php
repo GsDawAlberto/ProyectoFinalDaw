@@ -1,8 +1,8 @@
 <?php
 namespace Mediagend\App\Controlador;
-class UsuarioController {
+class PacienteController {
 
     public function login() {
-        require "../app/vista/usuario/login.php";
+        require "../app/vista/paciente/login.php";
     }
 }
