@@ -151,4 +151,28 @@ class AdminController
         header("Location: " . Enlaces::BASE_URL . "admin/login");
         exit;
     }
+
+    /************************* GUARDAR CONFIGURACIÓN ADMIN ******************************/
+    /* public function guardar_configuracion()
+{
+    session_start();
+
+    $id_admin = $_SESSION['admin']['id_admin'];
+
+    $data = [
+        'tema'   => $_POST['tema'],
+        'fuente' => $_POST['fuente'],
+        'color'  => $_POST['color']
+    ];
+
+    $pdo = BaseDatos::getConexion();
+    $config = new Administrador();
+    $config->guardarConfiguracionAdmin($pdo, $id_admin, $data);
+
+    // Guardar en sesión para aplicar instantáneo
+    $_SESSION['config'] = $data;
+
+    header("Location: " . Enlaces::BASE_URL . "admin/home/configuracion");
+} */
+
 }

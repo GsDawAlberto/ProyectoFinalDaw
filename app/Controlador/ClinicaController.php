@@ -28,22 +28,29 @@ class ClinicaController
     {
         session_start();
 
+        if (!isset($_SESSION['admin'])) {
+            header("Location: " . Enlaces::BASE_URL . "admin/login");
+            exit;
+        }
+
+        $idAdmin = $_SESSION['admin']['id_admin'];
+
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header("Location: " . Enlaces::BASE_URL . "clinica/loguear");
             exit;
         }
 
         // Sanitizar entrada
-        $nombre     = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING));
-        $direccion  = trim(filter_input(INPUT_POST, 'direccion', FILTER_SANITIZE_STRING));
-        $telefono   = trim(filter_input(INPUT_POST, 'telefono', FILTER_SANITIZE_STRING));
-        $email      = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
-        $usuario    = trim(filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_STRING));
-        $pass1      = trim($_POST['password'] ?? '');
-        $pass2      = trim($_POST['password2'] ?? '');
+        $nombre     = trim(filter_input(INPUT_POST, 'nombre_clinica', FILTER_SANITIZE_STRING));
+        $direccion  = trim(filter_input(INPUT_POST, 'direccion_clinica', FILTER_SANITIZE_STRING));
+        $telefono   = trim(filter_input(INPUT_POST, 'telefono_clinica', FILTER_SANITIZE_STRING));
+        $email      = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
+        $usuario    = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING));
+        $pass1      = trim($_POST['password_clinica'] ?? '');
+        $pass2      = trim($_POST['password2_clinica'] ?? '');
 
         // Validar contraseñas
-         if ($pass1 !== $pass2) {
+        if ($pass1 !== $pass2) {
             die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear'>Volver</a>");
         }
 
@@ -52,6 +59,7 @@ class ClinicaController
 
         // Crear modelo
         $clinica = new Clinica();
+        $clinica->setIdAdmin($idAdmin);
         $clinica->setNombreClinica($nombre);
         $clinica->setDireccionClinica($direccion);
         $clinica->setTelefonoClinica($telefono);
@@ -97,7 +105,7 @@ class ClinicaController
             echo "<a href='" . Enlaces::BASE_URL . "clinica/login'>Volver</a>";
             exit;
         }
-        
+
         session_Start();
 
         // Guardar sesión
@@ -110,7 +118,7 @@ class ClinicaController
 
         header("Location: " . Enlaces::BASE_URL . "clinica/home");
         exit;
-}
+    }
 
     /*************************  HOME CLINICA *************************/
     public function home()
@@ -127,7 +135,8 @@ class ClinicaController
     }
 
     /*************************  CERRAR SESIÓN *************************/
-    public function logout(){
+    public function logout()
+    {
         session_start();
         session_unset();
         session_destroy();

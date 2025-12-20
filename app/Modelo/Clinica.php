@@ -93,6 +93,14 @@ class Clinica
         $this->id_clinica = $id_clinica;
     }
     /**
+     * método para establecer el ID del administrador asociado a la clínica
+     * @param int $id_admin
+     */
+    public function setIdAdmin(int $id_admin): void
+    {
+        $this->id_admin = $id_admin;
+    }
+    /**
      * método para establecer el nombre de la clínica
      * @param string $nombre_clinica
      */
@@ -153,11 +161,13 @@ class Clinica
         //Intentamos capturar errores de PDO
         try {
             //Consulta SQL para insertar una nueva clínica
-            $sql = "INSERT INTO clinica (nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica) 
-                    VALUES (:nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica)";
+            $sql = "INSERT INTO clinica (id_admin, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica) 
+                    VALUES (:id_admin, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica)";
             
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
+
+                ':id_admin'          => $this->id_admin,
                 ':nombre_clinica'    => $this->nombre_clinica,
                 ':direccion_clinica' => $this->direccion_clinica,
                 ':telefono_clinica'  => $this->telefono_clinica,

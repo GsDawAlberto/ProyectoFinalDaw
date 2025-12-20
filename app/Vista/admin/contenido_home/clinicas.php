@@ -4,6 +4,7 @@ namespace Mediagend\App\Vista\admin\contenido_home;
 
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Clinica;
+use Mediagend\App\Config\Enlaces;
 
 $pdo = BaseDatos::getConexion();
 $clinicaModel = new Clinica();
@@ -20,6 +21,7 @@ $resultado = $clinicaModel->mostrarClinica($pdo, $id_clinica);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>tablas.css">
     <title>Document</title>
 </head>
 
@@ -29,7 +31,6 @@ $resultado = $clinicaModel->mostrarClinica($pdo, $id_clinica);
         <label>Buscar clínica por ID:</label>
         <input type="number" name="id_clinica" placeholder="ID de clínica">
         <button type="submit">Buscar</button>
-        <a href="clinicas.php">Ver todas</a>
     </form>
 
     <?php if ($resultado === 'ERR_CLINICA_03'): ?>
@@ -40,10 +41,12 @@ $resultado = $clinicaModel->mostrarClinica($pdo, $id_clinica);
 
     <?php else: ?>
 
-        <table border="1" cellpadding="8">
+        <div class="table-container">
+        <table>
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>ID Admin</th>
                     <th>Nombre</th>
                     <th>Dirección</th>
                     <th>Email</th>
@@ -56,6 +59,7 @@ $resultado = $clinicaModel->mostrarClinica($pdo, $id_clinica);
                     <!-- UNA clínica -->
                     <tr>
                         <td><?= $resultado['id_clinica'] ?></td>
+                        <td><?= $resultado['id_admin'] ?></td>
                         <td><?= $resultado['nombre_clinica'] ?></td>
                         <td><?= $resultado['direccion_clinica'] ?></td>
                         <td><?= $resultado['email_clinica'] ?></td>
@@ -67,6 +71,7 @@ $resultado = $clinicaModel->mostrarClinica($pdo, $id_clinica);
                     <?php foreach ($resultado as $clinica): ?>
                         <tr>
                             <td><?= $clinica['id_clinica'] ?></td>
+                            <td><?= $clinica['id_admin'] ?></td>
                             <td><?= $clinica['nombre_clinica'] ?></td>
                             <td><?= $clinica['direccion_clinica'] ?></td>
                             <td><?= $clinica['email_clinica'] ?></td>

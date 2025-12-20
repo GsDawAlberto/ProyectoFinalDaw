@@ -1,0 +1,87 @@
+/* CONTENEDOR DE TABLA */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 25px;
+}
+
+/* TABLA GENERAL */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    font-size: 0.95rem;
+}
+
+/* CABECERA */
+thead {
+    background: linear-gradient(135deg, #0077b6, #023e8a);
+}
+
+thead th {
+    padding: 15px 12px;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.85rem;
+}
+
+/* CUERPO */
+tbody tr {
+    transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f6fbff;
+}
+
+tbody tr:hover {
+    background-color: #e0f4ff;
+    transform: scale(1.002);
+}
+
+/* CELDAS */
+tbody td {
+    padding: 14px 12px;
+    color: #333;
+    border-bottom: 1px solid #e6eef5;
+}
+
+/* ÚLTIMA FILA SIN BORDE */
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ID */
+tbody td:first-child {
+    font-weight: 700;
+    color: #0077b6;
+}
+
+/* EMAIL */
+tbody td:nth-child(5) {
+    font-size: 0.9rem;
+    color: #005f87;
+}
+
+/* TELÉFONO */
+tbody td:nth-child(6) {
+    font-weight: 600;
+    color: #00b894;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.85rem;
+    }
+
+    thead th {
+        font-size: 0.75rem;
+    }
+}

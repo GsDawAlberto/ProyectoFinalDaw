@@ -71,6 +71,12 @@ class Rutas
                 $controller = new AdminController();
                 $controller->home_insertar();
                 break;
+            
+            // ---------- GUARDAR CONFIGURACIÓN ----------
+            /* case 'admin/guardar-config':
+                $controller = new AdminController();
+                $controller->guardar_configuracion();
+                break; */
                 
 
 
@@ -88,6 +94,11 @@ class Rutas
             case 'clinica/registrar':
                 $controller = new ClinicaController();
                 $controller->registrar();
+                break;
+
+            case 'clinica/loguear':
+                $controller = new ClinicaController();
+                $controller->loguear();
                 break;
 
             case 'clinica/acceder':

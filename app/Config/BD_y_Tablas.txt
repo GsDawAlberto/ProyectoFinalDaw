@@ -1,0 +1,104 @@
+-- Base de datos: `mediagend`
+--
+CREATE DATABASE IF NOT EXISTS `mediagend` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `mediagend`;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `administrador`
+--
+
+CREATE TABLE `administrador` (
+  `id_admin` int(11) NOT NULL,
+  `nombre_admin` varchar(100) NOT NULL,
+  `email_admin` varchar(100) NOT NULL,
+  `usuario_admin` varchar(50) NOT NULL,
+  `password_admin` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cita`
+--
+
+CREATE TABLE `cita` (
+  `id_cita` int(11) NOT NULL,
+  `id_clinica` int(11) NOT NULL,
+  `id_paciente` int(11) NOT NULL,
+  `id_medico` int(11) NOT NULL,
+  `id_informe` int(11) DEFAULT NULL,
+  `fecha_cita` date NOT NULL,
+  `hora_cita` time NOT NULL,
+  `estado_cita` enum('pendiente','confirmada','cancelada','realizada') DEFAULT 'pendiente',
+  `motivo_cita` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clinica`
+--
+
+CREATE TABLE `clinica` (
+  `id_clinica` int(11) NOT NULL,
+  `id_admin` int(11) NOT NULL,
+  `nombre_clinica` varchar(150) NOT NULL,
+  `direccion_clinica` varchar(200) DEFAULT NULL,
+  `telefono_clinica` varchar(20) DEFAULT NULL,
+  `email_clinica` varchar(100) DEFAULT NULL,
+  `usuario_clinica` varchar(50) NOT NULL,
+  `password_clinica` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `informe`
+--
+
+CREATE TABLE `informe` (
+  `id_informe` int(11) NOT NULL,
+  `id_clinica` int(11) NOT NULL,
+  `id_cita` int(11) DEFAULT NULL,
+  `id_medico` int(11) NOT NULL,
+  `id_paciente` int(11) NOT NULL,
+  `diagnostico_informe` text DEFAULT NULL,
+  `tratamiento_informe` text DEFAULT NULL,
+  `fecha_generacion_informe` datetime DEFAULT current_timestamp(),
+  `archivo_pdf_informe` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medico`
+--
+
+CREATE TABLE `medico` (
+  `id_medico` int(11) NOT NULL,
+  `id_clinica` int(11) NOT NULL,
+  `nombre_medico` varchar(100) NOT NULL,
+  `especialidad_medico` varchar(100) DEFAULT NULL,
+  `telefono_medico` varchar(20) DEFAULT NULL,
+  `email_medico` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `paciente`
+--
+
+CREATE TABLE `paciente` (
+  `id_paciente` int(11) NOT NULL,
+  `id_clinica` int(11) NOT NULL,
+  `dni_paciente` varchar(20) NOT NULL,
+  `nombre_paciente` varchar(100) NOT NULL,
+  `apellidos_paciente` varchar(150) DEFAULT NULL,
+  `telefono_paciente` varchar(20) DEFAULT NULL,
+  `email_paciente` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
