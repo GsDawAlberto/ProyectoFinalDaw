@@ -1,0 +1,268 @@
+<?php
+
+namespace Mediagend\App\Modelo;
+
+use PDO;
+use PDOException;
+
+class Paciente
+{
+    //Propiedades
+    private ?int $id_paciente = null;
+    private ?int $id_clinica = null;
+    private ?string $nombre_paciente = null;
+    private ?string $apellidos_paciente = null;
+    private ?string $dni_paciente = null;
+    private ?string $telefono_paciente = null;
+    private ?string $email_paciente = null;
+    private ?string $password_paciente = null;
+    
+    //Getters
+    /**
+     * Método para obtener el ID del paciente
+     * @return int|null
+     */
+    public function getIdPaciente(): ?int
+    {
+        return $this->id_paciente;
+    }
+     /**
+     * Método para obtener el ID de la clínica
+     * @return int|null
+     */
+    public function getIdClinica(): ?int
+    {
+        return $this->id_clinica;
+    }
+     /**
+     * Método para obtener el nombre del paciente
+     * @return string|null
+     */
+    public function getNombrePaciente(): ?string
+    {
+        return $this->nombre_paciente;
+    }
+     /**
+     * Método para obtener los apellidos del paciente
+     * @return string|null
+     */
+    public function getApellidosPaciente(): ?string
+    {
+        return $this->apellidos_paciente;
+    }
+     /**
+     * Método para obtener el DNI del paciente
+     * @return string|null
+     */
+    public function getDniPaciente(): ?string
+    {
+        return $this->dni_paciente;
+    }
+     /**
+     * Método para obtener el teléfono del paciente
+     * @return string|null
+     */
+    public function getTelefonoPaciente(): ?string
+    {
+        return $this->telefono_paciente;
+    }
+     /**
+     * Método para obtener el email del paciente
+     * @return string|null
+     */
+    public function getEmailPaciente(): ?string
+    {
+        return $this->email_paciente;
+    }
+    /**
+     * Método para obtener la contraseña del paciente
+     * @return string|null
+     */
+    public function getPasswordPaciente(): ?string
+    {
+        return $this->password_paciente;
+    }
+
+    //Setters
+    /**
+     * Método para establecer el ID del paciente
+     * @param int|null $id_paciente
+     */
+    public function setIdPaciente(int $id_paciente): void
+    {
+        $this->id_paciente = $id_paciente;
+    }
+    /**
+     * Método para establecer el ID de la clínica
+     * @param int|null $id_clinica
+     */
+    public function setIdClinica(int $id_clinica): void
+    {
+        $this->id_clinica = $id_clinica;
+    }
+    /**
+     * Método para establecer el nombres del paciente
+     * @param string $nombre
+     */
+    public function setNombrePaciente(string $nombre_paciente): void
+    {
+        $this->nombre_paciente = $nombre_paciente;
+    }
+    /**
+     * Método para establecer los apellidos del paciente
+     * @param string $apellidos
+     */
+    public function setApellidosPaciente(string $apellidos_paciente): void
+    {
+        $this->apellidos_paciente = $apellidos_paciente;
+    }
+    /**
+     * Método para establecer el DNI del paciente
+     * @param string $dni
+     */
+    public function setDniPaciente(string $dni_paciente): void
+    {
+        $this->dni_paciente = $dni_paciente;
+    }
+    /**
+     * Método para establecer el teléfono del paciente
+     * @param string $telefono
+     */
+    public function setTelefonoPaciente(string $telefono_paciente): void
+    {
+        $this->telefono_paciente = $telefono_paciente;
+    }
+    /**
+     * Método para establecer el email del paciente
+     * @param string $email
+     */
+    public function setEmailPaciente(string $email_paciente): void
+    {
+        $this->email_paciente = $email_paciente;
+    }
+    /**
+     * Método para establecer la contraseña del paciente
+     * @param string $password_paciente
+     */
+    public function setPasswordPaciente(string $password_paciente): void
+    {
+        $this->password_paciente = $password_paciente;
+    }
+
+    // MÉTODOS DE BASE DE DATOS
+    /**
+     * Método para guardar un nuevo paciente en la base de datos
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @return string|int Retronamos el número de filas afectadas o ERR_PACIENTE_01 en caso de no poder guardar el paciente
+     */
+
+    public function guardarPaciente(PDO $pdo): string|int{
+        //Intentamos capturar errores del PDO
+        try {
+            //Consulta SQL para insertar un nuevo paciente
+            $sql = "INSERT INTO paciente (id_clinica, nombre_paciente, apellidos_paciente, dni_paciente, telefono_paciente, email_paciente) 
+                    VALUES (:id_clinica, :nombre, :apellidos, :dni, :telefono, :email)";
+           
+           $stmt = $pdo->prepare($sql);
+           $stmt->execute([
+               ':id_clinica' => $this->id_clinica,
+               ':nombre' => $this->nombre_paciente,
+               ':apellidos' => $this->apellidos_paciente,
+               ':dni' => $this->dni_paciente,
+               ':telefono' => $this->telefono_paciente,
+               ':email' => $this->email_paciente
+              ]);
+
+            //Guardamos el ID autogenerado
+            $this->id_paciente = (int)$pdo->lastInsertId();
+            
+            //Retornamos la cantidad de filas afectadas
+            return $stmt->rowCount();
+
+            //Capturamos cualquier error de PDO
+        } catch (PDOException $e) {
+            //Devolvemos el mensaje de error
+            $error = 'ERR_PACIENTE_01'; // Error al guardar paciente
+            return $error;
+        }
+    }
+    /**
+     * Método para autenticar un paciente en la base de datos
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param string $email_paciente. Email del paciente
+     * @param string $password_paciente. Contraseña del paciente
+     * @return string|array|bool Retornamos un array con los datos del paciente, false si no se encuentra o ERR_PACIENTE_02 en caso de error
+     */
+    public function autenticarPaciente(PDO $pdo, string $email_paciente, string $password_paciente): string|array|bool{
+        //Intentamos capturar errores del PDO
+        try {
+            //Consulta SQL para autenticar un paciente
+            $sql = "SELECT * FROM paciente WHERE email_paciente = :email";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(
+                [':email' => $email_paciente]
+            );
+            
+            //Guardamos el resultado en un array asociativo
+            $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            //Verificamos se el usuario existe
+            if (!$paciente) {
+                return false; // Paciente no encontrado
+            }
+
+            //Verificamos la contraseña
+            if (!password_verify($password_paciente, $paciente['password_paciente'])) {
+                return false; // Contraseña incorrecta
+            }
+
+                // Cargamos datos dentro del objeto Paciente
+                $this->id_paciente = (int)$paciente['id_paciente'];
+                $this->id_clinica = (int)$paciente['id_clinica'];
+                $this->nombre_paciente = $paciente['nombre_paciente'];
+                $this->apellidos_paciente = $paciente['apellidos_paciente'];
+                $this->dni_paciente = $paciente['dni_paciente'];
+                $this->telefono_paciente = $paciente['telefono_paciente'];
+                $this->email_paciente = $paciente['email_paciente'];
+                $this->password_paciente = $paciente['password_paciente'];
+
+                // Retornamos el array con los datos del paciente
+                return $paciente;
+
+                // Capturamos cualquier error de PDO
+        } catch (PDOException $e) {
+            $error = 'ERR_PACIENTE_02'; // Error al autenticar paciente
+            return $error;
+        }
+    }
+
+    public function mostrarPaciente(PDO $pdo, ?int $id_paciente = null): string|array|null{
+        //Intentamos capturar errores del PDO
+        try {
+            //Consulta SQL para obtener los datos de un paciente
+            /* $sql = "SELECT * FROM paciente WHERE id_paciente = :id_paciente";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(
+                [':id_paciente' => $id_paciente]
+            );
+            
+            //Guardamos el resultado en un array asociativo
+            $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            //Verificamos se el paciente existe
+            if (!$paciente) {
+                return false; // Paciente no encontrado
+            }
+
+                // Retornamos el array con los datos del paciente
+                return $paciente;
+
+                // Capturamos cualquier error de PDO */
+        } catch (PDOException $e) {
+            $error = 'ERR_PACIENTE_03'; // Error al obtener datos del paciente
+            return $error;
+        }
+    }
+
+
+}

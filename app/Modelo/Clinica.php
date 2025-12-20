@@ -212,7 +212,7 @@ class Clinica
 
             //Verificamos si el usuario existe
             if (!$clinica) {
-                return false; // Usuario no encontrado
+                return false; // Clinica no encontrado
             }
 
             // Verificamos la contraseña
