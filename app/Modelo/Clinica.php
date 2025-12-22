@@ -163,7 +163,7 @@ class Clinica
             //Consulta SQL para insertar una nueva clínica
             $sql = "INSERT INTO clinica (id_admin, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica) 
                     VALUES (:id_admin, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica)";
-            
+
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
 
@@ -189,14 +189,14 @@ class Clinica
         }
     }
 
-        /**
-         * Método para autenticar una clínica
-         * @param PDO $pdo. Conexión PDO a la base de datos 
-         * @param string $usuario_clinica. Usuario de la clínica
-         * @param string $password_clinica. Contraseña de la clínica
-         * @return string|array|bool Retorna un array con los datos de la clínica, o false si no se encuentra, o ERR_CLINICA_02 en caso de error
-         */
-        public function autenticarClinica(PDO $pdo, string $usuario_clinica, string $password_clinica): string|array|bool
+    /**
+     * Método para autenticar una clínica
+     * @param PDO $pdo. Conexión PDO a la base de datos 
+     * @param string $usuario_clinica. Usuario de la clínica
+     * @param string $password_clinica. Contraseña de la clínica
+     * @return string|array|bool Retorna un array con los datos de la clínica, o false si no se encuentra, o ERR_CLINICA_02 en caso de error
+     */
+    public function autenticarClinica(PDO $pdo, string $usuario_clinica, string $password_clinica): string|array|bool
     {
         // Intentamos capturar errores de PDO
         try {
@@ -218,7 +218,7 @@ class Clinica
             // Verificamos la contraseña
             if (!password_verify($password_clinica, $clinica['password_clinica'])) {
                 return false; // contraseña incorrecta
-            } 
+            }
 
             //Cargamos datos dentro del objeto
             $this->id_clinica = $clinica['id_clinica'];
@@ -243,35 +243,35 @@ class Clinica
      * Método para mostrar los datos de una clínica por su ID
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_clinica. ID de la clínica a mostrar
-     * @return string|array|null Retorna un array con los datos de la clínica, null si no existe, ERR_CLINICA_03 en caso de error al mostrar clínica
+     * @return string|array|null Retorna un array con los datos de la clínica, null si no existe os ERR_CLINICA_03 en caso de error al mostrar clínica
      */
     public function mostrarClinica(PDO $pdo, ?int $id_clinica = null): string|array|null
     {
         // Intentamos capturar errores de PDO
         try {
-            if($id_clinica === null) {
+            if ($id_clinica === null) {
                 // si no se indica id, obtenemos TODAS las clínicas
-            $sql = "SELECT * FROM clinica";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+                $sql = "SELECT * FROM clinica";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
 
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            // Consulta SQL para obtener la clínica por su ID
-            $sql = "SELECT * FROM clinica WHERE id_clinica = :id_clinica";
-            // Preparar y ejecutar la consulta
-            $stmt = $pdo->prepare($sql);
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                // Consulta SQL para obtener la clínica por su ID
+                $sql = "SELECT * FROM clinica WHERE id_clinica = :id_clinica";
+                // Preparar y ejecutar la consulta
+                $stmt = $pdo->prepare($sql);
 
-            $stmt->execute(
-                [':id_clinica' => $id_clinica]
-            );
+                $stmt->execute(
+                    [':id_clinica' => $id_clinica]
+                );
 
-            // Guardamos el resultado en un array asociativo
-            $clinica = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Guardamos el resultado en un array asociativo
+                $clinica = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            //Retonamos el array o null si no existe
-            return $clinica ?: null;
-        }
+                //Retonamos el array o null si no existe
+                return $clinica ?: null;
+            }
         } catch (PDOException $e) {
             $error = 'ERR_CLINICA_03'; // Error al mostrar clínica
             return $error;
@@ -296,7 +296,7 @@ class Clinica
                         email_clinica = :email_clinica, 
                         usuario_clinica = :usuario_clinica 
                     WHERE id_clinica = :id_clinica";
-            
+
             // Preparar y ejecutar la consulta
             $stmt = $pdo->prepare($sql);
 
@@ -329,13 +329,22 @@ class Clinica
      */
     public function eliminarClinica(PDO $pdo, int $id_clinica): string|int
     {
+        // Intentamos capturar errores de PDO
         try {
+            //Consultamos SQL para eliminar un paciente por su id
             $sql = "DELETE FROM clinica WHERE id_clinica = :id_clinica";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([':id_clinica' => $id_clinica]);
 
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':id_clinica' => $id_clinica
+            ]);
+
+            //Retornamos la cantidad de filas afectadas
             return $stmt->rowCount();
+
+            //Capturamos cualquier error de PDO
         } catch (PDOException $e) {
+            //Devolvemos el mensaje de error
             $error = 'ERR_ADMIN_05'; // Error al eliminar clínica
             return $error;
         }
