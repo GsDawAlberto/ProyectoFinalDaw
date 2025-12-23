@@ -2,7 +2,7 @@
 namespace Mediagend\App\Vista\clinica\contenido_clinica_home;
 
 use Mediagend\App\Config\BaseDatos;
-use Mediagend\App\Modelo\Usuario;
+use Mediagend\App\Modelo\Paciente;
 use Mediagend\App\Config\Enlaces;
 
 $pdo = BaseDatos::getConexion();
@@ -11,7 +11,7 @@ $usuarioModel = new Paciente();
 $id_usuario = $_GET['id_usuario'] ?? null;
 $id_usuario = is_numeric($id_usuario) ? (int)$id_usuario : null;
 
-$resultado = $usuarioModel->mostrarUsuario($pdo, $id_usuario);
+$resultado = $usuarioModel->mostrarPaciente($pdo, $id_usuario);
 ?>
 
 <!DOCTYPE html>

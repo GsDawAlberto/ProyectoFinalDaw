@@ -165,6 +165,7 @@ class Paciente
                     VALUES (:id_clinica, :nombre, :apellidos, :dni, :telefono, :email)";
 
             $stmt = $pdo->prepare($sql);
+
             $stmt->execute([
                 ':id_clinica' => $this->id_clinica,
                 ':nombre' => $this->nombre_paciente,
@@ -199,10 +200,10 @@ class Paciente
         //Intentamos capturar errores del PDO
         try {
             //Consulta SQL para autenticar un paciente
-            $sql = "SELECT * FROM paciente WHERE email_paciente = :email";
+            $sql = "SELECT * FROM paciente WHERE email_paciente = :email_paciente";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(
-                [':email' => $email_paciente]
+                [':email_paciente' => $email_paciente]
             );
 
             //Guardamos el resultado en un array asociativo
@@ -272,7 +273,7 @@ class Paciente
                 return $paciente ?: null;
             }
         } catch (PDOException $e) {
-            $error = 'ERR_PACIENTE_03'; // Error al obtener datos del paciente
+            $error = 'ERR_PACIENTE_03'; // Error al mostrar paciente
             return $error;
         }
     }
@@ -321,6 +322,12 @@ class Paciente
         }
     }
 
+    /**
+     * Método para eliminar un paciente por su ID
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_paciente. ID del paciente a eliminar
+     * @return int|string. Retorna el número de filas afectadas o 'ERR_ADMIN_05' en caso de error al eliminar paciente
+     */
     public function eliminarPaciente (PDO $pdo, int $id_paciente): string|int
     {
         //Intentamos capturar errores del PDO

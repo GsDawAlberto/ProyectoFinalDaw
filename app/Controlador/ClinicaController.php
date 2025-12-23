@@ -74,7 +74,7 @@ class ClinicaController
             die("Error al registrar la clínica.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
         }
 
-        // Redirigir
+        // Redirigir a home admin
         header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
         exit;
     }
@@ -90,8 +90,8 @@ class ClinicaController
         }
 
         // Sanitizar entrada
-        $usuario = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING));
-        $password = trim($_POST['password_clinica'] ?? '');
+        $usuario = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING) ?? '');
+        $password = trim(filter_input(INPUT_POST, 'password_clinica', FILTER_SANITIZE_STRING) ?? '');
 
         // Conexión BD
         $pdo = BaseDatos::getConexion();
