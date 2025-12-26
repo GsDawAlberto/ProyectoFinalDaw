@@ -304,7 +304,8 @@ class Informe
             return $stmt->rowCount();
             //Capturamos el mensaje de error
         } catch (PDOException $e) {
-            return 'ERR_INFORME_05'; //Error al eliminar informe
+            $error = 'ERR_INFORME_05'; //Error al eliminar informe
+            return $error;
         }
     }
 }

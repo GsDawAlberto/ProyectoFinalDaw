@@ -264,11 +264,13 @@ class Cita
      * Método para actualizar los datos de la cita en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_cita. ID de la cita a actualizar
-     * @return string|int Retornamos el número de filas afectadas o ERR_INFORME_04 en caso de no poder actualizar el informe
+     * @return string|int Retornamos el número de filas afectadas o ERR_CITA_04 en caso de no poder actualizar la cita
      */
     public function actualizarCita(PDO $pdo, int $id_cita): string|int
     {
+        // Intentamos capturar errores de PDO
         try {
+            // Consulta SQL para actualizar la cita
             $sql = "UPDATE cita SET
                         fecha_cita = :fecha,
                         hora_cita = :hora,
@@ -277,7 +279,10 @@ class Cita
                         id_informe = :id_informe
                     WHERE id_cita = :id_cita";
 
+            // Preparamos y ejecutamos la cita
             $stmt = $pdo->prepare($sql);
+
+            //Ejecutamos la consulta con los datos actualizados
             $stmt->execute([
                 ':fecha'      => $this->fecha_cita,
                 ':hora'       => $this->hora_cita,
@@ -287,27 +292,37 @@ class Cita
                 ':id_cita'    => $id_cita
             ]);
 
+            //Retornamos la cantidad de filas afectadas
             return $stmt->rowCount();
+            //Capturamos errores de PDO
         } catch (PDOException $e) {
-            return 'ERR_CITA_03';
+            $error = 'ERR_CITA_04'; //Error al actualizar cita
+            return $error;
         }
     }
 
     /**
-     * Método para eliminar una cita
-     * @param PDO $pdo
-     * @param int $id_cita
-     * @return string|int
+     * Método para eliminar una cita por su ID
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_cita. ID de la cita a eliminar
+     * @return int|string. Retorna el número de filas afectadas o 'ERR_CITA_05' en caso de error al eliminar la cita
      */
     public function eliminarCita(PDO $pdo, int $id_cita): string|int
     {
+        //Intentamos captuara errores del PDO
         try {
+            //Consulta SQL para eliminar una cita
             $sql = "DELETE FROM cita WHERE id_cita = :id_cita";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([':id_cita' => $id_cita]);
+            $stmt->execute([
+                ':id_cita' => $id_cita
+            ]);
+            //Retornamos la cantidad de filas afectadas
             return $stmt->rowCount();
+            //Capturamos el mensaje de error
         } catch (PDOException $e) {
-            return 'ERR_CITA_04';
+            $error =  'ERR_CITA_05'; //Error al eliminar la cita
+            return $error;
         }
     }
 }
