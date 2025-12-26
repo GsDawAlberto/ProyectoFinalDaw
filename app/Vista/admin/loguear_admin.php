@@ -52,7 +52,7 @@ use Mediagend\App\Config\Enlaces;
         </form>
 
         <div class="extra-links">
-            <a href="<?= Enlaces::BASE_URL ?>admin/login">Volver al login</a>
+            <a href="<?= Enlaces::BASE_URL ?>admin/login_admin">Volver al login</a>
         </div>
 
         <footer>

@@ -189,10 +189,18 @@ class Administrador
      * @param int $id_admin. ID del administrador a mostrar
      * @return string|array|null. Retorna un array con los datos del administrador, null si no existe, 'ERR_ADMIN_03' en caso de error al mostrar administrador
      */
-    public function mostrarAdmin(PDO $pdo, int $id_admin): string|array|null
+    public function mostrarAdmin(PDO $pdo, ?int $id_admin = null): string|array|null
     {
         // Intentamos capturar errores de PDO
         try {
+            if ($id_admin === null) {
+                // si no se indica id, obtenemos TODAS los administradores
+                $sql = "SELECT * FROM administrador";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }else{
             // Consulta para obtener el administrador por su ID
             $sql = "SELECT * FROM administrador WHERE id_admin = :id_admin";
 
@@ -208,6 +216,7 @@ class Administrador
             
             // Retornar el array o null si no existe
             return $admin ?: null;
+        }
         } catch (PDOException $e) {
             $error = 'ERR_ADMIN_03'; // Error al mostrar administrador
             return $error;

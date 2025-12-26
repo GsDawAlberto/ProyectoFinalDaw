@@ -27,17 +27,17 @@ use Mediagend\App\Config\Enlaces;
     </header>
 
     <nav class="lobby-nav">
-        <a href="<?= Enlaces::BASE_URL ?>admin/login" class="lobby-btn btn-admin">
+        <a href="<?= Enlaces::BASE_URL ?>admin/login_admin" class="lobby-btn btn-admin">
             <i class="fas fa-user-shield"></i>
             Administrador
         </a>
 
-        <a href="<?= Enlaces::BASE_URL ?>clinica/login" class="lobby-btn btn-clinica">
+        <a href="<?= Enlaces::BASE_URL ?>clinica/login_clinica" class="lobby-btn btn-clinica">
             <i class="fas fa-hospital"></i>
             Clínicas
         </a>
 
-        <a href="<?= Enlaces::BASE_URL ?>usuario/login" class="lobby-btn btn-usuario">
+        <a href="<?= Enlaces::BASE_URL ?>usuario/login_usuario" class="lobby-btn btn-usuario">
             <i class="fas fa-user"></i>
             Usuarios
         </a>

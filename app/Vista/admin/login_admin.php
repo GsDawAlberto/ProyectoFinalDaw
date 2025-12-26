@@ -39,7 +39,7 @@ use Mediagend\App\Config\Enlaces;
     </form>
 
     <div class="extra-links">
-        <a href="<?= Enlaces::BASE_URL ?>admin/loguear">Crear cuenta</a>
+        <a href="<?= Enlaces::BASE_URL ?>admin/loguear_admin">Crear cuenta</a>
     </div>
 
     <footer>

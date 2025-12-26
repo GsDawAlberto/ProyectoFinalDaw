@@ -38,10 +38,6 @@ use Mediagend\App\Config\Enlaces;
 
     </form>
 
-    <div class="extra-links">
-        <a href="<?= Enlaces::BASE_URL ?>clinica/loguear">Crear cuenta</a>
-    </div>
-
     <footer>
         <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
     </footer>

@@ -10,9 +10,11 @@ if (!isset($_SESSION['admin'])) {
 $nombreUsuario = $_SESSION['admin']['nombre'];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
+    <meta http-equiv="Content-Language" content="es">
+    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Font Awesome para iconos -->
@@ -24,7 +26,7 @@ $nombreUsuario = $_SESSION['admin']['nombre'];
     <title>Document</title>
 </head>
 
-<body>
+<body lang="es">
 
     <div class="layout">
 
@@ -37,7 +39,7 @@ $nombreUsuario = $_SESSION['admin']['nombre'];
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/clinicas')"><i class="fa-solid fa-truck-medical"></i>Clínicas</button>
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/loguear')"><i class="fa-solid fa-file-import"></i>Insertar</button>
             <!-- <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/configuracion')"><i class="fa-solid fa-gears"></i>Configuración</button> -->
-            <a href="<?= Enlaces::BASE_URL ?>admin/login"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>
+            <a href="<?= Enlaces::BASE_URL ?>admin/login_admin"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>
         </aside>
 
         <!-- Contenedor derecho -->

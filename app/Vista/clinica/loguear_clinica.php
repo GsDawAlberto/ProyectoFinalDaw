@@ -59,9 +59,6 @@ use Mediagend\App\Config\Enlaces;
         <button type="submit" class="btn-submit">Registrar Clínica</button>
     </form>
 
-    <div class="extra-links">
-        <a href="<?= Enlaces::BASE_URL ?>admin/home/clinicas">Volver al panel</a>
-    </div>
 
 </div>
 

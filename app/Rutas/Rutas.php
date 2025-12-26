@@ -85,17 +85,17 @@ class Rutas
 
             // ---------- CLINICA ---------- //
             //***********************************************************************************************//
-            case 'clinica/login':
+            case 'clinica/login_clinica':
                 $controller = new ClinicaController();
                 $controller->login();
                 break;
 
-            case 'clinica/home':
+            case 'clinica/home_clinica':
                 $controller = new ClinicaController();
                 $controller->home();
                 break;
 
-            case 'clinica/registrar':
+            case 'clinica/registrar_clinica':
                 $controller = new ClinicaController();
                 $controller->registrar();
                 break;
@@ -113,22 +113,22 @@ class Rutas
 
             // ---------- USUARIO ---------- //
             //***********************************************************************************************//
-            case 'usuario/login':
+            case 'usuario/login_usuario':
                 $controller = new PacienteController();
                 $controller->login();
                 break;
                 
-            /* case 'usuario/home':
+             /* case 'usuario/home_usuario':
                 $controller = new UsuarioController();
                 $controller->home();
                 break;
 
-            case 'usuario/loguear':
+            case 'usuario/loguear_usuario':
                 $controller = new UsuarioController();
                 $controller->loguear();
                 break;
 
-            case 'usuario/registrar':
+           case 'usuario/registrar':
                 $controller = new UsuarioController();
                 $controller->registrar();
                 break;
