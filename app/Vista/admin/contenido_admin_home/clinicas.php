@@ -12,7 +12,7 @@ session_start();
 $administrador = $_SESSION['admin']['id_admin'];
 
 $pdo = BaseDatos::getConexion();
-/*************  Trabajando con clinicas ********************/
+
 $clinicaModel = new Clinica();
 
 $id_clinica = $_GET['id_clinica'] ?? null;
@@ -20,15 +20,6 @@ $id_clinica = is_numeric($id_clinica) ? (int)$id_clinica : null;
 
 $resultado = $clinicaModel->mostrarClinica($pdo, $id_clinica);
 
-/************* Trabajando con usuarios *********************/
-$adminModel = new Administrador();
-
-/* $id_administrador = $_GET['id_admin'] ?? null;
-$id_administrador = is_numeric($id_administrador) ? (int)$id_administrador : null; */
-$id_admin = $_GET['id_admin'] ?? null;
-$id_admin = is_numeric($id_admin) ? (int)$id_admin : null;
-
-$resultado_2 = $adminModel->mostrarAdmin($pdo, $id_admin);
 
 ?>
 
@@ -46,15 +37,14 @@ $resultado_2 = $adminModel->mostrarAdmin($pdo, $id_admin);
 
 <body lang="es">
     <h1> HOME DE CLINICAS.PHP</h1>
+    
     <form method="GET">
         <label>Buscar clínica por Administrador:</label>
+
         <select name="id_admin">
-            <option value="">-- Todas las clinicas --</option>
-
-
-            <?php foreach ($resultado_2 as $administradores): ?>
-                <!-- <input type="number" name="id_clinica" placeholder="ID de clínica"> -->
-                <option value="<?= $administradores['id_admin'] ?>"><?= $administradores['usuario_admin'] ?></option>
+            <option value="">Todos</option>
+            <?php foreach ($resultado as $clinica):?>
+                <option value="<?= $clinica['id_admin'] ?>"><?= $clinica['id_admin'] ?></option>
             <?php endforeach; ?>
         </select>
         <button type="submit">Buscar</button>
@@ -86,7 +76,8 @@ $resultado_2 = $adminModel->mostrarAdmin($pdo, $id_admin);
 
                     <?php if ($id_admin !== null): ?>
                         <?php foreach ($resultado as $clinica): ?>
-                            <?php if ($id_admin == $clinica['id_admin']): ?>
+                            <?= $l = (int)$clinica['id_admin'] ?>
+                            <?php if ( $l === $id_admin): ?>
                                 <!-- UNA clínica -->
                                 <tr>
                                     <td><?= $clinica['id_admin'] ?></td>
@@ -95,7 +86,32 @@ $resultado_2 = $adminModel->mostrarAdmin($pdo, $id_admin);
                                     <td><?= $clinica['direccion_clinica'] ?></td>
                                     <td><?= $clinica['email_clinica'] ?></td>
                                     <td><?= $clinica['telefono_clinica'] ?></td>
+                                    <?php if ((int)$_SESSION['admin']['id_admin'] === (int)$clinica['id_admin']): ?>
 
+                                    <!-- MODIFICAR -->
+                                    <td>
+                                        <form action="<?= Enlaces::BASE_URL ?>admin/clinica/editar" method="GET">
+                                            <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
+                                            <button type="submit" class="btn-submit">✏️ Modificar</button>
+                                        </form>
+                                    </td>
+
+                                    <!-- ELIMINAR -->
+                                    <td>
+                                        <form action="<?= Enlaces::BASE_URL ?>admin/clinica/eliminar" method="POST"
+                                            onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica?');">
+                                            <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
+                                            <button type="submit" class="btn-delete">🗑️ Eliminar</button>
+                                        </form>
+                                    </td>
+
+                                <?php else: ?>
+
+                                    <!-- Celdas vacías si no es del admin -->
+                                    <td>-<?= $id_admin ?></td>
+                                    <td>-</td>
+
+                                <?php endif; ?>
                                 </tr>
                             <?php endif; ?>
                         <?php endforeach; ?>
@@ -132,7 +148,7 @@ $resultado_2 = $adminModel->mostrarAdmin($pdo, $id_admin);
                                 <?php else: ?>
 
                                     <!-- Celdas vacías si no es del admin -->
-                                    <td>-</td>
+                                    <td><?=  $id_admin?></td>
                                     <td>-</td>
 
                                 <?php endif; ?>

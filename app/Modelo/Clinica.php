@@ -16,6 +16,7 @@ class Clinica
     private ?string $email_clinica = null;
     private ?string $usuario_clinica = null;
     private ?string $password_clinica = null;
+    private ?string $usuario_admin = null;
 
     // Getters
     /**
@@ -83,6 +84,11 @@ class Clinica
         return $this->password_clinica;
     }
 
+    public function getUsuarioAdmin(): ?string
+    {
+        return $this->$usuario_admin;
+    }
+
     // Setters
     /**
      * método para establecer el ID de la clínica
@@ -148,6 +154,11 @@ class Clinica
     public function setPasswordClinica(string $password_clinica): void
     {
         $this->password_clinica = $password_clinica;
+    }
+
+    public function setUsuarioAdmin(string $usuario_admin): void
+    {
+        $this->$usuario_admin = $usuario_admin;
     }
 
     // MÉTODOS DE BASE DE DATOS
