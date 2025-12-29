@@ -119,9 +119,10 @@ class AdminController
 
         // Guardar sesión
         $_SESSION['admin'] = [
-            "id_admin"  => $resultado['id_admin'],
-            "nombre"    => $resultado['nombre_admin'],
-            "email"     => $resultado['email_admin']
+            'id_admin'       => $resultado['id_admin'],
+            'nombre_admin'   => $resultado['nombre_admin'],
+            'usuario_admin'  => $resultado['usuario_admin'],
+            'email_admin'    => $resultado['email_admin']
         ];
 
         header("Location: " . Enlaces::BASE_URL . "admin/home_admin");
@@ -174,5 +175,4 @@ class AdminController
 
     header("Location: " . Enlaces::BASE_URL . "admin/home/configuracion");
 } */
-
 }

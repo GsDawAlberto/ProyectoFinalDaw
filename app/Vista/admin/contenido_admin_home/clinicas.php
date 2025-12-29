@@ -1,5 +1,4 @@
 <?php
-
 namespace Mediagend\App\Vista\admin\contenido_admin_home;
 
 use Mediagend\App\Config\BaseDatos;
@@ -7,159 +6,125 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Modelo\Administrador;
 use Mediagend\App\Modelo\Clinica;
 
-
 session_start();
-$administrador = $_SESSION['admin']['id_admin'];
+$administradorSesion = $_SESSION['admin']['id_admin'];
 
 $pdo = BaseDatos::getConexion();
 
+/************************** CLÍNICAS ******************************/
 $clinicaModel = new Clinica();
 
-$id_clinica = $_GET['id_clinica'] ?? null;
-$id_clinica = is_numeric($id_clinica) ? (int)$id_clinica : null;
+// MOSTRAR TODAS LAS CLÍNICAS (el filtrado se hace en la vista)
+$resultado = $clinicaModel->mostrarClinica($pdo, null);
 
-$resultado = $clinicaModel->mostrarClinica($pdo, $id_clinica);
-
-
+/************************** ADMINISTRADORES ******************************/
+$adminModel = new Administrador();
+$id_admin = $_GET['id_admin'] ?? null;
+$id_admin = ($id_admin === '' || !is_numeric($id_admin)) ? null : (int)$id_admin;
+// 🔹 SIEMPRE todos los admins para el select
+$admins = $adminModel->mostrarAdmin($pdo, null);
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta http-equiv="Content-Language" content="es">
-    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>tablas.css">
-    <title>Document</title>
+    <title>Clínicas</title>
 </head>
 
-<body lang="es">
-    <h1> HOME DE CLINICAS.PHP</h1>
-    
-    <form method="GET">
-        <label>Buscar clínica por Administrador:</label>
+<body>
 
-        <select name="id_admin">
-            <option value="">Todos</option>
-            <?php foreach ($resultado as $clinica):?>
-                <option value="<?= $clinica['id_admin'] ?>"><?= $clinica['id_admin'] ?></option>
-            <?php endforeach; ?>
-        </select>
-        <button type="submit">Buscar</button>
-    </form>
+<h1>HOME DE CLÍNICAS</h1>
 
-    <?php if ($resultado === 'ERR_CLINICA_03'): ?>
-        <p>Error al obtener clínicas</p>
+<form method="GET">
+    <label>Buscar clínica por Administrador:</label>
+    <select name="id_admin" onchange="this.form.submit()"> <!-- onchange="this.form.submit(), realiza un submit automático sin un botón -->
+        <option value="">Todos</option>
 
-    <?php elseif (empty($resultado)): ?>
-        <p>No se encontraron clínicas</p>
+        <?php foreach ($admins as $admin): ?>
+            <option value="<?= $admin['id_admin'] ?>"
+                <?= ($id_admin === (int)$admin['id_admin']) ? 'selected' : '' ?>>
+                <?= $admin['usuario_admin'] ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
 
-    <?php else: ?>
+    <!-- <button type="submit">Buscar</button> -->
+</form>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Admin</th>
-                        <th>Clinica</th>
-                        <th>Nombre</th>
-                        <th>Dirección</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                        <th>Modificar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
+<?php if ($resultado === 'ERR_CLINICA_03'): ?>
+    <p>Error al mostrar clínicas</p>
 
-                    <?php if ($id_admin !== null): ?>
-                        <?php foreach ($resultado as $clinica): ?>
-                            <?= $l = (int)$clinica['id_admin'] ?>
-                            <?php if ( $l === $id_admin): ?>
-                                <!-- UNA clínica -->
-                                <tr>
-                                    <td><?= $clinica['id_admin'] ?></td>
-                                    <td><?= $clinica['usuario_clinica'] ?></td>
-                                    <td><?= $clinica['nombre_clinica'] ?></td>
-                                    <td><?= $clinica['direccion_clinica'] ?></td>
-                                    <td><?= $clinica['email_clinica'] ?></td>
-                                    <td><?= $clinica['telefono_clinica'] ?></td>
-                                    <?php if ((int)$_SESSION['admin']['id_admin'] === (int)$clinica['id_admin']): ?>
+<?php elseif (empty($resultado)): ?>
+    <p>No se encontraron clínicas</p>
 
-                                    <!-- MODIFICAR -->
-                                    <td>
-                                        <form action="<?= Enlaces::BASE_URL ?>admin/clinica/editar" method="GET">
-                                            <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
-                                            <button type="submit" class="btn-submit">✏️ Modificar</button>
-                                        </form>
-                                    </td>
+<?php else: ?>
 
-                                    <!-- ELIMINAR -->
-                                    <td>
-                                        <form action="<?= Enlaces::BASE_URL ?>admin/clinica/eliminar" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica?');">
-                                            <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
-                                            <button type="submit" class="btn-delete">🗑️ Eliminar</button>
-                                        </form>
-                                    </td>
+<div class="table-container">
+<table>
+    <thead>
+        <tr>
+            <th>Administrador</th>
+            <th>Clínica</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
 
-                                <?php else: ?>
+    <?php foreach ($resultado as $clinica): ?>
 
-                                    <!-- Celdas vacías si no es del admin -->
-                                    <td>-<?= $id_admin ?></td>
-                                    <td>-</td>
+        <?php
+        // Filtrado por administrador
+        if ($id_admin !== null && (int)$clinica['id_admin'] !== $id_admin) {
+            continue;
+        }
+        ?>
 
-                                <?php endif; ?>
-                                </tr>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+        <tr>
+            <td><?= $clinica['usuario_admin'] ?></td>
+            <td><?= $clinica['usuario_clinica'] ?></td>
+            <td><?= $clinica['nombre_clinica'] ?></td>
+            <td><?= $clinica['direccion_clinica'] ?></td>
+            <td><?= $clinica['email_clinica'] ?></td>
+            <td><?= $clinica['telefono_clinica'] ?></td>
 
-                    <?php else: ?>
-                        <!-- VARIAS clínicas -->
-                        <?php foreach ($resultado as $clinica): ?>
-                            <tr>
-                                <td><?= $clinica['id_admin'] ?></td>
-                                <td><?= $clinica['usuario_clinica'] ?></td>
-                                <td><?= $clinica['nombre_clinica'] ?></td>
-                                <td><?= $clinica['direccion_clinica'] ?></td>
-                                <td><?= $clinica['email_clinica'] ?></td>
-                                <td><?= $clinica['telefono_clinica'] ?></td>
-                                <?php if ((int)$_SESSION['admin']['id_admin'] === (int)$clinica['id_admin']): ?>
+            <?php if ((int)$administradorSesion === (int)$clinica['id_admin']): ?>
 
-                                    <!-- MODIFICAR -->
-                                    <td>
-                                        <form action="<?= Enlaces::BASE_URL ?>admin/clinica/editar" method="GET">
-                                            <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
-                                            <button type="submit" class="btn-submit">✏️ Modificar</button>
-                                        </form>
-                                    </td>
+                <td>
+                    <form action="<?= Enlaces::BASE_URL ?>clinica/modificar" method="POST">
+                        <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
+                        <button type="submit">✏️ Modificar</button>
+                    </form>
+                </td>
 
-                                    <!-- ELIMINAR -->
-                                    <td>
-                                        <form action="<?= Enlaces::BASE_URL ?>admin/clinica/eliminar" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica?');">
-                                            <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
-                                            <button type="submit" class="btn-delete">🗑️ Eliminar</button>
-                                        </form>
-                                    </td>
+                <td>
+                    <form action="<?= Enlaces::BASE_URL ?>clinica/eliminar" method="POST"
+                          onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica?');">
+                        <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
+                        <button type="submit">🗑️ Eliminar</button>
+                    </form>
+                </td>
 
-                                <?php else: ?>
+            <?php else: ?>
+                <td>-</td>
+                <td>-</td>
+            <?php endif; ?>
+        </tr>
 
-                                    <!-- Celdas vacías si no es del admin -->
-                                    <td><?=  $id_admin?></td>
-                                    <td>-</td>
+    <?php endforeach; ?>
 
-                                <?php endif; ?>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+    </tbody>
+</table>
+</div>
 
-                </tbody>
-            </table>
+<?php endif; ?>
 
-        <?php endif; ?>
 </body>
-
 </html>

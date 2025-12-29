@@ -100,7 +100,7 @@ class Rutas
                 $controller->registrar();
                 break;
 
-            case 'clinica/loguear':
+            case 'clinica/loguear_clinica':
                 $controller = new ClinicaController();
                 $controller->loguear();
                 break;
@@ -108,6 +108,16 @@ class Rutas
             case 'clinica/acceder':
                 $controller = new ClinicaController();  
                 $controller->acceder();
+                break;
+
+            case 'clinica/modificar':
+                $controller = new ClinicaController();
+                $controller->modificar();
+                break;
+
+            case 'clinica/eliminar':
+                $controller = new ClinicaController();
+                $controller->eliminar();
                 break;
 
 

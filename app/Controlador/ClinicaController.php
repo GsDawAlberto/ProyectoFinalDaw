@@ -34,6 +34,7 @@ class ClinicaController
         }
 
         $idAdmin = $_SESSION['admin']['id_admin'];
+        $userAdmin = $_SESSION['admin']['usuario_admin'];
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header("Location: " . Enlaces::BASE_URL . "clinica/loguear_clinica");
@@ -66,6 +67,7 @@ class ClinicaController
         $clinica->setEmailClinica($email);
         $clinica->setUsuarioClinica($usuario);
         $clinica->setPasswordClinica($pass1);
+        $clinica->setUsuarioAdmin($userAdmin);
 
         // Guardar
         $guardado = $clinica->guardarClinica($pdo);
@@ -110,10 +112,10 @@ class ClinicaController
 
         // Guardar sesión
         $_SESSION['clinica'] = [
-            'id'       => $resultado['id_clinica'],
-            'nombre'   => $resultado['nombre_clinica'],
-            'usuario'  => $resultado['usuario_clinica'],
-            'email'    => $resultado['email_clinica']
+            'id_clinica'       => $resultado['id_clinica'],
+            'nombre_clinica'   => $resultado['nombre_clinica'],
+            'usuario_clinica'  => $resultado['usuario_clinica'],
+            'email_clinica'    => $resultado['email_clinica']
         ];
 
         header("Location: " . Enlaces::BASE_URL . "clinica/home_clinica");
@@ -144,4 +146,136 @@ class ClinicaController
         header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
         exit;
     }
+
+/************************* ELIMINAR CLINICA *************************/
+public function eliminar()
+{
+    session_start();
+
+    // Verificar sesión admin
+    if (!isset($_SESSION['admin'])) {
+        header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
+        exit;
+    }
+
+    $id_clinica = filter_input(INPUT_POST, 'id_clinica', FILTER_VALIDATE_INT);
+    if (!$id_clinica) {
+        die("ID de clínica inválido");
+    }
+
+    $pdo = BaseDatos::getConexion();
+    $clinicaModel = new Clinica();
+
+    // Obtener clínica para comprobar propietario
+    $clinica = $clinicaModel->mostrarClinica($pdo, $id_clinica);
+
+    if (!$clinica) {
+        die("La clínica no existe");
+    }
+
+    // Seguridad: solo el admin creador puede borrar
+    if ((int)$clinica['id_admin'] !== (int)$_SESSION['admin']['id_admin']) {
+        die("No tienes permisos para eliminar esta clínica");
+    }
+
+    // Eliminar
+    if (!$clinicaModel->eliminarClinica($pdo, $id_clinica)) {
+        die("Error al eliminar la clínica");
+    }
+
+    header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
+    exit;
+}
+
+
+    /************************* MODIFICAR CLINICA *************************/
+public function modificar()
+{
+    session_start();
+
+    if (!isset($_SESSION['admin'])) {
+        header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
+        exit;
+    }
+
+    $pdo = BaseDatos::getConexion();
+    $clinicaModel = new Clinica();
+
+    // =======================
+    // MOSTRAR FORMULARIO
+    // =======================
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+        $id_clinica = filter_input(INPUT_GET, 'id_clinica', FILTER_VALIDATE_INT);
+        if (!$id_clinica) {
+            header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
+            exit;
+        }
+
+        $clinica = $clinicaModel->mostrarClinica($pdo, $id_clinica);
+
+        if (!$clinica) {
+            die("Clínica no encontrada");
+        }
+
+        // Seguridad
+        if ((int)$clinica['id_admin'] !== (int)$_SESSION['admin']['id_admin']) {
+            die("No tienes permisos para modificar esta clínica");
+        }
+
+        // Pasar $clinica a la vista
+        require Enlaces::VIEW_PATH . "admin/clinica/editar_clinica.php";
+        exit;
+    }
+
+    // =======================
+    // GUARDAR CAMBIOS
+    // =======================
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $id_clinica = filter_input(INPUT_POST, 'id_clinica', FILTER_VALIDATE_INT);
+
+        if (!$id_clinica) {
+            die("ID inválido");
+        }
+
+        $clinica = $clinicaModel->mostrarClinica($pdo, $id_clinica);
+
+        if (!$clinica) {
+            die("Clínica no encontrada");
+        }
+
+        if ((int)$clinica['id_admin'] !== (int)$_SESSION['admin']['id_admin']) {
+            die("No tienes permisos");
+        }
+
+        // Sanitizar datos
+        $nombre    = trim(filter_input(INPUT_POST, 'nombre_clinica', FILTER_SANITIZE_STRING));
+        $direccion = trim(filter_input(INPUT_POST, 'direccion_clinica', FILTER_SANITIZE_STRING));
+        $telefono  = trim(filter_input(INPUT_POST, 'telefono_clinica', FILTER_SANITIZE_STRING));
+        $email     = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
+        $usuario   = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING));
+
+        // Setear modelo
+        $clinicaModel->setIdClinica($id_clinica);
+        $clinicaModel->setNombreClinica($nombre);
+        $clinicaModel->setDireccionClinica($direccion);
+        $clinicaModel->setTelefonoClinica($telefono);
+        $clinicaModel->setEmailClinica($email);
+        $clinicaModel->setUsuarioClinica($usuario);
+
+        if (!$clinicaModel->actualizarClinica($pdo, $id_clinica)) {
+            die("Error al actualizar la clínica");
+        }
+
+        header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
+        exit;
+    }
+}
+
 }

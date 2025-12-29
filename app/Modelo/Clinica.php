@@ -83,10 +83,13 @@ class Clinica
     {
         return $this->password_clinica;
     }
-
+    /**
+     * método para obtener el usuario adminstrador
+     * @return string|null
+     */
     public function getUsuarioAdmin(): ?string
     {
-        return $this->$usuario_admin;
+        return $this->usuario_admin;
     }
 
     // Setters
@@ -169,22 +172,25 @@ class Clinica
      */
     public function guardarClinica(PDO $pdo): string|int
     {
-        //Intentamos capturar errores de PDO
+        //Intentamos capturar errores de PDO 
+
         try {
             //Consulta SQL para insertar una nueva clínica
-            $sql = "INSERT INTO clinica (id_admin, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica) 
-                    VALUES (:id_admin, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica)";
+            $sql = "INSERT INTO clinica (id_admin, usuario_admin, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica) 
+                    VALUES (:id_admin, :usuario_admin, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica)";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
 
                 ':id_admin'          => $this->id_admin,
+                ':usuario_admin'     => $this->usuario_admin,
                 ':nombre_clinica'    => $this->nombre_clinica,
                 ':direccion_clinica' => $this->direccion_clinica,
                 ':telefono_clinica'  => $this->telefono_clinica,
                 ':email_clinica'     => $this->email_clinica,
                 ':usuario_clinica'   => $this->usuario_clinica,
                 ':password_clinica'  => password_hash($this->password_clinica, PASSWORD_BCRYPT)
+                
             ]);
 
             //Guardamos el ID autogenerado
@@ -239,6 +245,7 @@ class Clinica
             $this->email_clinica = $clinica['email_clinica'];
             $this->usuario_clinica = $clinica['usuario_clinica'];
             $this->password_clinica = $clinica['password_clinica'];
+            $this->usuario_admin = $clinica['usuario_admin'];
 
             //Retornamos el array con los datos de la clínica
             return $clinica;
