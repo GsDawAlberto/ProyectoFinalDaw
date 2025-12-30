@@ -7,6 +7,7 @@ use Mediagend\App\Modelo\Administrador;
 use Mediagend\App\Modelo\Clinica;
 
 session_start();
+
 $administradorSesion = $_SESSION['admin']['id_admin'];
 
 $pdo = BaseDatos::getConexion();

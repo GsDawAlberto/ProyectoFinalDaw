@@ -10,13 +10,15 @@ class Clinica
     // Propiedades
     private ?int $id_clinica = null;
     private ?int $id_admin = null;
+    private ?string $usuario_admin = null;
     private ?string $nombre_clinica = null;
     private ?string $direccion_clinica = null;
     private ?string $telefono_clinica = null;
     private ?string $email_clinica = null;
     private ?string $usuario_clinica = null;
     private ?string $password_clinica = null;
-    private ?string $usuario_admin = null;
+    private ?string $foto_clinica = null;
+    
 
     // Getters
     /**
@@ -34,6 +36,14 @@ class Clinica
     public function getIdAdmin(): ?int
     {
         return $this->id_admin;
+    }
+    /**
+     * método para obtener el usuario adminstrador
+     * @return string|null
+     */
+    public function getUsuarioAdmin(): ?string
+    {
+        return $this->usuario_admin;
     }
     /**
      * método para obtener el nombre de la clínica
@@ -83,13 +93,9 @@ class Clinica
     {
         return $this->password_clinica;
     }
-    /**
-     * método para obtener el usuario adminstrador
-     * @return string|null
-     */
-    public function getUsuarioAdmin(): ?string
+    public function getFotoClinica(): ?string
     {
-        return $this->usuario_admin;
+        return $this->foto_clinica;
     }
 
     // Setters
@@ -108,6 +114,15 @@ class Clinica
     public function setIdAdmin(int $id_admin): void
     {
         $this->id_admin = $id_admin;
+    }
+    /**
+     * Método para establecer el usuario administrador
+     * @param string $usuario_admin
+     * @return void
+     */
+    public function setUsuarioAdmin(string $usuario_admin): void
+    {
+        $this->$usuario_admin = $usuario_admin;
     }
     /**
      * método para establecer el nombre de la clínica
@@ -158,11 +173,12 @@ class Clinica
     {
         $this->password_clinica = $password_clinica;
     }
-
-    public function setUsuarioAdmin(string $usuario_admin): void
+    public function setFotoClinica(string $foto_clinica): void
     {
-        $this->$usuario_admin = $usuario_admin;
+        $this->foto_clinica = $foto_clinica;
     }
+
+    
 
     // MÉTODOS DE BASE DE DATOS
     /**
@@ -176,21 +192,22 @@ class Clinica
 
         try {
             //Consulta SQL para insertar una nueva clínica
-            $sql = "INSERT INTO clinica (id_admin, usuario_admin, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica) 
-                    VALUES (:id_admin, :usuario_admin, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica)";
+            $sql = "INSERT INTO clinica (id_admin, usuario_admin, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica,foto_clinica) 
+                    VALUES (:id_admin, :usuario_admin, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica, :foto_clinica)";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
 
                 ':id_admin'          => $this->id_admin,
-                ':usuario_admin'     => $this->usuario_admin,
+                ':usuario_admin'     => $this->usuario_admin ?? '',
                 ':nombre_clinica'    => $this->nombre_clinica,
                 ':direccion_clinica' => $this->direccion_clinica,
                 ':telefono_clinica'  => $this->telefono_clinica,
                 ':email_clinica'     => $this->email_clinica,
                 ':usuario_clinica'   => $this->usuario_clinica,
-                ':password_clinica'  => password_hash($this->password_clinica, PASSWORD_BCRYPT)
-                
+                ':password_clinica'  => password_hash($this->password_clinica, PASSWORD_BCRYPT),
+                ':foto_clinica'      => $this->foto_clinica
+
             ]);
 
             //Guardamos el ID autogenerado
@@ -201,8 +218,9 @@ class Clinica
 
             //Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_CLINICA_01'; // Error al guardar clínica
-            return $error;
+            die($e->getMessage());
+            /* $error = 'ERR_CLINICA_01'. $e; // Error al guardar clínica
+            return $error; */
         }
     }
 
@@ -239,13 +257,14 @@ class Clinica
 
             //Cargamos datos dentro del objeto
             $this->id_clinica = $clinica['id_clinica'];
+            $this->usuario_admin = $clinica['usuario_admin'];
             $this->nombre_clinica = $clinica['nombre_clinica'];
             $this->direccion_clinica = $clinica['direccion_clinica'];
             $this->telefono_clinica = $clinica['telefono_clinica'];
             $this->email_clinica = $clinica['email_clinica'];
             $this->usuario_clinica = $clinica['usuario_clinica'];
             $this->password_clinica = $clinica['password_clinica'];
-            $this->usuario_admin = $clinica['usuario_admin'];
+
 
             //Retornamos el array con los datos de la clínica
             return $clinica;

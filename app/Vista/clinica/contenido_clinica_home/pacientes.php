@@ -1,4 +1,5 @@
 <?php
+
 namespace Mediagend\App\Vista\clinica\contenido_clinica_home;
 
 use Mediagend\App\Config\BaseDatos;
@@ -6,12 +7,10 @@ use Mediagend\App\Modelo\Paciente;
 use Mediagend\App\Config\Enlaces;
 
 $pdo = BaseDatos::getConexion();
-$usuarioModel = new Paciente();
+$pacienteModel = new Paciente();
 
-$id_usuario = $_GET['id_usuario'] ?? null;
-$id_usuario = is_numeric($id_usuario) ? (int)$id_usuario : null;
-
-$resultado = $usuarioModel->mostrarPaciente($pdo, $id_usuario);
+$busqueda = $_GET['buscar'] ?? null;
+$resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
 ?>
 
 <!DOCTYPE html>
@@ -21,14 +20,16 @@ $resultado = $usuarioModel->mostrarPaciente($pdo, $id_usuario);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>tablas.css">
-    <title>Document</title>
+    <title>Pacientes</title>
 </head>
 
 <body>
     <h1> HOME DE USUARIOS.PHP</h1>
     <form method="GET">
-        <label>Buscar usuario por ID:</label>
-        <input type="number" name="id_usuario" placeholder="ID de usuario">
+        <label for="buscar">Buscar un paciente</label>
+        <input type="text" name="buscar"
+            placeholder="Buscar por nombre, DNI, email..."
+            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
         <button type="submit">Buscar</button>
     </form>
 
@@ -41,49 +42,45 @@ $resultado = $usuarioModel->mostrarPaciente($pdo, $id_usuario);
     <?php else: ?>
 
         <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>DNI</th>
-                    <th>Telefono</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <?php if (isset($resultado['id_usuario'])): ?>
-                    <!-- UN usuario -->
+            <table>
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($resultado['id_usuario']) ?></td>
-                        <td><?= htmlspecialchars($resultado['nombre']) ?></td>
-                        <td><?= htmlspecialchars($resultado['apellidos']) ?></td>
-                        <td><?= htmlspecialchars($resultado['dni']) ?></td>
-                        <td><?= htmlspecialchars($resultado['telefono']) ?></td>
-                        <td><?= htmlspecialchars($resultado['email']) ?></td>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>DNI</th>
+                        <th>Telefono</th>
+                        <th>Email</th>
                     </tr>
+                </thead>
+                <tbody>
 
-                <?php else: ?>
-                    <!-- VARIOS usuarios -->
-                    <?php foreach ($resultado as $usuario): ?>
+                    <?php foreach ($resultado as $paciente): ?>
+
+                        <?php
+                        // Filtrado por administrador
+                        if ($busqueda !== null) {
+                            continue;
+                        }
+                        ?>
+
                         <tr>
-                            <td><?= htmlspecialchars($usuario['id_usuario']) ?></td>
-                            <td><?= htmlspecialchars($usuario['nombre']) ?></td>
-                            <td><?= htmlspecialchars($usuario['apellidos']) ?></td>
-                            <td><?= htmlspecialchars($usuario['dni']) ?></td>
-                            <td><?= htmlspecialchars($usuario['telefono']) ?></td>
-                            <td><?= htmlspecialchars($usuario['email']) ?></td>
+                            <td><?= htmlspecialchars($paciente['usuario_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['nombre_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['apellidos_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['dni_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['telefono_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['email_paciente']) ?></td>
                         </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
 
-            </tbody>
-        </table>
+                    <?php endforeach; ?>
+
+                </tbody>
+            </table>
         </div>
 
     <?php endif; ?>
 
+</body>
 
 </html>

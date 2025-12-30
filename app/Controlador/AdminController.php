@@ -10,11 +10,6 @@ class AdminController
 {
     /**********************   RUTA DE VISTAS ***********************************/
 
-    public function home_citas()
-    {
-        require Enlaces::VIEW_CONTENT_ADMIN_PATH . "citas.php";
-    }
-
     public function home_clinicas()
     {
         require Enlaces::VIEW_CONTENT_ADMIN_PATH . "clinicas.php";

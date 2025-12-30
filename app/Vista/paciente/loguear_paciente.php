@@ -3,12 +3,13 @@
 use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Administrador;
+use Mediagend\App\Modelo\Clinica;
 
 $pdo = BaseDatos::getConexion();
 
 /************************** ADMINISTRADORES ******************************/
-$adminModel = new Administrador();
-$admins = $adminModel->mostrarAdmin($pdo, null);
+$clinicaModel = new Clinica();
+$clinic = $clinicaModel->mostrarClinica($pdo, null);
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +17,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
 
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Clínica</title>
+    <title>Registrar Paciente</title>
 
     <!-- Estilos reutilizados -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
@@ -30,51 +31,51 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
             <h2>Registrar Nueva Clínica</h2>
         </header>
 
-        <form action="<?= Enlaces::BASE_URL ?>clinica/registrar_clinica" method="POST" enctype="multipart/form-data" class="form">
+        <form action="<?= Enlaces::BASE_URL ?>paciente/registrar_paciente" method="POST" enctype="multipart/form-data" class="form">
 
             <div class="form-group">
-                <label>Nombre de Administrador</label>
-                <input type="text" name="usuario_admin" required>
+                <label>Nombre del Paciente</label>
+                <input type="text" name="nombre_paciente" required>
             </div>
 
             <div class="form-group">
-                <label>Foto de la clínica</label>
-                <input type="file" name="foto_clinica" accept="image/*">
+                <label>Apellidos Paciente</label>
+                <input type="text" name="apellidos_paciente" required>
             </div>
 
             <div class="form-group">
-                <label>Nombre de la clínica</label>
-                <input type="text" name="nombre_clinica" required>
+                <label>DNI Paciente</label>
+                <input type="text" name="dni_paciente" required>
             </div>
 
             <div class="form-group">
-                <label>Dirección</label>
-                <input type="text" name="direccion_clinica" required>
+                <label>Foto del Paciente</label>
+                <input type="file" name="foto_paciente" accept="image/*">
             </div>
 
             <div class="form-group">
                 <label>Teléfono</label>
-                <input type="text" name="telefono_clinica" required>
+                <input type="text" name="telefono_paciente" required>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email_clinica" required>
+                <input type="email" name="email_paciente" required>
             </div>
 
             <div class="form-group">
                 <label>Usuario</label>
-                <input type="text" name="usuario_clinica" required>
+                <input type="text" name="usuario_paciente" required>
             </div>
 
             <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" name="password_clinica" required>
+                <input type="password" name="password_paciente" required>
             </div>
 
             <div class="form-group">
                 <label>Repetir contraseña</label>
-                <input type="password" name="password2_clinica" required>
+                <input type="password" name="password2_paciente" required>
             </div>
 
             <button type="submit" class="btn-submit">Registrar Clínica</button>

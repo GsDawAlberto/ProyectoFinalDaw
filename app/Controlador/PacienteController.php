@@ -46,6 +46,7 @@ class PacienteController
         $telefono   = trim(filter_input(INPUT_POST, 'telefono_paciente', FILTER_SANITIZE_STRING));
         $email      = trim(filter_input(INPUT_POST, 'email_paciente', FILTER_SANITIZE_EMAIL));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_paciente', FILTER_SANITIZE_STRING));
+        $fotoRuta = trim($_FILES['foto_paciente']['name']);
         $pass1      = trim($_POST['password_paciente'] ?? '');
         $pass2      = trim($_POST['password2_paciente'] ?? '');
 
@@ -65,7 +66,10 @@ class PacienteController
         $paciente->setDniPaciente($dni);
         $paciente->setTelefonoPaciente($telefono);
         $paciente->setEmailPaciente($email);
+        $paciente->setUsuarioPaciente($usuario);
+        $paciente->setFotoPaciente($fotoRuta);
         $paciente->setPasswordPaciente($pass1);
+
 
         //Guardar
         $guardado = $paciente->guardarPaciente($pdo);
@@ -104,11 +108,12 @@ class PacienteController
         //Guardar sesión
         $_SESSION['paciente'] = [
             'id_paciente' => $resultado['id_paciente'],
-            'nombre' => $resultado['nombre'],
-            'apellidos' => $resultado['apellidos'],
-            'dni' => $resultado['dni'],
-            'telefono' => $resultado['telefono'],
-            'email' => $resultado['email'],
+            'nombre' => $resultado['nombre_paciente'],
+            'apellidos' => $resultado['apellidos_paciente'],
+            'dni' => $resultado['dni_paciente'],
+            'telefono' => $resultado['telefono_paciente'],
+            'email' => $resultado['email_paciente'],
+            'usuario' =>$resultado['usuario_paciente']
         ];
 
         header("Location: " . Enlaces::BASE_URL . "paciente/home_paciente");

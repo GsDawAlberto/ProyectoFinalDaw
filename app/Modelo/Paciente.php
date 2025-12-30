@@ -15,7 +15,9 @@ class Paciente
     private ?string $dni_paciente = null;
     private ?string $telefono_paciente = null;
     private ?string $email_paciente = null;
+    private ?string $usuario_paciente = null;
     private ?string $password_paciente = null;
+    private ?string $foto_paciente = null;
     
     //Getters
     /**
@@ -75,6 +77,14 @@ class Paciente
         return $this->email_paciente;
     }
     /**
+     * Método para obtener el usuario del paciente
+     * @return string|null
+     */
+    public function getUsuarioPaciente(): ?string
+    {
+        return $this->usuario_paciente;
+    }
+    /**
      * Método para obtener la contraseña del paciente
      * @return string|null
      */
@@ -82,8 +92,16 @@ class Paciente
     {
         return $this->password_paciente;
     }
+    /**
+     * Método para obtener la ruta de la foto del paciente
+     * @return string|null
+     */
+    public function getFotoPaciente(): ?string
+    {
+        return $this->foto_paciente;
+    }
 
-    //Setters
+    //////////////////////////// Setters //////////////////////////
     /**
      * Método para establecer el ID del paciente
      * @param int|null $id_paciente
@@ -141,12 +159,28 @@ class Paciente
         $this->email_paciente = $email_paciente;
     }
     /**
+     * Método para establecer el usuario del paciente
+     * @param string $email
+     */
+    public function setUsuarioPaciente(string $usuario_paciente): void
+    {
+        $this->usuario_paciente = $usuario_paciente;
+    }
+    /**
      * Método para establecer la contraseña del paciente
      * @param string $password_paciente
      */
     public function setPasswordPaciente(string $password_paciente): void
     {
         $this->password_paciente = $password_paciente;
+    }
+    /**
+     * Método para establecer la ruta de la foto del paciente
+     * @param string $password_paciente
+     */
+    public function setFotoPaciente(string $foto_paciente): void
+    {
+        $this->foto_paciente = $foto_paciente;
     }
 
     // MÉTODOS DE BASE DE DATOS
@@ -161,18 +195,21 @@ class Paciente
         //Intentamos capturar errores del PDO
         try {
             //Consulta SQL para insertar un nuevo paciente
-            $sql = "INSERT INTO paciente (id_clinica, nombre_paciente, apellidos_paciente, dni_paciente, telefono_paciente, email_paciente) 
-                    VALUES (:id_clinica, :nombre, :apellidos, :dni, :telefono, :email)";
+            $sql = "INSERT INTO paciente (id_clinica, nombre_paciente, apellidos_paciente, dni_paciente, telefono_paciente, email_paciente, usuario_paciente, password_paciente, foto_paciente) 
+                    VALUES (:id_clinica, :nombre_paciente, :apellidos_paciente, :dni_paciente, :telefono_paciente, :email_paciente, :usuario_paciente, :password_paciente, :foto_paciente)";
 
             $stmt = $pdo->prepare($sql);
 
             $stmt->execute([
                 ':id_clinica' => $this->id_clinica,
-                ':nombre' => $this->nombre_paciente,
-                ':apellidos' => $this->apellidos_paciente,
-                ':dni' => $this->dni_paciente,
-                ':telefono' => $this->telefono_paciente,
-                ':email' => $this->email_paciente
+                ':nombre_paciente' => $this->nombre_paciente,
+                ':apellidos_paciente' => $this->apellidos_paciente,
+                ':dni_paciente' => $this->dni_paciente,
+                ':telefono_paciente' => $this->telefono_paciente,
+                ':email_paciente' => $this->email_paciente,
+                ':usuario_paciente' =>$this->usuario_paciente,
+                'password_paciente' => $this->password_paciente,
+                'foto_paciente' => $this->foto_paciente
             ]);
 
             //Guardamos el ID autogenerado
@@ -227,7 +264,9 @@ class Paciente
             $this->dni_paciente = $paciente['dni_paciente'];
             $this->telefono_paciente = $paciente['telefono_paciente'];
             $this->email_paciente = $paciente['email_paciente'];
+            $this->usuario_paciente = $paciente['usuario_paciente'];
             $this->password_paciente = $paciente['password_paciente'];
+            $this->foto_paciente = $paciente['foto_paciente'];
 
             // Retornamos el array con los datos del paciente
             return $paciente;
@@ -239,44 +278,47 @@ class Paciente
         }
     }
     /**
-     * Método para mostrar los datos de un paciente por su ID o todos los pacientes
+     * Método para mostrar los datos de un paciente por algún dato o todos los pacientes
      * @param PDO $pdo. Conexión PDO a la base de datos
-     * @param mixed $id_paciente. ID del paciente a mostrar
-     * @return string|array|null REtorna un array con los datos del paciente, null si no existe o ERR_PACIENTE_03 en caso de error al mostrar pacientes
+     * @param mixed $busqueda. dato del paciente a mostrar
+     * @return string|array|null Retorna un array con los datos del paciente, null si no existe o ERR_PACIENTE_03 en caso de error al mostrar pacientes
      */
-    public function mostrarPaciente(PDO $pdo, ?int $id_paciente = null): string|array|null
-    {
-        //Intentamos capturar errores del PDO
-        try {
-            if ($id_paciente === null) {
-                //si no se indica id, obtenemos TODAS las clinicas
-                $sql = "SELECT * FROM paciente";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute();
+    public function mostrarPaciente(PDO $pdo, ?string $busqueda = null): string|array|null
+{
+    try {
 
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                //Consulta SQL para obtener la clínica por su ID
-                $sql = "SELECT * FROM paciente WHERE $id_paciente = :id_paciente";
-                //Preparamos y ejecutamosla consulta
-                $stmt = $pdo->prepare($sql);
+        // SIN BÚSQUEDA → TODOS LOS PACIENTES
+        if ($busqueda === null || trim($busqueda) === '') {
 
-                $stmt->execute(
-                    [
-                        ':id_paciente' => $id_paciente
-                ]);
+            $sql = "SELECT * FROM paciente";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
 
-                //Guardamos el resultado en un array asociativo
-                $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                //Retornamos el array o null si no existe
-                return $paciente ?: null;
-            }
-        } catch (PDOException $e) {
-            $error = 'ERR_PACIENTE_03'; // Error al mostrar paciente
-            return $error;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        // CON BÚSQUEDA → BUSCAR EN VARIOS CAMPOS
+        $sql = "
+            SELECT * FROM paciente
+            WHERE nombre_paciente     LIKE :busqueda
+               OR apellidos_paciente  LIKE :busqueda
+               OR dni_paciente        LIKE :busqueda
+               OR telefono_paciente   LIKE :busqueda
+               OR email_paciente      LIKE :busqueda
+               OR usuario_paciente    LIKE :busqueda
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':busqueda' => '%' . $busqueda . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        return 'ERR_PACIENTE_03';
     }
+}
 
     /**
      * Método para actualizar los datos de un paciente en la base de datos
@@ -295,7 +337,9 @@ class Paciente
                         apellidos_paciente = :apellidos_paciente
                         telefono_paciente = :telefono_paciente,
                         email_paciente = :email_paciente,
-                        password_paciente = :password_paciente
+                        usuario_paciente = :usuario_paciente,
+                        password_paciente = :password_paciente,
+                        foto_paciente = ':foto_paciente
                         WHERE id_paciente = :id_paciente";
 
             //Preparamos y ejecutamos la consulta
@@ -308,8 +352,10 @@ class Paciente
                 ':apellidos_paciente' => $this->apellidos_paciente,
                 ':telefono_paciente' => $this->telefono_paciente,
                 ':email_paciente' => $this->email_paciente,
+                ':usuario_paciente' => $this->usuario_paciente,
                 ':password_paciente' => password_hash($this->password_paciente, PASSWORD_BCRYPT),
-                ':id_paciente' => $id_paciente
+                ':id_paciente' => $id_paciente,
+                ':foto_paciente' => $this->foto_paciente
             ]);
 
             //Retornamos la cantidad de filas afectadas

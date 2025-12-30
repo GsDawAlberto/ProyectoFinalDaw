@@ -33,7 +33,7 @@ class Rutas
                 $controller->login();
                 break;
 
-             case 'admin/home_admin':
+            case 'admin/home_admin':
                 $controller = new AdminController();
                 $controller->home();
                 break;
@@ -44,12 +44,12 @@ class Rutas
                 break;
 
             case 'admin/registrar':
-                $controller = new AdminController();   
+                $controller = new AdminController();
                 $controller->registrar();
                 break;
-            
+
             case 'admin/acceder':
-                $controller = new AdminController();   
+                $controller = new AdminController();
                 $controller->acceder();
                 break;
 
@@ -74,13 +74,13 @@ class Rutas
                 $controller = new AdminController();
                 $controller->home_insertar();
                 break;
-            
+
             // ---------- GUARDAR CONFIGURACIÓN ----------
             /* case 'admin/guardar-config':
                 $controller = new AdminController();
                 $controller->guardar_configuracion();
                 break; */
-                
+
 
 
             // ---------- CLINICA ---------- //
@@ -106,7 +106,7 @@ class Rutas
                 break;
 
             case 'clinica/acceder':
-                $controller = new ClinicaController();  
+                $controller = new ClinicaController();
                 $controller->acceder();
                 break;
 
@@ -120,30 +120,42 @@ class Rutas
                 $controller->eliminar();
                 break;
 
+            /****************   VISTAS CLINICA HOME ****************/
 
-            // ---------- USUARIO ---------- //
+            case 'clinica/home/pacientes':
+                $controller = new ClinicaController();
+                $controller->home_pacientes();
+                break;
+
+            case 'clinica/home/insertar':
+                $controller = new AdminController();
+                $controller->home_insertar();
+                break;
+
+
+            // ---------- PACIENTE ---------- //
             //***********************************************************************************************//
-            case 'usuario/login_usuario':
+            case 'paciente/login_paciente':
                 $controller = new PacienteController();
                 $controller->login();
                 break;
-                
-             /* case 'usuario/home_usuario':
+
+            /* case 'usuario/home_usuario':
                 $controller = new UsuarioController();
                 $controller->home();
-                break;
+                break; */
 
-            case 'usuario/loguear_usuario':
-                $controller = new UsuarioController();
+            case 'paciente/loguear_paciente':
+                $controller = new PacienteController();
                 $controller->loguear();
                 break;
 
-           case 'usuario/registrar':
-                $controller = new UsuarioController();
+           case 'paciente/registrar_paciente':
+                $controller = new PacienteController();
                 $controller->registrar();
                 break;
 
-            case 'usuario/acceder':
+            /* case 'usuario/acceder':
                 $controller = new UsuarioController();
                 $controller->acceder();
                 break; */

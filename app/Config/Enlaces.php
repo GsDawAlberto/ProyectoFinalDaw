@@ -12,6 +12,10 @@ class Enlaces
     public const STYLES_URL = self::BASE_URL . 'styles/';
     // Ruta absoluta en el sistema de archivos (no URL)
 
+    /********************** URLS DE LOGOS ***********************/
+    public const LOGOS_URL = self::BASE_URL . 'logos/';
+    // Ruta absoluta en el sistema de archivos (no URL)
+
     /******************************** PATHS *********************************/
     public const BASE_PATH = __DIR__ . "/../../";
 
@@ -21,6 +25,7 @@ class Enlaces
     // Ruta a contenidos de las vistas
     public const VIEW_CONTENT_ADMIN_PATH = self::VIEW_PATH . "admin/contenido_admin_home/";
 
+     public const VIEW_CONTENT_CLINICA_PATH = self::VIEW_PATH . "clinica/contenido_clinica_home/";
     // Ruta layouts
     public const LAYOUT_PATH = self::VIEW_PATH . "layout/";
 
