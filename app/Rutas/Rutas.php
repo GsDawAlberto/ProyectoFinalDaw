@@ -159,6 +159,16 @@ class Rutas
                 $controller = new UsuarioController();
                 $controller->acceder();
                 break; */
+            
+            /* case 'paciente/modificar':
+                $controller = new PacienteController();
+                $controller->modificar();
+                break; */
+
+            case 'paciente/eliminar':
+                $controller = new PacienteController();
+                $controller->eliminar();
+                break;
 
 
             // ---------- ERROR ---------- //

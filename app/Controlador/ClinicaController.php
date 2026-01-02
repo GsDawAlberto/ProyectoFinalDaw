@@ -18,7 +18,6 @@ class ClinicaController
     public function home_pacientes()
     {
         require Enlaces::VIEW_CONTENT_CLINICA_PATH . "pacientes.php";
-    
     }
     /********************* FORMULARIO LOGIN ***********************/
 
@@ -131,9 +130,9 @@ class ClinicaController
             'id_clinica'       => $resultado['id_clinica'],
             'nombre_clinica'   => $resultado['nombre_clinica'],
             'usuario_clinica'  => $resultado['usuario_clinica'],
-            'usuario_admin'  => $resultado['usuario_admin'],
+            'usuario_admin'    => $resultado['usuario_admin'],
             'email_clinica'    => $resultado['email_clinica'],
-            'foto_clinica'   => $resultado['foto_clinica']
+            'foto_clinica'     => $resultado['foto_clinica']
         ];
 
         header("Location: " . Enlaces::BASE_URL . "clinica/home_clinica");

@@ -208,7 +208,7 @@ class Paciente
                 ':telefono_paciente' => $this->telefono_paciente,
                 ':email_paciente' => $this->email_paciente,
                 ':usuario_paciente' =>$this->usuario_paciente,
-                'password_paciente' => $this->password_paciente,
+                'password_paciente' => password_hash($this->password_paciente, PASSWORD_BCRYPT),
                 'foto_paciente' => $this->foto_paciente
             ]);
 
@@ -221,8 +221,9 @@ class Paciente
             //Capturamos cualquier error de PDO
         } catch (PDOException $e) {
             //Devolvemos el mensaje de error
-            $error = 'ERR_PACIENTE_01'; // Error al guardar paciente
-            return $error;
+            die($e->getMessage());
+           /*  $error = 'ERR_PACIENTE_01'; // Error al guardar paciente
+            return $error . $e; */
         }
     }
     /**
@@ -313,7 +314,7 @@ class Paciente
             ':busqueda' => '%' . $busqueda . '%'
         ]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
 
     } catch (PDOException $e) {
         return 'ERR_PACIENTE_03';

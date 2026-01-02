@@ -7,12 +7,10 @@ use Mediagend\App\Modelo\Administrador;
 use Mediagend\App\Modelo\Clinica;
 
 session_start();
-
 $administradorSesion = $_SESSION['admin']['id_admin'];
 
-$pdo = BaseDatos::getConexion();
-
 /************************** CLÍNICAS ******************************/
+$pdo = BaseDatos::getConexion();
 $clinicaModel = new Clinica();
 
 // MOSTRAR TODAS LAS CLÍNICAS (el filtrado se hace en la vista)
@@ -107,7 +105,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
 
                 <td>
                     <form action="<?= Enlaces::BASE_URL ?>clinica/eliminar" method="POST"
-                          onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica?');">
+                          onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica?'<?= $clinica['usuario_clinica'] ?>);">
                         <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
                         <button type="submit">🗑️ Eliminar</button>
                     </form>
