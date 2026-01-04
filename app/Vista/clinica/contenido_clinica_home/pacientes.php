@@ -74,7 +74,7 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                             <tr>
                                 <td>
                                     <div>
-                                        <img class="foto_paciente" src="<?= Enlaces::BASE_URL . $paciente['foto_paciente'] ?>"
+                                        <img class="foto_paciente" src="<?= Enlaces::IMG_PACIENTE_URL . $paciente['foto_paciente'] ?>"
                                             alt="Foto paciente"
                                             width="80">
                                     </div>
