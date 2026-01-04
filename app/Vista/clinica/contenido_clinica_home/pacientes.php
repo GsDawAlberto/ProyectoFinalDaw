@@ -49,6 +49,7 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
             <table>
                 <thead>
                     <tr>
+                        <th>Foto</th>
                         <th>Usuario</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
@@ -71,6 +72,11 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                         ?>
                         <?php if ((int)$clinicaSesion === (int)$paciente['id_clinica']): ?>
                             <tr>
+                                <div>
+                                    <img class="foto_paciente" src="<?= Enlaces::IMG_PACIENTE_URL . $_SESSION['paciente']['foto_paciente'] ?>"
+                                        alt="Foto paciente"
+                                        width="120">
+                                </div>
                                 <td><?= htmlspecialchars($paciente['usuario_paciente']) ?></td>
                                 <td><?= htmlspecialchars($paciente['nombre_paciente']) ?></td>
                                 <td><?= htmlspecialchars($paciente['apellidos_paciente']) ?></td>

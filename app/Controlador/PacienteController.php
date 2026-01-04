@@ -55,6 +55,11 @@ class PacienteController
             die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
         }
 
+        // Usar imagen por defecto del paciente, si no se introduce ruta
+        if($fotoRuta == '' || !$fotoRuta){
+            $fotoRuta = 'imagen_paciente_por_defecto.jpg';
+        }
+
         // Conexión BD
         $pdo = BaseDatos::getConexion();
 
