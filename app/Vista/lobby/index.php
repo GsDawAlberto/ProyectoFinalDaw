@@ -39,7 +39,7 @@ use Mediagend\App\Config\Enlaces;
 
         <a href="<?= Enlaces::BASE_URL ?>usuario/login_usuario" class="lobby-btn btn-usuario">
             <i class="fas fa-user"></i>
-            Usuarios
+            Pacientes
         </a>
     </nav>
 

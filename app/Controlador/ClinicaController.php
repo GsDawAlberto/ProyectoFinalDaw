@@ -43,7 +43,7 @@ class ClinicaController
         }
 
         $idAdmin = $_SESSION['admin']['id_admin'];
-        $userAdmin = 'Alberto';
+        $userAdmin = $_SESSION['admin']['usuario_admin'];
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header("Location: " . Enlaces::BASE_URL . "clinica/loguear_clinica");
@@ -56,7 +56,6 @@ class ClinicaController
         $telefono   = trim(filter_input(INPUT_POST, 'telefono_clinica', FILTER_SANITIZE_STRING));
         $email      = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING));
-        $usuarioAs   = trim(filter_input(INPUT_POST, 'usuario_admin', FILTER_SANITIZE_STRING));
         $fotoRuta = trim($_FILES['foto_clinica']['name']);
         $pass1      = trim($_POST['password_clinica'] ?? '');
         $pass2      = trim($_POST['password2_clinica'] ?? '');
@@ -80,7 +79,7 @@ class ClinicaController
         $clinica->setEmailClinica($email);
         $clinica->setUsuarioClinica($usuario);
         $clinica->setPasswordClinica($pass1);
-        $clinica->setUsuarioAdmin($usuarioAs);
+        $clinica->setUsuarioAdmin($userAdmin);
         $clinica->setFotoClinica($fotoRuta);
 
 
@@ -130,7 +129,7 @@ class ClinicaController
             'id_clinica'       => $resultado['id_clinica'],
             'nombre_clinica'   => $resultado['nombre_clinica'],
             'usuario_clinica'  => $resultado['usuario_clinica'],
-            'usuario_admin'    => $resultado['usuario_admin'],
+            'usuario_admin_clinica'    => $resultado['usuario_admin_clinica'],
             'email_clinica'    => $resultado['email_clinica'],
             'foto_clinica'     => $resultado['foto_clinica']
         ];

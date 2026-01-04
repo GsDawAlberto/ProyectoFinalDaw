@@ -13,7 +13,10 @@ class Enlaces
     // Ruta absoluta en el sistema de archivos (no URL)
 
     /********************** URLS DE LOGOS ***********************/
-    public const LOGOS_URL = self::BASE_URL . 'logos/';
+    public const LOGOS_URL = '/mediagend/app/imagenes_registros/imagenes_clinicas/';
+    // Ruta absoluta en el sistema de archivos (no URL)
+
+    public const IMG_PACIENTE_URL = '/mediagend/app/imagenes_registros/imagenes_pacientes/';
     // Ruta absoluta en el sistema de archivos (no URL)
 
     /******************************** PATHS *********************************/
@@ -29,6 +32,6 @@ class Enlaces
     // Ruta layouts
     public const LAYOUT_PATH = self::VIEW_PATH . "layout/";
 
-    // Ruta a los controladores (si la necesitas)
+    // Ruta a los controladores (si se necesita)
     public const CONTROLLER_PATH = self::BASE_PATH . "app/controlador/";
 }

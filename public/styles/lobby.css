@@ -101,3 +101,6 @@ header p {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(255,127,80,0.4);
 }
+footer{
+    margin-top: 100px;
+}

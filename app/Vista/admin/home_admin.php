@@ -36,9 +36,9 @@ $nombreUsuario = $_SESSION['admin']['nombre_admin'];
             <h2>Bienvenido, <?= htmlspecialchars($nombreUsuario) ?></h2>
             <div class="layout_header"><?php include_once Enlaces::LAYOUT_PATH . 'header.php'; ?></div>
             
-            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/clinicas')"><i class="fa-solid fa-truck-medical"></i>Clínicas</button>
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/clinicas')"><i class="fa-solid fa-truck-medical"></i>Mostrar Clínicas</button>
 
-            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/loguear_clinica')"><i class="fa-solid fa-file-import"></i>Insertar</button>
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/loguear_clinica')"><i class="fa-solid fa-file-import"></i>Insertar Clinica</button>
             
             <!-- <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>admin/home/configuracion')"><i class="fa-solid fa-gears"></i>Configuración</button> -->
             <a href="<?= Enlaces::BASE_URL ?>admin/login_admin"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>

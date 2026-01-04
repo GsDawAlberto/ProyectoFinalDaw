@@ -33,11 +33,6 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
         <form action="<?= Enlaces::BASE_URL ?>clinica/registrar_clinica" method="POST" enctype="multipart/form-data" class="form">
 
             <div class="form-group">
-                <label>Nombre de Administrador</label>
-                <input type="text" name="usuario_admin" required>
-            </div>
-
-            <div class="form-group">
                 <label>Foto de la clínica</label>
                 <input type="file" name="foto_clinica" accept="image/*">
             </div>

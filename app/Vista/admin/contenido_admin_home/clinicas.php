@@ -87,7 +87,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
         ?>
 
         <tr>
-            <td><?= $clinica['usuario_admin'] ?></td>
+            <td><?= $clinica['usuario_admin_clinica'] ?></td>
             <td><?= $clinica['usuario_clinica'] ?></td>
             <td><?= $clinica['nombre_clinica'] ?></td>
             <td><?= $clinica['direccion_clinica'] ?></td>

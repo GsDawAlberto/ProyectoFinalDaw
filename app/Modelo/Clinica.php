@@ -192,14 +192,14 @@ class Clinica
 
         try {
             //Consulta SQL para insertar una nueva clínica
-            $sql = "INSERT INTO clinica (id_admin, usuario_admin, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica,foto_clinica) 
-                    VALUES (:id_admin, :usuario_admin, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica, :foto_clinica)";
+            $sql = "INSERT INTO clinica (id_admin, usuario_admin_clinica, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica,foto_clinica) 
+                    VALUES (:id_admin, :usuario_admin_clinica, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica, :foto_clinica)";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
 
                 ':id_admin'          => $this->id_admin,
-                ':usuario_admin'     => $this->usuario_admin ?? '',
+                ':usuario_admin_clinica'     => $this->usuario_admin ?? '',
                 ':nombre_clinica'    => $this->nombre_clinica,
                 ':direccion_clinica' => $this->direccion_clinica,
                 ':telefono_clinica'  => $this->telefono_clinica,
@@ -257,7 +257,7 @@ class Clinica
 
             //Cargamos datos dentro del objeto
             $this->id_clinica = $clinica['id_clinica'];
-            $this->usuario_admin = $clinica['usuario_admin'];
+            $this->usuario_admin = $clinica['usuario_admin_clinica'];
             $this->nombre_clinica = $clinica['nombre_clinica'];
             $this->direccion_clinica = $clinica['direccion_clinica'];
             $this->telefono_clinica = $clinica['telefono_clinica'];
