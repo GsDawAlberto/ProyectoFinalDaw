@@ -38,6 +38,8 @@ class PacienteController
             header("Location: " . Enlaces::BASE_URL . "paciente/loguear_paciente");
             exit;
         }
+        
+        $fotoRuta = null;
 
         // Sanitizar entrada
         $nombre     = trim(filter_input(INPUT_POST, 'nombre_paciente', FILTER_SANITIZE_STRING));
@@ -55,9 +57,36 @@ class PacienteController
             die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
         }
 
-        // Usar imagen por defecto del paciente, si no se introduce ruta
-        if($fotoRuta == '' || !$fotoRuta){
-            $fotoRuta = 'imagen_paciente_por_defecto.jpg';
+        // Control de la ruta de la foto introducida
+        if (!empty($_FILES['foto_paciente']['name'])) {
+
+            // RUTA FÍSICA REAL
+            $directorioFisico = Enlaces::BASE_PATH . 'app/imagenes_registros/imagenes_pacientes/';
+
+            if (!is_dir($directorioFisico)) {
+                mkdir($directorioFisico, 0777, true);
+            }
+
+            $extension = strtolower(pathinfo($_FILES['foto_paciente']['name'], PATHINFO_EXTENSION));
+
+            $extPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+            if (!in_array($extension, $extPermitidas)) {
+                die('Formato de imagen no permitido');
+            }
+
+            $nombreArchivo = 'paciente_' . time() . '.' . $extension;
+            $rutaFisicaFinal = $directorioFisico . $nombreArchivo;
+
+            if (move_uploaded_file($_FILES['foto_paciente']['tmp_name'], $rutaFisicaFinal)) {
+
+                //SOLO guardamos la RUTA RELATIVA para la BD
+                $fotoRuta = 'imagenes_registros/imagenes_pacientes/' . $nombreArchivo;
+            }
+        }
+
+        // Imagen por defecto
+        if (!$fotoRuta) {
+            $fotoRuta = 'imagenes_registros/imagenes_pacientes/imagen_paciente_por_defecto.jpg';
         }
 
         // Conexión BD
