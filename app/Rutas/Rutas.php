@@ -6,7 +6,7 @@ use Mediagend\App\Controlador\LobbyController;
 use Mediagend\App\Controlador\AdminController;
 use Mediagend\App\Controlador\ClinicaController;
 use Mediagend\App\Controlador\PacienteController;
-use Mediagend\App\Controlador\UsuarioController;
+use Mediagend\App\Controlador\MedicoController;
 
 class Rutas
 {
@@ -167,6 +167,43 @@ class Rutas
 
             case 'paciente/eliminar':
                 $controller = new PacienteController();
+                $controller->eliminar();
+                break;
+
+                // ---------- MÉDICO ---------- //
+            //***********************************************************************************************//
+            case 'medico/login_medico':
+                $controller = new MedicoController();
+                $controller->login();
+                break;
+
+            case 'medico/home_medico':
+                $controller = new MedicoController();
+                $controller->home();
+                break;
+
+            case 'medico/loguear_medico':
+                $controller = new MedicoController();
+                $controller->loguear();
+                break;
+
+           case 'medico/registrar_medico':
+                $controller = new MedicoController();
+                $controller->registrar();
+                break;
+
+            /* case 'medico/acceder':
+                $controller = new MedicoController();
+                $controller->acceder();
+                break; */
+            
+            /* case 'medico/modificar':
+                $controller = new MedicoController();
+                $controller->modificar();
+                break; */
+
+            case 'medico/eliminar':
+                $controller = new MedicoController();
                 $controller->eliminar();
                 break;
 

@@ -42,6 +42,7 @@ CREATE TABLE medico (
   id_clinica INT NOT NULL,
   numero_colegiado VARCHAR(150) NOT NULL,
   nombre_medico VARCHAR(100) NOT NULL,
+  apellidos_medico VARCHAR (150) NOT NULL,
   especialidad_medico VARCHAR(100),
   telefono_medico VARCHAR(20),
   email_medico VARCHAR(100),

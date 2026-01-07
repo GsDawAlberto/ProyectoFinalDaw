@@ -11,7 +11,10 @@ class Medico
     private ?int $id_medico = null;
     private ?int $id_clinica = null;
     private ?string $nombre_medico = null;
+    private ?string $apellidos_medico = null;
     private ?string $especialidad_medico = null;
+    private ?string $numero_colegiado = null;
+    private ?string $foto_medico = null;
     private ?string $telefono_medico = null;
     private ?string $email_medico = null;
     private ?string $password_medico = null;
@@ -42,12 +45,36 @@ class Medico
         return $this->nombre_medico;
     }
     /**
+     * Método para obtener los apellidos del médico
+     * @return string|null
+     */
+    public function getApellidosMedico(): ?string
+    {
+        return $this->apellidos_medico;
+    }
+    /**
      * Método para obtener la especialidad del médico
      * @return string|null
      */
     public function getEspecialidadMedico(): ?string
     {
         return $this->especialidad_medico;
+    }
+    /**
+     * Método para obtener el numero de colegiado del médico
+     * @return string|null
+     */
+    public function getNumeroColegiado(): ?string
+    {
+        return $this->numero_colegiado;
+    }
+    /**
+     * Método para obtener la ruta de imagen del médico
+     * @return string|null
+     */
+    public function getFotoMedico(): ?string
+    {
+        return $this->foto_medico;
     }
     /**
      * Método para obtener el teléfono del médico
@@ -100,6 +127,14 @@ class Medico
         $this->nombre_medico = $nombre_medico;
     }
     /**
+     * Método para establecer los apellidos del médico
+     * @param string $apellidos_medico
+     */
+    public function setApellidosMedico(string $apellidos_medico): void
+    {
+        $this->apellidos_medico = $apellidos_medico;
+    }
+    /**
      * Método para establecer la especialidad del médico
      * @param string $especialidad_medico
      */
@@ -111,6 +146,22 @@ class Medico
      * Método para establecer el teléfono del médico
      * @param string $telefono_medico
      */
+    /**
+     * Método para establecer el numero de colegiado del médico
+     * @param string $numero_colegiado
+     */
+    public function setNumeroColegiado(string $numero_colegiado): void
+    {
+        $this->numero_colegiado = $numero_colegiado;
+    }
+    /**
+     * Método para establecer la ruta de la foto del médico
+     * @param string $foto_medico
+     */
+    public function setFotoMedico(string $foto_medico): void
+    {
+        $this->foto_medico = $foto_medico;
+    }
     public function setTelefonoMedico(string $telefono_medico): void
     {
         $this->telefono_medico = $telefono_medico;
@@ -141,16 +192,19 @@ class Medico
     public function guardarMedico(PDO $pdo): string|int
     {
         try {
-            $sql = "INSERT INTO medico (id_clinica, nombre_medico, especialidad_medico, telefono_medico, email_medico)
-                    VALUES (:id_clinica, :nombre_medico, :especialidad_medico, :telefono_medico, :email_medico)";
+            $sql = "INSERT INTO medico (id_clinica, nombre_medico, apellidos_medico, numero_colegiado, especialidad_medico, telefono_medico, email_medico, foto_medico)
+                    VALUES (:id_clinica, :nombre_medico, :apellidos_medico, :numero_colegiado, :especialidad_medico, :telefono_medico, :email_medico, :foto_medico)";
 
             $stmt = $pdo->prepare($sql);
 
             $stmt->execute([
                 ':id_clinica' => $this->id_clinica,
                 ':nombre_medico' => $this->nombre_medico,
+                ':apellidos_medico' =>$this->apellidos_medico,
+                ':numero_colegiado' =>$this->numero_colegiado,
                 ':especialidad_medico' => $this->especialidad_medico,
                 ':telefono_medico' => $this->telefono_medico,
+                ':foto_medico' => $this->foto_medico,
                 ':email_medico' => $this->email_medico
             ]);
 
@@ -168,15 +222,15 @@ class Medico
         }
     }
 
-    public function autenticarMedico(PDO $pdo, string $email_medico, string $password_medico): string|array|bool
+    public function autenticarMedico(PDO $pdo, string $numero_colegiado, string $password_medico): string|array|bool
     {
         // Intentamos capturar errores de PDO
         try {
             // Consulta SQL para buscar el médico por email
-            $sql = "SELECT * FROM medico WHERE email_medico = :email_medico";
+            $sql = "SELECT * FROM medico WHERE numero_colegiado = :numero_colegiado";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
-                ':email_medico' => $email_medico
+                ':numero_colegiado' => $numero_colegiado
             ]);
 
             // Guardamos el resultado en un array asociativo
@@ -196,6 +250,9 @@ class Medico
                 $this->id_medico = (int)$medico['id_medico'];
                 $this->id_clinica = (int)$medico['id_clinica'];
                 $this->nombre_medico = $medico['nombre_medico'];
+                $this->apellidos_medico = $medico['apellidos_medico'];
+                $this->numero_colegiado = $medico['numero_colegiado'];
+                $this->foto_medico = $medico['foto_medico'];
                 $this->especialidad_medico = $medico['especialidad_medico'];
                 $this->telefono_medico = $medico['telefono_medico'];
                 $this->email_medico = $medico['email_medico'];
@@ -263,9 +320,12 @@ class Medico
             $sql = "UPDATE medico SET
                     id_clinica = :id_clinica,
                     nombre_medico = :nombre_medico,
+                    apellidos_medico = :apellidos_medico,
+                    numero_colegiado = :numero_colegiado,
                     especialidad_medico = :especialidad_medico,
                     telefono_medico = :telefono_medico,
-                    email_medico = :email_medico
+                    email_medico = :email_medico,
+                    foto_medico = :foto_medico
                     WHERE id_medico = :id_medico";
 
             // Preparamos y ejecutamos la consulta
@@ -275,9 +335,12 @@ class Medico
             $stmt->execute([
                 ':id_clinica' => $this->id_clinica,
                 ':nombre_medico' => $this->nombre_medico,
+                ':apellidos_medico' =>$this->apellidos_medico,
+                ':numero_colegiado' =>$this->numero_colegiado,
                 ':especialidad_medico' => $this->especialidad_medico,
                 ':telefono_medico' => $this->telefono_medico,
                 ':email_medico' => $this->email_medico,
+                ':foto_medico' =>$this->foto_medico,
                 ':id_medico' => $id_medico
             ]);
 
