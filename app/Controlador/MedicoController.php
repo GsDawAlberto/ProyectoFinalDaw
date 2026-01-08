@@ -43,7 +43,7 @@ class MedicoController
 
         // Sanitizar entrada
         $nombre                 = trim(filter_input(INPUT_POST, 'nombre_medico', FILTER_SANITIZE_STRING));
-        $apellidos              = trim(filter_input(INPUT_POST, 'apellidos_paciente', FILTER_SANITIZE_STRING));
+        $apellidos              = trim(filter_input(INPUT_POST, 'apellidos_medico', FILTER_SANITIZE_STRING));
         $numero_colegiado       = trim(filter_input(INPUT_POST, 'numero_colegiado', FILTER_SANITIZE_STRING));
         $especialidad_medico    = trim(filter_input(INPUT_POST, 'especialidad_medico', FILTER_SANITIZE_EMAIL));
         $telefono               = trim(filter_input(INPUT_POST, 'telefono_medico', FILTER_SANITIZE_STRING));
@@ -195,7 +195,7 @@ class MedicoController
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: " . Enlaces::BASE_URL . "clinica/home/pacientes");
+            header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
             exit;
         }
 
@@ -208,23 +208,27 @@ class MedicoController
         $medicoModel = new Medico();
 
         //Obtener paciente para comprobar propietario
-        $paciente = $medicoModel->mostrarMedico($pdo, $id_medico);
+        $medico = $medicoModel->mostrarMedico($pdo, $id_medico);
 
-        if (!$paciente) {
-            die("El medico no existe");
+        if ($medico === 'ERR_MEDICO_03') {
+            die("Error al obtener el médico");
+        }
+
+        if (!$medico || !is_array($medico)) {
+            die("El médico no existe");
         }
 
         //Seguridad: solo la clinica creadora puede borrar
-        if ((int)$paciente['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
+        if ((int)$medico['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
             die("No tienes permisos para eliminar este medico");
         }
 
         //Eliminar
         if (!$medicoModel->eliminarMedico($pdo, $id_medico)) {
-            die("Error al eliminar el paciente");
+            die("Error al eliminar el médico");
         }
 
-        header("Location: " . Enlaces::BASE_URL . "clinica/home/pacientes");
+        header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
         exit;
     }
 }

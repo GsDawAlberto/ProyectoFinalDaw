@@ -132,6 +132,11 @@ class Rutas
                 $controller->home_insertar();
                 break;
 
+            case 'clinica/home/medicos':
+                $controller = new ClinicaController();
+                $controller->home_medicos();
+                break;
+
 
             // ---------- PACIENTE ---------- //
             //***********************************************************************************************//
@@ -160,10 +165,10 @@ class Rutas
                 $controller->acceder();
                 break; */
             
-            /* case 'paciente/modificar':
+            case 'paciente/modificar':
                 $controller = new PacienteController();
                 $controller->modificar();
-                break; */
+                break;
 
             case 'paciente/eliminar':
                 $controller = new PacienteController();

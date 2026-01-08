@@ -38,7 +38,7 @@ class PacienteController
             header("Location: " . Enlaces::BASE_URL . "paciente/loguear_paciente");
             exit;
         }
-        
+
         $fotoRuta = null;
 
         // Sanitizar entrada
@@ -204,7 +204,11 @@ class PacienteController
         //Obtener paciente para comprobar propietario
         $paciente = $pacienteModel->mostrarPaciente($pdo, $id_paciente);
 
-        if (!$paciente) {
+        if ($paciente === 'ERR_PACIENTE_03') {
+            die("Error al obtener el paciente");
+        }
+
+        if (!$paciente || !is_array($paciente)) {
             die("El paciente no existe");
         }
 
@@ -221,4 +225,100 @@ class PacienteController
         header("Location: " . Enlaces::BASE_URL . "clinica/home/pacientes");
         exit;
     }
+
+    /************************* MODIFICAR PACIENTE *************************/
+    public function modificar()
+{
+    session_start();
+
+    if (!isset($_SESSION['clinica'])) {
+        header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
+        exit;
+    }
+
+    
+
+    /* =======================
+       MOSTRAR FORMULARIO
+    ======================= */
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
+        if (!$id_paciente) {
+            header("Location: " . Enlaces::BASE_URL . "clinica/home/pacientes");
+            exit;
+        }
+
+        $pdo = BaseDatos::getConexion();
+        $pacienteModel = new Paciente();
+
+        $paciente = $pacienteModel->mostrarPaciente($pdo, $id_paciente);
+
+        if (!$paciente) {
+            die("Paciente no encontradoooooooo");
+        }
+
+        if ((int)$paciente['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
+            die("No tienes permisos para modificar este paciente");
+        }
+
+        require Enlaces::VIEW_PATH . "paciente/editar_paciente.php";
+        exit;
+    }
+
+    /* =======================
+       GUARDAR CAMBIOS
+    ======================= */
+    /* if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
+        if (!$id_paciente) {
+            die("ID inválido");
+        }
+
+        $paciente = $pacienteModel->mostrarPaciente($pdo, $id_paciente);
+        if (!$paciente) {
+            die("Paciente no encontrado");
+        }
+
+        if ((int)$paciente['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
+            die("No tienes permisos");
+        }
+
+        // Datos
+        $nombre    = trim($_POST['nombre_paciente']);
+        $apellidos = trim($_POST['apellidos_paciente']);
+        $dni       = trim($_POST['dni_paciente']);
+        $telefono  = trim($_POST['telefono_paciente']);
+        $email     = trim($_POST['email_paciente']);
+        $usuario   = trim($_POST['usuario_paciente']);
+
+        // FOTO
+        $foto = $paciente['foto_paciente'];
+
+        if (!empty($_FILES['foto_paciente']['name'])) {
+            $foto = uniqid() . '_' . $_FILES['foto_paciente']['name'];
+            move_uploaded_file(
+                $_FILES['foto_paciente']['tmp_name'],
+                Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_pacientes/" . $foto
+            );
+        }
+
+        // Setear modelo
+        $pacienteModel->setNombrePaciente($nombre);
+        $pacienteModel->setApellidosPaciente($apellidos);
+        $pacienteModel->setDniPaciente($dni);
+        $pacienteModel->setTelefonoPaciente($telefono);
+        $pacienteModel->setEmailPaciente($email);
+        $pacienteModel->setUsuarioPaciente($usuario);
+        $pacienteModel->setFotoPaciente($foto);
+
+        if (!$pacienteModel->actualizarPaciente($pdo, $id_paciente)) {
+            die("Error al actualizar el paciente");
+        }
+
+        header("Location: " . Enlaces::BASE_URL . "clinica/home/pacientes");
+        exit;
+    } */
+}
 }

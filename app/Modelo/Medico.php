@@ -217,8 +217,9 @@ class Medico
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
             //Devolvemos el mensaje de error
-            $error = 'ERR_MEDICO_01'; // Error al guardar médico
-            return $error;
+            /* $error = 'ERR_MEDICO_01'; // Error al guardar médico
+            return $error; */
+            die($e->getMessage());
         }
     }
 
@@ -263,8 +264,9 @@ class Medico
 
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_MEDICO_02'; // Error al autenticar médico
-            return $error;
+            /* $error = 'ERR_MEDICO_02'; // Error al autenticar médico
+            return $error; */
+            die($e->getMessage());
         }
     }
     /**
@@ -273,39 +275,42 @@ class Medico
      * @param int|null $id_medico. ID del médico a buscar (opcional)
      * @return string|array|null Retorna un array asociativo con los datos del médico, un array de médicos o ERR_MEDICO_03 en caso de error
      */
-    public function mostrarMedico(PDO $pdo, ?int $id_medico = null): string|array|null
-    {
-        // Intentamos capturar errores de PDO
-        try {
-            if ($id_medico !== null) {
-                // Consulta SQL para buscar el médico por ID
-                $sql = "SELECT * FROM medico";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute();
+    public function mostrarMedico(PDO $pdo, ?string $busqueda = null): array|string|null
+{
+    try {
+
+        // SIN BÚSQUEDA → TODOS
+        if ($busqueda === null || trim($busqueda) === '') {
+            $sql = "SELECT * FROM medico";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                // Consulta SQL para buscar el médico por ID
-                $sql = "SELECT * FROM medico WHERE id_medico = :id_medico";
-                // Preparamos y ejecutamos la consulta
-                $stmt = $pdo->prepare($sql);
-
-                $stmt->execute([
-                    ':id_medico' => $id_medico
-                ]);
-
-                // Guardamos el resultado en un array asociativo
-                $medico = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // Retornamos el array o null si no existe
-                return $medico ?: null;
-            }
-            // Capturamos cualquier error de PDO
-        } catch (PDOException $e) {
-            $error = 'ERR_MEDICO_03'; // Error al mostrar médico
-            return $error;
         }
+
+        // CON BÚSQUEDA
+        $sql = "
+            SELECT * FROM medico
+            WHERE nombre_medico       LIKE :busqueda
+               OR apellidos_medico    LIKE :busqueda
+               OR numero_colegiado    LIKE :busqueda
+               OR telefono_medico     LIKE :busqueda
+               OR email_medico        LIKE :busqueda
+               OR especialidad_medico LIKE :busqueda
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':busqueda' => '%' . $busqueda . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        /* return 'ERR_MEDICO_03'; */
+        die($e->getMessage());
     }
+}
     /**
      * Método para actualizar un médico en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
@@ -349,8 +354,9 @@ class Medico
 
         } catch (PDOException $e) {
             //Devolvemos el mensaje de error
-            $error = 'ERR_MEDICO_04'; // Error al actualizar médico
-            return $error;
+            /* $error = 'ERR_MEDICO_04'; // Error al actualizar médico
+            return $error; */
+            die($e->getMessage());
         }
     }
     /**
@@ -377,8 +383,9 @@ class Medico
 
         } catch (PDOException $e) {
             //Devolvemos el mensaje de error
-            $error = 'ERR_MEDICO_05'; // Error al eliminar médico
-            return $error;
+            /* $error = 'ERR_MEDICO_05'; // Error al eliminar médico
+            return $error; */
+            die($e->getMessage());
         }
     }
 }

@@ -28,7 +28,7 @@ $admins = $clinicaModel->mostrarClinica($pdo, $id_clinica); */
     <div class="container">
 
         <header>
-            <h2>Registrar Nueva Clínica</h2>
+            <h2>Registrar Nuevo Médico</h2>
         </header>
 
         <form action="<?= Enlaces::BASE_URL ?>medico/registrar_medico" method="POST" enctype="multipart/form-data" class="form">

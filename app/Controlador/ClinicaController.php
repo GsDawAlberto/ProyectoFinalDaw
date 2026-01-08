@@ -19,6 +19,11 @@ class ClinicaController
     {
         require Enlaces::VIEW_CONTENT_CLINICA_PATH . "pacientes.php";
     }
+
+    public function home_medicos()
+    {
+        require Enlaces::VIEW_CONTENT_CLINICA_PATH . "medicos.php";
+    }
     /********************* FORMULARIO LOGIN ***********************/
 
     public function login()

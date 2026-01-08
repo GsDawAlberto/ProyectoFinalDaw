@@ -314,10 +314,11 @@ class Paciente
             ':busqueda' => '%' . $busqueda . '%'
         ]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (PDOException $e) {
-        return 'ERR_PACIENTE_03';
+        /* return 'ERR_PACIENTE_03'; */
+        die($e->getMessage());
     }
 }
 
