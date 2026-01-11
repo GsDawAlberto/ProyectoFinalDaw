@@ -314,10 +314,10 @@ public function modificar()
         $logo = $clinica['foto_clinica']; // Mantener logo actual
 
         if (!empty($_FILES['foto_clinica']['name'])) {
-            $logo = uniqid('foto_') . '_' . basename($_FILES['foto_clinica']['name']);
+            $logo = uniqid() . '_' . $_FILES['foto_clinica']['name'];
             move_uploaded_file(
                 $_FILES['foto_clinica']['tmp_name'],
-                Enlaces::BASE_PATH . "app/imagenes_registros/logos_clinicas/" . $logo
+                Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_clinicas/" . $logo
             );
         }
 

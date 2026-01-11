@@ -16,6 +16,10 @@ use Mediagend\App\Config\Enlaces;
 </head>
 
 <body>
+    <div class="container">
+    <header>
+        <h2>Editar Información de la Clínica</h2>
+    </header>
 
     <form action="<?= Enlaces::BASE_URL ?>clinica/modificar"
         method="POST"
@@ -30,14 +34,6 @@ use Mediagend\App\Config\Enlaces;
             <input type="text"
                 name="nombre_clinica"
                 value="<?= htmlspecialchars($clinica['nombre_clinica']) ?>"
-                required>
-        </div>
-
-        <div class="form-group">
-            <label>CIF</label>
-            <input type="text"
-                name="cif_clinica"
-                value="<?= htmlspecialchars($clinica['cif_clinica']) ?>"
                 required>
         </div>
 
@@ -75,7 +71,7 @@ use Mediagend\App\Config\Enlaces;
             <input type="file" name="foto_clinica" accept="image/*">
 
             <?php if (!empty($clinica['foto_clinica'])): ?>
-                <small>Foto actual:</small><br>
+                <small>Logo actual:</small><br>
                 <img src="<?= Enlaces::LOGOS_URL . $clinica['foto_clinica'] ?>"
                     alt="Foto actual"
                     width="80" height="80">
@@ -87,7 +83,7 @@ use Mediagend\App\Config\Enlaces;
         </button>
 
     </form>
-
+    </div>
 </body>
 
 </html>

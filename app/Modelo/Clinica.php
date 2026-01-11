@@ -350,7 +350,8 @@ class Clinica
                         direccion_clinica = :direccion_clinica, 
                         telefono_clinica = :telefono_clinica, 
                         email_clinica = :email_clinica, 
-                        usuario_clinica = :usuario_clinica 
+                        usuario_clinica = :usuario_clinica,
+                        foto_clinica = :foto_clinica
                     WHERE id_clinica = :id_clinica";
 
             // Preparar y ejecutar la consulta
@@ -363,7 +364,7 @@ class Clinica
                 ':telefono_clinica'  => $this->telefono_clinica,
                 ':email_clinica'     => $this->email_clinica,
                 ':usuario_clinica'   => $this->usuario_clinica,
-                ':password_clinica'  => password_hash($this->password_clinica, PASSWORD_BCRYPT),
+                ':foto_clinica'      => $this->foto_clinica,
                 ':id_clinica'       => $id_clinica
             ]);
 
@@ -372,8 +373,9 @@ class Clinica
 
             // Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_CLINICA_04'; // Error al actualizar clínica
-            return $error;
+            die($e->getMessage());
+            /* $error = 'ERR_CLINICA_04'; // Error al actualizar clínica
+            return $error; */
         }
     }
 
