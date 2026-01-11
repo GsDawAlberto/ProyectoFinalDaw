@@ -70,7 +70,7 @@ class ClinicaController
             die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
         }
 
-         // Control de la ruta de la foto introducida
+        // Control de la ruta de la foto introducida
         if (!empty($_FILES['foto_clinica']['name'])) {
 
             // RUTA FÍSICA REAL
@@ -114,7 +114,7 @@ class ClinicaController
         $clinica->setEmailClinica($email);
         $clinica->setUsuarioClinica($usuario);
         $clinica->setPasswordClinica($pass1);
-        $clinica->setUsuarioAdmin($userAdmin);
+        $clinica->setUsuarioAdminClinica($userAdmin);
         $clinica->setFotoClinica($fotoRuta);
 
 
@@ -244,88 +244,97 @@ class ClinicaController
     }
 
 
-    /************************* MODIFICAR CLINICA *************************/
-    public function modificar()
-    {
-        session_start();
+ /************************* MODIFICAR CLINICA *************************/
+public function modificar()
+{
+    session_start();
 
-        if (!isset($_SESSION['admin'])) {
-            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
-            exit;
-        }
+    if (!isset($_SESSION['admin'])) {
+        header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
+        exit;
+    }
 
-        $pdo = BaseDatos::getConexion();
-        $clinicaModel = new Clinica();
+    $pdo = BaseDatos::getConexion();
+    $clinicaModel = new Clinica();
 
-        // =======================
-        // MOSTRAR FORMULARIO
-        // =======================
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    /* =======================
+       MOSTRAR FORMULARIO
+    ======================= */
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-            $id_clinica = filter_input(INPUT_GET, 'id_clinica', FILTER_VALIDATE_INT);
-            if (!$id_clinica) {
-                header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
-                exit;
-            }
-
-            $clinica = $clinicaModel->mostrarClinica($pdo, $id_clinica);
-
-            if (!$clinica) {
-                die("Clínica no encontrada");
-            }
-
-            // Seguridad
-            if ((int)$clinica['id_admin'] !== (int)$_SESSION['admin']['id_admin']) {
-                die("No tienes permisos para modificar esta clínica");
-            }
-
-            // Pasar $clinica a la vista
-            require Enlaces::VIEW_PATH . "admin/clinica/editar_clinica.php";
-            exit;
-        }
-
-        // =======================
-        // GUARDAR CAMBIOS
-        // =======================
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $id_clinica = filter_input(INPUT_POST, 'id_clinica', FILTER_VALIDATE_INT);
-
-            if (!$id_clinica) {
-                die("ID inválido");
-            }
-
-            $clinica = $clinicaModel->mostrarClinica($pdo, $id_clinica);
-
-            if (!$clinica) {
-                die("Clínica no encontrada");
-            }
-
-            if ((int)$clinica['id_admin'] !== (int)$_SESSION['admin']['id_admin']) {
-                die("No tienes permisos");
-            }
-
-            // Sanitizar datos
-            $nombre    = trim(filter_input(INPUT_POST, 'nombre_clinica', FILTER_SANITIZE_STRING));
-            $direccion = trim(filter_input(INPUT_POST, 'direccion_clinica', FILTER_SANITIZE_STRING));
-            $telefono  = trim(filter_input(INPUT_POST, 'telefono_clinica', FILTER_SANITIZE_STRING));
-            $email     = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
-            $usuario   = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING));
-
-            // Setear modelo
-            $clinicaModel->setIdClinica($id_clinica);
-            $clinicaModel->setNombreClinica($nombre);
-            $clinicaModel->setDireccionClinica($direccion);
-            $clinicaModel->setTelefonoClinica($telefono);
-            $clinicaModel->setEmailClinica($email);
-            $clinicaModel->setUsuarioClinica($usuario);
-
-            if (!$clinicaModel->actualizarClinica($pdo, $id_clinica)) {
-                die("Error al actualizar la clínica");
-            }
-
+        $id_clinica = filter_input(INPUT_GET, 'id_clinica', FILTER_VALIDATE_INT);
+        if (!$id_clinica) {
             header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
             exit;
         }
+
+        $clinica = $clinicaModel->mostrarClinicaPorId($pdo, $id_clinica);
+
+        if (!$clinica) {
+            die("Clínica no encontrada");
+        }
+
+        if ((int)$clinica['id_admin'] !== (int)$_SESSION['admin']['id_admin']) {
+            die("No tienes permisos para modificar esta clínica");
+        }
+
+        // Cargar la vista de edición
+        require Enlaces::VIEW_PATH . "clinica/editar_clinica.php";
+        exit;
     }
+
+    /* =======================
+       GUARDAR CAMBIOS
+    ======================= */
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $id_clinica = filter_input(INPUT_POST, 'id_clinica', FILTER_VALIDATE_INT);
+        if (!$id_clinica) {
+            die("ID inválido");
+        }
+
+        $clinica = $clinicaModel->mostrarClinicaPorId($pdo, $id_clinica);
+
+        if (!$clinica) {
+            die("Clínica no encontrada");
+        }
+
+        if ((int)$clinica['id_admin'] !== (int)$_SESSION['admin']['id_admin']) {
+            die("No tienes permisos");
+        }
+
+        // Datos
+        $nombre    = trim($_POST['nombre_clinica']);
+        $direccion = trim($_POST['direccion_clinica']);
+        $telefono  = trim($_POST['telefono_clinica']);
+        $email     = trim($_POST['email_clinica']);
+        $usuario   = trim($_POST['usuario_clinica']);
+
+        // LOGO
+        $logo = $clinica['foto_clinica']; // Mantener logo actual
+
+        if (!empty($_FILES['foto_clinica']['name'])) {
+            $logo = uniqid('foto_') . '_' . basename($_FILES['foto_clinica']['name']);
+            move_uploaded_file(
+                $_FILES['foto_clinica']['tmp_name'],
+                Enlaces::BASE_PATH . "app/imagenes_registros/logos_clinicas/" . $logo
+            );
+        }
+
+        // Setear modelo
+        $clinicaModel->setNombreClinica($nombre);
+        $clinicaModel->setDireccionClinica($direccion);
+        $clinicaModel->setTelefonoClinica($telefono);
+        $clinicaModel->setEmailClinica($email);
+        $clinicaModel->setUsuarioClinica($usuario);
+        $clinicaModel->setFotoClinica($logo);
+
+        if (!$clinicaModel->actualizarClinica($pdo, $id_clinica)) {
+            die("Error al actualizar la clínica");
+        }
+
+        header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
+        exit;
+    }
+}
 }

@@ -197,10 +197,10 @@ class Rutas
                 $controller->registrar();
                 break;
 
-            /* case 'medico/acceder':
+            case 'medico/acceder':
                 $controller = new MedicoController();
                 $controller->acceder();
-                break; */
+                break;
             
             case 'medico/modificar':
                 $controller = new MedicoController();
@@ -216,8 +216,8 @@ class Rutas
             // ---------- ERROR ---------- //
             //***********************************************************************************************//
             default:
-                http_response_code(404);
-                echo "Página no encontrada: $url";
+                $controller = new LobbyController();
+                $controller->error404();
                 break;
         }
     }

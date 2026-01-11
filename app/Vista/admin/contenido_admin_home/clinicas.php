@@ -97,7 +97,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
             <?php if ((int)$administradorSesion === (int)$clinica['id_admin']): ?>
 
                 <td>
-                    <form action="<?= Enlaces::BASE_URL ?>clinica/modificar" method="POST">
+                    <form action="<?= Enlaces::BASE_URL ?>clinica/modificar" method="GET">
                         <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
                         <button type="submit">✏️ Modificar</button>
                     </form>
@@ -105,7 +105,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
 
                 <td>
                     <form action="<?= Enlaces::BASE_URL ?>clinica/eliminar" method="POST"
-                          onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica?'<?= $clinica['usuario_clinica'] ?>);">
+                          onsubmit="return confirm('¿Seguro que deseas eliminar esta clínica: <?= $clinica['usuario_clinica']?>');">
                         <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
                         <button type="submit">🗑️ Eliminar</button>
                     </form>

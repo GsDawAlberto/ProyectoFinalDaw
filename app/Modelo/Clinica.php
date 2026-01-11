@@ -10,7 +10,7 @@ class Clinica
     // Propiedades
     private ?int $id_clinica = null;
     private ?int $id_admin = null;
-    private ?string $usuario_admin = null;
+    private ?string $usuario_admin_clinica = null;
     private ?string $nombre_clinica = null;
     private ?string $direccion_clinica = null;
     private ?string $telefono_clinica = null;
@@ -41,9 +41,9 @@ class Clinica
      * método para obtener el usuario adminstrador
      * @return string|null
      */
-    public function getUsuarioAdmin(): ?string
+    public function getUsuarioAdminClinica(): ?string
     {
-        return $this->usuario_admin;
+        return $this->usuario_admin_clinica;
     }
     /**
      * método para obtener el nombre de la clínica
@@ -120,9 +120,9 @@ class Clinica
      * @param string $usuario_admin
      * @return void
      */
-    public function setUsuarioAdmin(string $usuario_admin): void
+    public function setUsuarioAdminClinica(string $usuario_admin_clinica): void
     {
-        $this->$usuario_admin = $usuario_admin;
+        $this->usuario_admin_clinica = $usuario_admin_clinica;
     }
     /**
      * método para establecer el nombre de la clínica
@@ -192,7 +192,7 @@ class Clinica
 
         try {
             //Consulta SQL para insertar una nueva clínica
-            $sql = "INSERT INTO clinica (id_admin, usuario_admin_clinica, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica,foto_clinica) 
+            $sql = "INSERT INTO clinica (id_admin, usuario_admin_clinica, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica, foto_clinica) 
                     VALUES (:id_admin, :usuario_admin_clinica, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica, :foto_clinica)";
 
             $stmt = $pdo->prepare($sql);
@@ -257,7 +257,7 @@ class Clinica
 
             //Cargamos datos dentro del objeto
             $this->id_clinica = $clinica['id_clinica'];
-            $this->usuario_admin = $clinica['usuario_admin_clinica'];
+            $this->usuario_admin_clinica = $clinica['usuario_admin_clinica'];
             $this->nombre_clinica = $clinica['nombre_clinica'];
             $this->direccion_clinica = $clinica['direccion_clinica'];
             $this->telefono_clinica = $clinica['telefono_clinica'];
@@ -312,6 +312,25 @@ class Clinica
         } catch (PDOException $e) {
             $error = 'ERR_CLINICA_03'; // Error al mostrar clínica
             return $error;
+        }
+    }
+
+    /**
+     * Método para mostrar los datos de una clínica por su ID. (Este método es para el formulario de modificación y eliminación)
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_clinica. ID de la clínica a mostrar
+     * @return array|null Retorna un array con los datos de la clínica o null si no existe
+     */
+    public function mostrarClinicaPorId(PDO $pdo, int $id_clinica): array|null
+    {
+        try {
+            $sql = "SELECT * FROM clinica WHERE id_clinica = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id' => $id_clinica]);
+
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        } catch (PDOException $e) {
+            return null;
         }
     }
 
