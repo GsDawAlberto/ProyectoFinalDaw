@@ -37,7 +37,7 @@ use Mediagend\App\Config\Enlaces;
             Clínicas
         </a>
 
-        <a href="<?= Enlaces::BASE_URL ?>usuario/login_usuario" class="lobby-btn btn-usuario">
+        <a href="<?= Enlaces::BASE_URL ?>paciente/login_paciente" class="lobby-btn btn-usuario">
             <i class="fas fa-user"></i>
             Pacientes
         </a>

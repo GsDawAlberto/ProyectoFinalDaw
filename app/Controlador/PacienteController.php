@@ -80,13 +80,13 @@ class PacienteController
             if (move_uploaded_file($_FILES['foto_paciente']['tmp_name'], $rutaFisicaFinal)) {
 
                 //SOLO guardamos la RUTA RELATIVA para la BD
-                $fotoRuta = 'imagenes_registros/imagenes_pacientes/' . $nombreArchivo;
+                $fotoRuta = $nombreArchivo;
             }
         }
 
         // Imagen por defecto
         if (!$fotoRuta) {
-            $fotoRuta = 'imagenes_registros/imagenes_pacientes/imagen_paciente_por_defecto.jpg';
+            $fotoRuta = 'imagen_paciente_por_defecto.jpg';
         }
 
         // Conexión BD
@@ -202,7 +202,7 @@ class PacienteController
         $pacienteModel = new Paciente();
 
         //Obtener paciente para comprobar propietario
-        $paciente = $pacienteModel->mostrarPaciente($pdo, $id_paciente);
+        $paciente = $pacienteModel->mostrarPacientePorId($pdo, $id_paciente);
 
         if ($paciente === 'ERR_PACIENTE_03') {
             die("Error al obtener el paciente");
@@ -227,7 +227,7 @@ class PacienteController
     }
 
     /************************* MODIFICAR PACIENTE *************************/
-    public function modificar()
+public function modificar()
 {
     session_start();
 
@@ -236,26 +236,24 @@ class PacienteController
         exit;
     }
 
-    
+    $pdo = BaseDatos::getConexion();
+    $pacienteModel = new Paciente();
 
     /* =======================
        MOSTRAR FORMULARIO
     ======================= */
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-        $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
+        $id_paciente = filter_input(INPUT_GET, 'id_paciente', FILTER_VALIDATE_INT);
         if (!$id_paciente) {
             header("Location: " . Enlaces::BASE_URL . "clinica/home/pacientes");
             exit;
         }
 
-        $pdo = BaseDatos::getConexion();
-        $pacienteModel = new Paciente();
-
-        $paciente = $pacienteModel->mostrarPaciente($pdo, $id_paciente);
+        $paciente = $pacienteModel->mostrarPacientePorId($pdo, $id_paciente);
 
         if (!$paciente) {
-            die("Paciente no encontradoooooooo");
+            die("Paciente no encontrado");
         }
 
         if ((int)$paciente['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
@@ -269,14 +267,15 @@ class PacienteController
     /* =======================
        GUARDAR CAMBIOS
     ======================= */
-    /* if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
         if (!$id_paciente) {
             die("ID inválido");
         }
 
-        $paciente = $pacienteModel->mostrarPaciente($pdo, $id_paciente);
+        $paciente = $pacienteModel->mostrarPacientePorId($pdo, $id_paciente);
+
         if (!$paciente) {
             die("Paciente no encontrado");
         }
@@ -304,7 +303,6 @@ class PacienteController
             );
         }
 
-        // Setear modelo
         $pacienteModel->setNombrePaciente($nombre);
         $pacienteModel->setApellidosPaciente($apellidos);
         $pacienteModel->setDniPaciente($dni);
@@ -319,6 +317,6 @@ class PacienteController
 
         header("Location: " . Enlaces::BASE_URL . "clinica/home/pacientes");
         exit;
-    } */
+    }
 }
 }

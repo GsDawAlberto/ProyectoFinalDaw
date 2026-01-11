@@ -70,7 +70,37 @@ class ClinicaController
             die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
         }
 
+         // Control de la ruta de la foto introducida
+        if (!empty($_FILES['foto_clinica']['name'])) {
 
+            // RUTA FÍSICA REAL
+            $directorioFisico = Enlaces::BASE_PATH . 'app/imagenes_registros/imagenes_clinicas/';
+
+            if (!is_dir($directorioFisico)) {
+                mkdir($directorioFisico, 0777, true);
+            }
+
+            $extension = strtolower(pathinfo($_FILES['foto_clinica']['name'], PATHINFO_EXTENSION));
+
+            $extPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+            if (!in_array($extension, $extPermitidas)) {
+                die('Formato de imagen no permitido');
+            }
+
+            $nombreArchivo = 'clinica_' . time() . '.' . $extension;
+            $rutaFisicaFinal = $directorioFisico . $nombreArchivo;
+
+            if (move_uploaded_file($_FILES['foto_clinica']['tmp_name'], $rutaFisicaFinal)) {
+
+                //SOLO guardamos la RUTA RELATIVA para la BD
+                $fotoRuta = $nombreArchivo;
+            }
+        }
+
+        // Imagen por defecto
+        if (!$fotoRuta) {
+            $fotoRuta = 'imagen_clinica_por_defecto.png';
+        }
 
         // Conexión BD
         $pdo = BaseDatos::getConexion();

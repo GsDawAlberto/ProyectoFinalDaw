@@ -38,10 +38,10 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
     </form>
 
     <?php if ($resultado === 'ERR_MEDICO_03'): ?>
-        <p>Error al obtener usuarios</p>
+        <p>Error al obtener médicos</p>
 
     <?php elseif (empty($resultado)): ?>
-        <p>No se encontraron usuarios</p>
+        <p>No se encontraron médicos con esa busqueda</p>
 
     <?php else: ?>
 
@@ -68,9 +68,9 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
                             <tr>
                                 <td>
                                     <div>
-                                        <img class="foto_medico" src="<?= Enlaces::IMG_PACIENTE_URL . $medico['foto_medico'] ?>"
+                                        <img class="foto_medico" src="<?= Enlaces::IMG_MEDICO_URL . $medico['foto_medico'] ?>"
                                             alt="Foto Médico"
-                                            width="80" height="80">
+                                            width="60" height="60">
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($medico['numero_colegiado']) ?></td>
@@ -81,7 +81,7 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
                                 <td><?= htmlspecialchars($medico['email_medico']) ?></td>
 
                                 <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>medico/modificar" method="POST">
+                                    <form action="<?= Enlaces::BASE_URL ?>medico/modificar" method="GET">
                                         <input type="hidden" name="id_medico" value="<?= $medico['id_medico'] ?>">
                                         <button type="submit">✏️ Modificar</button>
                                     </form>
@@ -89,7 +89,7 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
 
                                 <td>
                                     <form action="<?= Enlaces::BASE_URL ?>medico/eliminar" method="POST"
-                                        onsubmit="return confirm('¿Seguro que deseas eliminar este médico: <?= $medico['nombre_medico']. ' '.$medico['apellidos_medico'] ?> ?');">
+                                        onsubmit="return confirm('¿Seguro que deseas eliminar este médico: <?= $medico['nombre_medico'] . ' ' . $medico['apellidos_medico'] ?> ?');">
                                         <input type="hidden" name="id_medico" value="<?= $medico['id_medico'] ?>">
                                         <button type="submit">🗑️ Eliminar</button>
                                     </form>

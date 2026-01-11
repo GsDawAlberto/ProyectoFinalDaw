@@ -145,10 +145,10 @@ class Rutas
                 $controller->login();
                 break;
 
-            /* case 'usuario/home_usuario':
-                $controller = new UsuarioController();
+            case 'paciente/home_paciente':
+                $controller = new PacienteController();
                 $controller->home();
-                break; */
+                break;
 
             case 'paciente/loguear_paciente':
                 $controller = new PacienteController();
@@ -160,10 +160,10 @@ class Rutas
                 $controller->registrar();
                 break;
 
-            /* case 'usuario/acceder':
-                $controller = new UsuarioController();
+            case 'paciente/acceder':
+                $controller = new PacienteController();
                 $controller->acceder();
-                break; */
+                break;
             
             case 'paciente/modificar':
                 $controller = new PacienteController();
@@ -202,10 +202,10 @@ class Rutas
                 $controller->acceder();
                 break; */
             
-            /* case 'medico/modificar':
+            case 'medico/modificar':
                 $controller = new MedicoController();
                 $controller->modificar();
-                break; */
+                break;
 
             case 'medico/eliminar':
                 $controller = new MedicoController();

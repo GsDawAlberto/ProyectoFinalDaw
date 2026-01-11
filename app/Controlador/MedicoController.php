@@ -80,13 +80,13 @@ class MedicoController
             if (move_uploaded_file($_FILES['foto_medico']['tmp_name'], $rutaFisicaFinal)) {
 
                 //SOLO guardamos la RUTA RELATIVA para la BD
-                $fotoRuta = 'imagenes_registros/imagenes_medicos/' . $nombreArchivo;
+                $fotoRuta = $nombreArchivo;
             }
         }
 
         // Imagen por defecto
         if (!$fotoRuta) {
-            $fotoRuta = 'imagenes_registros/imagenes_medicos/imagen_medico_por_defecto.jpg';
+            $fotoRuta = 'imagen_medico_por_defecto.jpg';
         }
 
         // Conexión BD
@@ -208,7 +208,7 @@ class MedicoController
         $medicoModel = new Medico();
 
         //Obtener paciente para comprobar propietario
-        $medico = $medicoModel->mostrarMedico($pdo, $id_medico);
+        $medico = $medicoModel->mostrarMedicoPorId($pdo, $id_medico);
 
         if ($medico === 'ERR_MEDICO_03') {
             die("Error al obtener el médico");
@@ -231,4 +231,102 @@ class MedicoController
         header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
         exit;
     }
+
+    /************************* MODIFICAR MÉDICO *************************/
+public function modificar()
+{
+    session_start();
+
+    // Verificar sesión clínica
+    if (!isset($_SESSION['clinica'])) {
+        header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
+        exit;
+    }
+
+    $pdo = BaseDatos::getConexion();
+    $medicoModel = new Medico();
+
+    /* =======================
+       MOSTRAR FORMULARIO
+    ======================= */
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+        $id_medico = filter_input(INPUT_GET, 'id_medico', FILTER_VALIDATE_INT);
+        if (!$id_medico) {
+            header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
+            exit;
+        }
+
+        $medico = $medicoModel->mostrarMedicoPorId($pdo, $id_medico);
+
+        if (!$medico) {
+            die("Médico no encontrado");
+        }
+
+        // Seguridad: solo la clínica propietaria
+        if ((int)$medico['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
+            die("No tienes permisos para modificar este médico");
+        }
+
+        require Enlaces::VIEW_PATH . "medico/editar_medico.php";
+        exit;
+    }
+
+    /* =======================
+       GUARDAR CAMBIOS
+    ======================= */
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $id_medico = filter_input(INPUT_POST, 'id_medico', FILTER_VALIDATE_INT);
+        if (!$id_medico) {
+            die("ID inválido");
+        }
+
+        $medico = $medicoModel->mostrarMedicoPorId($pdo, $id_medico);
+
+        if (!$medico) {
+            die("Médico no encontrado");
+        }
+
+        if ((int)$medico['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
+            die("No tienes permisos");
+        }
+
+        // Sanitizar datos
+        $nombre              = trim($_POST['nombre_medico']);
+        $apellidos           = trim($_POST['apellidos_medico']);
+        $numero_colegiado    = trim($_POST['numero_colegiado']);
+        $especialidad        = trim($_POST['especialidad_medico']);
+        $telefono            = trim($_POST['telefono_medico']);
+        $email               = trim($_POST['email_medico']);
+
+        // FOTO
+        $foto = $medico['foto_medico']; // Mantener foto actual por defecto
+
+        if (!empty($_FILES['foto_medico']['name'])) {
+            $foto = uniqid() . '_' . $_FILES['foto_medico']['name'];
+            move_uploaded_file(
+                $_FILES['foto_medico']['tmp_name'],
+                Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_medicos/" . $foto
+            );
+        }
+
+        // Setear modelo
+        $medicoModel->setNombreMedico($nombre);
+        $medicoModel->setApellidosMedico($apellidos);
+        $medicoModel->setNumeroColegiado($numero_colegiado);
+        $medicoModel->setEspecialidadMedico($especialidad);
+        $medicoModel->setTelefonoMedico($telefono);
+        $medicoModel->setEmailMedico($email);
+        $medicoModel->setFotoMedico($foto);
+
+        if (!$medicoModel->actualizarMedico($pdo, $id_medico)) {
+            die("Error al actualizar el médico");
+        }
+
+        header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
+        exit;
+    }
+}
+
 }

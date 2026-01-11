@@ -70,7 +70,7 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                                     <div>
                                         <img class="foto_paciente" src="<?= Enlaces::IMG_PACIENTE_URL . $paciente['foto_paciente'] ?>"
                                             alt="Foto paciente"
-                                            width="80" height="80">
+                                            width="60" height="60">
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($paciente['usuario_paciente']) ?></td>
@@ -81,7 +81,7 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                                 <td><?= htmlspecialchars($paciente['email_paciente']) ?></td>
 
                                 <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>paciente/modificar" method="POST">
+                                    <form action="<?= Enlaces::BASE_URL ?>paciente/modificar" method="GET">
                                         <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
                                         <button type="submit">✏️ Modificar</button>
                                     </form>

@@ -311,19 +311,36 @@ class Medico
         die($e->getMessage());
     }
 }
+/**
+     * Método para mostrar un médico por su ID (Este método es para el formulario de modificación y eliminación)
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_medico. ID del médico a buscar
+     * @return array|null Retorna un array asociativo con los datos del médico o null en caso de no encontrarlo
+     */
+    public function mostrarMedicoPorId(PDO $pdo, int $id_medico): array|null
+{
+    try {
+        $sql = "SELECT * FROM medico WHERE id_medico = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id' => $id_medico]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+
+    } catch (PDOException $e) {
+        return null;
+    }
+}
     /**
      * Método para actualizar un médico en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_medico. ID del médico a actualizar
-     * @return string|int Retorna el número de filas afectadas o ERR_MEDICO_04 en caso de no poder actualizar el médico
+     * @return bool Retorna true si la actualización fue exitosa, false en caso contrario
      */
-    public function actualizarMedico(PDO $pdo, int $id_medico): string|int
-    {
-        // Intentamos capturar errores de PDO
-        try {
-            // Consulta SQL para actualizar el médico
-            $sql = "UPDATE medico SET
-                    id_clinica = :id_clinica,
+    public function actualizarMedico(PDO $pdo, int $id_medico): bool
+{
+    try {
+
+        $sql = "UPDATE medico SET
                     nombre_medico = :nombre_medico,
                     apellidos_medico = :apellidos_medico,
                     numero_colegiado = :numero_colegiado,
@@ -331,34 +348,25 @@ class Medico
                     telefono_medico = :telefono_medico,
                     email_medico = :email_medico,
                     foto_medico = :foto_medico
-                    WHERE id_medico = :id_medico";
+                WHERE id_medico = :id_medico";
 
-            // Preparamos y ejecutamos la consulta
-            $stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
-            // Ejecutamos la consulta con los datos del objeto
-            $stmt->execute([
-                ':id_clinica' => $this->id_clinica,
-                ':nombre_medico' => $this->nombre_medico,
-                ':apellidos_medico' =>$this->apellidos_medico,
-                ':numero_colegiado' =>$this->numero_colegiado,
-                ':especialidad_medico' => $this->especialidad_medico,
-                ':telefono_medico' => $this->telefono_medico,
-                ':email_medico' => $this->email_medico,
-                ':foto_medico' =>$this->foto_medico,
-                ':id_medico' => $id_medico
-            ]);
+        return $stmt->execute([
+            ':nombre_medico' => $this->nombre_medico,
+            ':apellidos_medico' => $this->apellidos_medico,
+            ':numero_colegiado' => $this->numero_colegiado,
+            ':especialidad_medico' => $this->especialidad_medico,
+            ':telefono_medico' => $this->telefono_medico,
+            ':email_medico' => $this->email_medico,
+            ':foto_medico' => $this->foto_medico,
+            ':id_medico' => $id_medico
+        ]);
 
-            // Retornamos la cantidad de filas afectadas
-            return $stmt->rowCount();
-
-        } catch (PDOException $e) {
-            //Devolvemos el mensaje de error
-            /* $error = 'ERR_MEDICO_04'; // Error al actualizar médico
-            return $error; */
-            die($e->getMessage());
-        }
+    } catch (PDOException $e) {
+        return false;
     }
+}
     /**
      * Método para eliminar un médico de la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos

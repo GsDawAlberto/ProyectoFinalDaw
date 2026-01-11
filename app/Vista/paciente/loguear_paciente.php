@@ -1,15 +1,6 @@
 <?php
 
 use Mediagend\App\Config\Enlaces;
-use Mediagend\App\Config\BaseDatos;
-use Mediagend\App\Modelo\Administrador;
-use Mediagend\App\Modelo\Clinica;
-
-$pdo = BaseDatos::getConexion();
-
-/************************** ADMINISTRADORES ******************************/
-$clinicaModel = new Clinica();
-$clinic = $clinicaModel->mostrarClinica($pdo, null);
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +8,7 @@ $clinic = $clinicaModel->mostrarClinica($pdo, null);
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Paciente</title>
 
     <!-- Estilos reutilizados -->
@@ -78,7 +70,7 @@ $clinic = $clinicaModel->mostrarClinica($pdo, null);
                 <input type="password" name="password2_paciente" required>
             </div>
 
-            <button type="submit" class="btn-submit">Registrar Clínica</button>
+            <button type="submit" class="btn-submit">Registrar Paciente</button>
         </form>
 
 

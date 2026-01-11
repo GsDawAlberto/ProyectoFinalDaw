@@ -207,7 +207,7 @@ class Paciente
                 ':dni_paciente' => $this->dni_paciente,
                 ':telefono_paciente' => $this->telefono_paciente,
                 ':email_paciente' => $this->email_paciente,
-                ':usuario_paciente' =>$this->usuario_paciente,
+                ':usuario_paciente' => $this->usuario_paciente,
                 'password_paciente' => password_hash($this->password_paciente, PASSWORD_BCRYPT),
                 'foto_paciente' => $this->foto_paciente
             ]);
@@ -222,7 +222,7 @@ class Paciente
         } catch (PDOException $e) {
             //Devolvemos el mensaje de error
             die($e->getMessage());
-           /*  $error = 'ERR_PACIENTE_01'; // Error al guardar paciente
+            /*  $error = 'ERR_PACIENTE_01'; // Error al guardar paciente
             return $error . $e; */
         }
     }
@@ -285,21 +285,21 @@ class Paciente
      * @return string|array|null Retorna un array con los datos del paciente, null si no existe o ERR_PACIENTE_03 en caso de error al mostrar pacientes
      */
     public function mostrarPaciente(PDO $pdo, ?string $busqueda = null): string|array|null
-{
-    try {
+    {
+        try {
 
-        // SIN BÚSQUEDA → TODOS LOS PACIENTES
-        if ($busqueda === null || trim($busqueda) === '') {
+            // SIN BÚSQUEDA → TODOS LOS PACIENTES
+            if ($busqueda === null || trim($busqueda) === '') {
 
-            $sql = "SELECT * FROM paciente";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+                $sql = "SELECT * FROM paciente";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
 
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
 
-        // CON BÚSQUEDA → BUSCAR EN VARIOS CAMPOS
-        $sql = "
+            // CON BÚSQUEDA → BUSCAR EN VARIOS CAMPOS
+            $sql = "
             SELECT * FROM paciente
             WHERE nombre_paciente     LIKE :busqueda
                OR apellidos_paciente  LIKE :busqueda
@@ -309,18 +309,36 @@ class Paciente
                OR usuario_paciente    LIKE :busqueda
         ";
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ':busqueda' => '%' . $busqueda . '%'
-        ]);
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':busqueda' => '%' . $busqueda . '%'
+            ]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    } catch (PDOException $e) {
-        /* return 'ERR_PACIENTE_03'; */
-        die($e->getMessage());
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            /* return 'ERR_PACIENTE_03'; */
+            die($e->getMessage());
+        }
     }
-}
+
+    /**
+     * Método para mostrar un paciente por su ID (Este método es para el formulario de modificación y eliminación)
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_paciente. ID del paciente a buscar
+     * @return array|null Retorna un array asociativo con los datos del paciente o null en caso de no encontrarlo
+     */
+    public function mostrarPacientePorId(PDO $pdo, int $id_paciente): array|null
+    {
+        try {
+            $sql = "SELECT * FROM paciente WHERE id_paciente = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id' => $id_paciente]);
+
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
 
     /**
      * Método para actualizar los datos de un paciente en la base de datos
@@ -328,45 +346,38 @@ class Paciente
      * @param int $id_paciente. ID del paciente a actualizar
      * @return string|int Retornamos el número de filas afectadas o ERR_PACIENTE_04 en caso de no poder actualizar el paciente
      */
-    public function actualizarPaciente(PDO $pdo, int $id_paciente): string|int
+    public function actualizarPaciente(PDO $pdo, int $id_paciente): bool
     {
-        //Intentamos caprurar errores de PDO
         try {
-            //Consulta SQL para actualizar el paciente 
-            $sql = "UPDATE paciente
-                    SET dni_paciente = :dni_paciente,
-                        nombre_paciente = :nombre_paciente,
-                        apellidos_paciente = :apellidos_paciente
-                        telefono_paciente = :telefono_paciente,
-                        email_paciente = :email_paciente,
-                        usuario_paciente = :usuario_paciente,
-                        password_paciente = :password_paciente,
-                        foto_paciente = ':foto_paciente
-                        WHERE id_paciente = :id_paciente";
+            $sql = "
+            UPDATE paciente SET
+                dni_paciente        = :dni,
+                nombre_paciente     = :nombre,
+                apellidos_paciente  = :apellidos,
+                telefono_paciente   = :telefono,
+                email_paciente      = :email,
+                usuario_paciente    = :usuario,
+                foto_paciente       = :foto
+            WHERE id_paciente = :id_paciente
+        ";
 
-            //Preparamos y ejecutamos la consulta
             $stmt = $pdo->prepare($sql);
 
-            //Ejecutamos la consulta con los datos actualizados
-            $stmt->execute([
-                ':dni_paciente' => $this->dni_paciente,
-                ':nombre_paciente' => $this->nombre_paciente,
-                ':apellidos_paciente' => $this->apellidos_paciente,
-                ':telefono_paciente' => $this->telefono_paciente,
-                ':email_paciente' => $this->email_paciente,
-                ':usuario_paciente' => $this->usuario_paciente,
-                ':password_paciente' => password_hash($this->password_paciente, PASSWORD_BCRYPT),
-                ':id_paciente' => $id_paciente,
-                ':foto_paciente' => $this->foto_paciente
+            return $stmt->execute([
+                ':dni'         => $this->dni_paciente,
+                ':nombre'      => $this->nombre_paciente,
+                ':apellidos'   => $this->apellidos_paciente,
+                ':telefono'    => $this->telefono_paciente,
+                ':email'       => $this->email_paciente,
+                ':usuario'     => $this->usuario_paciente,
+                ':foto'        => $this->foto_paciente,
+                ':id_paciente' => $id_paciente
             ]);
-
-            //Retornamos la cantidad de filas afectadas
-            return $stmt->rowCount();
-
-            //Captuarmos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_PACIENTE_04'; // Error al actualizar paciente
-            return $error;
+            /* $error = 'ERR_PACIENTE_04'; // Error al actualizar paciente
+            return $error; */
+            error_log($e->getMessage());
+            return false;
         }
     }
 
@@ -376,7 +387,7 @@ class Paciente
      * @param int $id_paciente. ID del paciente a eliminar
      * @return int|string. Retorna el número de filas afectadas o 'ERR_ADMIN_05' en caso de error al eliminar paciente
      */
-    public function eliminarPaciente (PDO $pdo, int $id_paciente): string|int
+    public function eliminarPaciente(PDO $pdo, int $id_paciente): string|int
     {
         //Intentamos capturar errores del PDO
         try {
@@ -398,5 +409,4 @@ class Paciente
             return $error;
         }
     }
-
 }
