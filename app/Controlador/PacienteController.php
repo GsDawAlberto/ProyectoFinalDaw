@@ -48,6 +48,7 @@ class PacienteController
         $telefono   = trim(filter_input(INPUT_POST, 'telefono_paciente', FILTER_SANITIZE_STRING));
         $email      = trim(filter_input(INPUT_POST, 'email_paciente', FILTER_SANITIZE_EMAIL));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_paciente', FILTER_SANITIZE_STRING));
+        /* $id_medico  = trim($_POST['id_medico']) ?? null; */
         $fotoRuta = trim($_FILES['foto_paciente']['name']);
         $pass1      = trim($_POST['password_paciente'] ?? '');
         $pass2      = trim($_POST['password2_paciente'] ?? '');
@@ -95,6 +96,7 @@ class PacienteController
         // Crear modelo
         $paciente = new Paciente();
         $paciente->setIdClinica($idClinica);
+        /* $paciente->setIdMedico($id_medico); */
         $paciente->setNombrePaciente($nombre);
         $paciente->setApellidosPaciente($apellidos);
         $paciente->setDniPaciente($dni);
@@ -142,6 +144,7 @@ class PacienteController
         //Guardar sesión
         $_SESSION['paciente'] = [
             'id_paciente' => $resultado['id_paciente'],
+            'id_medico'   => $resultado['id_medico'],
             'nombre'      => $resultado['nombre_paciente'],
             'apellidos'   => $resultado['apellidos_paciente'],
             'dni'         => $resultado['dni_paciente'],
@@ -290,6 +293,7 @@ public function modificar()
         $dni       = trim($_POST['dni_paciente']);
         $telefono  = trim($_POST['telefono_paciente']);
         $email     = trim($_POST['email_paciente']);
+        $id_medico  = trim($_POST['id_medico']) ?: null;
         $usuario   = trim($_POST['usuario_paciente']);
 
         // FOTO
@@ -309,6 +313,7 @@ public function modificar()
         $pacienteModel->setTelefonoPaciente($telefono);
         $pacienteModel->setEmailPaciente($email);
         $pacienteModel->setUsuarioPaciente($usuario);
+        $pacienteModel->setIdMedico($id_medico);
         $pacienteModel->setFotoPaciente($foto);
 
         if (!$pacienteModel->actualizarPaciente($pdo, $id_paciente)) {

@@ -91,7 +91,7 @@ h1{
 
 /* Contenido derecho */
 .contenido {
-    width: 100%; /* 4/5 del ancho */
+    width: 80%; /* 4/5 del ancho */
     height: 100%;
     background-color: #ffffff;
     padding: 10px;
@@ -101,6 +101,7 @@ h1{
 #visor {
     width: 100%;
     height: 100%;
+    border-radius: 12px;
     border: none;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }

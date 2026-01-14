@@ -10,6 +10,7 @@ class Paciente
     //Propiedades
     private ?int $id_paciente = null;
     private ?int $id_clinica = null;
+    private ?int $id_medico = null;
     private ?string $nombre_paciente = null;
     private ?string $apellidos_paciente = null;
     private ?string $dni_paciente = null;
@@ -35,6 +36,14 @@ class Paciente
     public function getIdClinica(): ?int
     {
         return $this->id_clinica;
+    }
+    /**
+     * Método para obtener el ID del médico
+     * @return int|null
+     */
+    public function getIdMedico(): ?int
+    {
+        return $this->id_medico;
     }
     /**
      * Método para obtener el nombre del paciente
@@ -119,6 +128,14 @@ class Paciente
         $this->id_clinica = $id_clinica;
     }
     /**
+     * Método para establecer el ID del médico
+     * @param int|null $id_medico
+     */
+    public function setIdMedico(int $id_medico): void
+    {
+        $this->id_medico = $id_medico;
+    }
+    /**
      * Método para establecer el nombres del paciente
      * @param string $nombre
      */
@@ -195,13 +212,14 @@ class Paciente
         //Intentamos capturar errores del PDO
         try {
             //Consulta SQL para insertar un nuevo paciente
-            $sql = "INSERT INTO paciente (id_clinica, nombre_paciente, apellidos_paciente, dni_paciente, telefono_paciente, email_paciente, usuario_paciente, password_paciente, foto_paciente) 
-                    VALUES (:id_clinica, :nombre_paciente, :apellidos_paciente, :dni_paciente, :telefono_paciente, :email_paciente, :usuario_paciente, :password_paciente, :foto_paciente)";
+            $sql = "INSERT INTO paciente (id_clinica, id_medico, nombre_paciente, apellidos_paciente, dni_paciente, telefono_paciente, email_paciente, usuario_paciente, password_paciente, foto_paciente) 
+                    VALUES (:id_clinica, :id_medico, :nombre_paciente, :apellidos_paciente, :dni_paciente, :telefono_paciente, :email_paciente, :usuario_paciente, :password_paciente, :foto_paciente)";
 
             $stmt = $pdo->prepare($sql);
 
             $stmt->execute([
                 ':id_clinica' => $this->id_clinica,
+                ':id_medico' => $this->id_medico,
                 ':nombre_paciente' => $this->nombre_paciente,
                 ':apellidos_paciente' => $this->apellidos_paciente,
                 ':dni_paciente' => $this->dni_paciente,
@@ -260,6 +278,7 @@ class Paciente
             // Cargamos datos dentro del objeto Paciente
             $this->id_paciente = (int)$paciente['id_paciente'];
             $this->id_clinica = (int)$paciente['id_clinica'];
+            $this->id_medico = (int)$paciente['id_medico'];
             $this->nombre_paciente = $paciente['nombre_paciente'];
             $this->apellidos_paciente = $paciente['apellidos_paciente'];
             $this->dni_paciente = $paciente['dni_paciente'];
@@ -352,6 +371,7 @@ class Paciente
             $sql = "
             UPDATE paciente SET
                 dni_paciente        = :dni,
+                id_medico           = :id_medico,
                 nombre_paciente     = :nombre,
                 apellidos_paciente  = :apellidos,
                 telefono_paciente   = :telefono,
@@ -365,6 +385,7 @@ class Paciente
 
             return $stmt->execute([
                 ':dni'         => $this->dni_paciente,
+                ':id_medico'   => $this->id_medico,
                 ':nombre'      => $this->nombre_paciente,
                 ':apellidos'   => $this->apellidos_paciente,
                 ':telefono'    => $this->telefono_paciente,

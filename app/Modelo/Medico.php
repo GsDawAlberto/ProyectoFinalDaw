@@ -192,8 +192,8 @@ class Medico
     public function guardarMedico(PDO $pdo): string|int
     {
         try {
-            $sql = "INSERT INTO medico (id_clinica, nombre_medico, apellidos_medico, numero_colegiado, especialidad_medico, telefono_medico, email_medico, foto_medico)
-                    VALUES (:id_clinica, :nombre_medico, :apellidos_medico, :numero_colegiado, :especialidad_medico, :telefono_medico, :email_medico, :foto_medico)";
+            $sql = "INSERT INTO medico (id_clinica, nombre_medico, apellidos_medico, numero_colegiado, especialidad_medico, telefono_medico, email_medico, password_medico, foto_medico)
+                    VALUES (:id_clinica, :nombre_medico, :apellidos_medico, :numero_colegiado, :especialidad_medico, :telefono_medico, :email_medico, :password_medico, :foto_medico)";
 
             $stmt = $pdo->prepare($sql);
 
@@ -205,6 +205,7 @@ class Medico
                 ':especialidad_medico' => $this->especialidad_medico,
                 ':telefono_medico' => $this->telefono_medico,
                 ':foto_medico' => $this->foto_medico,
+                ':password_medico' => password_hash($this->password_medico, PASSWORD_BCRYPT),
                 ':email_medico' => $this->email_medico
             ]);
 

@@ -212,6 +212,13 @@ class Rutas
                 $controller->eliminar();
                 break;
 
+            /****************   VISTAS MÉDICO HOME ****************/
+
+            case 'medico/home/pacientes':
+                $controller = new MedicoController();
+                $controller->home_mis_pacientes();
+                break;
+
 
             // ---------- ERROR ---------- //
             //***********************************************************************************************//

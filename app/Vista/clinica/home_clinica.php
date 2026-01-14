@@ -35,16 +35,20 @@ $nombreUsuario = $_SESSION['clinica']['nombre_clinica'];
             <h2>Bienvenido, <?= htmlspecialchars($nombreUsuario) ?></h2>
             <div class="layout_header">
                 <img class="logo_clinica" src="<?= Enlaces::LOGOS_URL . $_SESSION['clinica']['foto_clinica'] ?>"
-                alt="Foto clínica"
-                width="120">
+                    alt="Foto clínica"
+                    width="120">
             </div>
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/home/pacientes')"><i class="fa-regular fa-user"></i>Mostrar Pacientes</button>
 
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/home/medicos')"><i class="fa-solid fa-user-doctor"></i>Mostrar Médicos</button>
 
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>paciente/loguear_paciente')"><i class="fa-solid fa-file-import"></i>Insertar Paciente</button>
-            
+
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>medico/loguear_medico')"><i class="fa-solid fa-file-import"></i>Insertar Médico</button>
+
+            <a class="menu-btn" href="<?= Enlaces::BASE_URL ?>medico/login_medico">
+                <i class="fa-solid fa-user-doctor"></i> Acceso Médico
+            </a>
 
             <!-- <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/home/configuracion')"><i class="fa-solid fa-gears"></i>Configuración</button> -->
             <a href="<?= Enlaces::BASE_URL ?>clinica/login_clinica"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>

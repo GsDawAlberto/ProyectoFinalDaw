@@ -1,7 +1,23 @@
 <?php
 
 use Mediagend\App\Config\Enlaces;
+use Mediagend\App\Config\BaseDatos;
+use Mediagend\App\Modelo\Medico;
+
+/* session_start(); */
+$clinicaSesion = $_SESSION['clinica']['id_clinica'];
+
+/************************** CONEXIÓN Y MEDICOS ******************************/
+$pdo = BaseDatos::getConexion();
+$medicoModel = new Medico();
+
+// Para mantener la selección si viene de un GET (id_medico)
+$id_medico = filter_input(INPUT_GET, 'id_medico', FILTER_VALIDATE_INT) ?: null;
+
+// Obtener todos los médicos para el select
+$medicos = $medicoModel->mostrarMedico($pdo, null); // null para traer todos
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,6 +30,13 @@ use Mediagend\App\Config\Enlaces;
 </head>
 
 <body>
+
+<div class="container">
+
+        <header>
+            <h2>Modificar Paciente</h2>
+        </header>
+
     <form action="<?= Enlaces::BASE_URL ?>paciente/modificar"
         method="POST"
         enctype="multipart/form-data"
@@ -58,6 +81,21 @@ use Mediagend\App\Config\Enlaces;
         </div>
 
         <div class="form-group">
+                <label>Asignar un Médico (opcional):</label>
+                <select name="id_medico">
+                    <option value="">Ninguno</option>
+                    <?php foreach ($medicos as $medico): ?>
+                        <?php if ($clinicaSesion === (int)$medico['id_clinica']): ?>
+                            <option value="<?= $medico['id_medico'] ?>"
+                                <?= ($id_medico === (int)$medico['id_medico']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($medico['nombre_medico']) ?> <?= htmlspecialchars($medico['apellidos_medico']) ?>
+                            </option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+        <div class="form-group">
             <label>Foto del Paciente</label>
             <input type="file" name="foto_paciente" accept="image/*">
 
@@ -74,6 +112,7 @@ use Mediagend\App\Config\Enlaces;
         </button>
 
     </form>
+    </div>
 </body>
 
 </html>

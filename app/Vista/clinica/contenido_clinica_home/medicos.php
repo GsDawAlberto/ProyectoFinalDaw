@@ -81,7 +81,8 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
                                 <td><?= htmlspecialchars($medico['email_medico']) ?></td>
 
                                 <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>medico/modificar" method="GET">
+                                    <form action="<?= Enlaces::BASE_URL ?>medico/modificar" method="GET"
+                                        onsubmit="return confirm('¿Seguro que deseas ⚠️ MODIFICAR ⚠️ los datos del médico: <?= $medico['nombre_medico'] . ' ' . $medico['apellidos_medico'] ?> ?');">
                                         <input type="hidden" name="id_medico" value="<?= $medico['id_medico'] ?>">
                                         <button type="submit">✏️ Modificar</button>
                                     </form>
@@ -89,7 +90,7 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
 
                                 <td>
                                     <form action="<?= Enlaces::BASE_URL ?>medico/eliminar" method="POST"
-                                        onsubmit="return confirm('¿Seguro que deseas eliminar este médico: <?= $medico['nombre_medico'] . ' ' . $medico['apellidos_medico'] ?> ?');">
+                                        onsubmit="return confirm('¿Seguro que deseas ⚠️ ELIMINAR ⚠️ este médico: <?= $medico['nombre_medico'] . ' ' . $medico['apellidos_medico'] ?> ?');">
                                         <input type="hidden" name="id_medico" value="<?= $medico['id_medico'] ?>">
                                         <button type="submit">🗑️ Eliminar</button>
                                     </form>

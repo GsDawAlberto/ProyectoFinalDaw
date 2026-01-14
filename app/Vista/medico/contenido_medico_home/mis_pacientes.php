@@ -1,12 +1,13 @@
 <?php
 
-namespace Mediagend\App\Vista\clinica\contenido_clinica_home;
+namespace Mediagend\App\Vista\medico\contenido_medico_home;
 
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Paciente;
 use Mediagend\App\Config\Enlaces;
 
 session_start();
+$medicoSesion = $_SESSION['medico']['id_medico'];
 $clinicaSesion = $_SESSION['clinica']['id_clinica'];
 
 /***************************  PACIENTES  *********************************/
@@ -38,10 +39,10 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
     </form>
 
     <?php if ($resultado === 'ERR_USUARIO_03'): ?>
-        <p>Error al obtener usuarios</p>
+        <p>Error al obtener mis pacientes</p>
 
     <?php elseif (empty($resultado)): ?>
-        <p>No se encontraron usuarios</p>
+        <p>No se encontraron pacientes</p>
 
     <?php else: ?>
 
@@ -56,15 +57,16 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                         <th>DNI</th>
                         <th>Telefono</th>
                         <th>Email</th>
-                        <th>Modificar</th>
-                        <th>Eliminar</th>
+                        <th>Citar</th>
+                        <th>Ver informes</th>
+                        <th>Crear informe</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     <?php foreach ($resultado as $paciente): ?>
 
-                        <?php if ((int)$clinicaSesion === (int)$paciente['id_clinica']): ?>
+                        <!-- <?php if ((int)$clinicaSesion === (int)$paciente['id_clinica'] && (int)$medicoSesion === (int)$paciente['id_medico']): ?> -->
                             <tr>
                                 <td>
                                     <div>
@@ -81,24 +83,33 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                                 <td><?= htmlspecialchars($paciente['email_paciente']) ?></td>
 
                                 <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>paciente/modificar" method="GET"
-                                        onsubmit="return confirm('¿Seguro que deseas ⚠️ MODIFICAR ⚠️ los datos del paciente: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
+                                    <form action="<?= Enlaces::BASE_URL ?>" method="GET"
+                                    onsubmit="return confirm('¿Deseas citar al paciente: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
                                         <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
-                                        <button type="submit">✏️ Modificar</button>
+                                        <button type="submit">✏️ Citar</button>
                                     </form>
                                 </td>
 
                                 <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>paciente/eliminar" method="POST"
-                                        onsubmit="return confirm('¿Seguro que deseas ⚠️ ELIMINAR ⚠️ este paciente: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
+                                    <form action="<?= Enlaces::BASE_URL ?>" method="POST"
+                                        onsubmit="return confirm('¿Deseas ver los informes de: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
                                         <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
-                                        <button type="submit">🗑️ Eliminar</button>
+                                        <button type="submit">📂 Ver informes</button>
                                     </form>
                                 </td>
+
+                                <td>
+                                    <form action="<?= Enlaces::BASE_URL ?>" method="POST"
+                                        onsubmit="return confirm('¿Deseas crear un INFORME para: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
+                                        <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
+                                        <button type="submit">📄 Crear informe</button>
+                                    </form>
+                                </td>
+
                             </tr>
                         <?php endif; ?>
 
-                    <?php endforeach; ?>
+                    <!-- <?php endforeach; ?> -->
 
                 </tbody>
             </table>

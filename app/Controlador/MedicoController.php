@@ -9,6 +9,11 @@ use Mediagend\App\Config\BaseDatos;
 class MedicoController
 {
     /**************************** RUTA DE VISTAS **************************/
+    public function home_mis_pacientes()
+    {
+
+        require Enlaces::VIEW_PATH . "medico/contenido_medico_home/mis_pacientes.php";
+    }
 
     /**************************** FORMULARIO LOGIN *************************/
     public function login()
@@ -128,7 +133,7 @@ class MedicoController
         }
         //Sanitizar entrada
         $colegiado = trim(filter_input(INPUT_POST, 'numero_colegiado', FILTER_SANITIZE_STRING) ?? '');
-        $password = trim(filter_input(INPUT_POST, 'password_paciente', FILTER_SANITIZE_STRING) ?? '');
+        $password = trim(filter_input(INPUT_POST, 'password_medico', FILTER_SANITIZE_STRING) ?? '');
 
         //Conexión BD
         $pdo = BaseDatos::getConexion();
@@ -153,10 +158,11 @@ class MedicoController
             'numero_colegiado'      => $resultado['numero_colegiado'],
             'telefono_medico'       => $resultado['telefono_medico'],
             'email_medico'          => $resultado['email_medico'],
-            'especialidad_medico'   => $resultado['especialidad_medico']
+            'especialidad_medico'   => $resultado['especialidad_medico'],
+            'foto_medico'           => $resultado['foto_medico']
         ];
 
-        header("Location: " . Enlaces::BASE_URL . "medio/home_medico");
+        header("Location: " . Enlaces::BASE_URL . "medico/home_medico");
         exit;
     }
 

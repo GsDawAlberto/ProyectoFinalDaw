@@ -76,6 +76,23 @@ header p {
     box-shadow: 0 0 10px rgba(0, 119, 182, 0.2);
 }
 
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 2px solid #90e0ef;
+    outline: none;
+    font-size: 1rem;
+    transition: 0.3s ease;
+    background-color: #fff;
+}
+
+.form-group select:focus {
+    border-color: #0077b6;
+    box-shadow: 0 0 10px rgba(0, 119, 182, 0.2);
+}
+
 /* BOTÓN */
 .btn-submit {
     width: 100%;
