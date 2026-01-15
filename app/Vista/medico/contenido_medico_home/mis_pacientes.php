@@ -67,47 +67,47 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                     <?php foreach ($resultado as $paciente): ?>
 
                         <!-- <?php if ((int)$clinicaSesion === (int)$paciente['id_clinica'] && (int)$medicoSesion === (int)$paciente['id_medico']): ?> -->
-                            <tr>
-                                <td>
-                                    <div>
-                                        <img class="foto_paciente" src="<?= Enlaces::IMG_PACIENTE_URL . $paciente['foto_paciente'] ?>"
-                                            alt="Foto paciente"
-                                            width="60" height="60">
-                                    </div>
-                                </td>
-                                <td><?= htmlspecialchars($paciente['usuario_paciente']) ?></td>
-                                <td><?= htmlspecialchars($paciente['nombre_paciente']) ?></td>
-                                <td><?= htmlspecialchars($paciente['apellidos_paciente']) ?></td>
-                                <td><?= htmlspecialchars($paciente['dni_paciente']) ?></td>
-                                <td><?= htmlspecialchars($paciente['telefono_paciente']) ?></td>
-                                <td><?= htmlspecialchars($paciente['email_paciente']) ?></td>
+                        <tr>
+                            <td>
+                                <div>
+                                    <img class="foto_paciente" src="<?= Enlaces::IMG_PACIENTE_URL . $paciente['foto_paciente'] ?>"
+                                        alt="Foto paciente"
+                                        width="60" height="60">
+                                </div>
+                            </td>
+                            <td><?= htmlspecialchars($paciente['usuario_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['nombre_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['apellidos_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['dni_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['telefono_paciente']) ?></td>
+                            <td><?= htmlspecialchars($paciente['email_paciente']) ?></td>
 
-                                <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>" method="GET"
-                                    onsubmit="return confirm('¿Deseas citar al paciente: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
-                                        <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
-                                        <button type="submit">✏️ Citar</button>
-                                    </form>
-                                </td>
+                            <td>
+                                <form action="<?= Enlaces::BASE_URL ?>" method="GET"
+                                    onsubmit="return confirm('¿Deseas citar al paciente: <?= $paciente['nombre_paciente'] . ' ' . $paciente['apellidos_paciente'] ?>');">
+                                    <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
+                                    <button type="submit">✏️ Citar</button>
+                                </form>
+                            </td>
 
-                                <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>" method="POST"
-                                        onsubmit="return confirm('¿Deseas ver los informes de: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
-                                        <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
-                                        <button type="submit">📂 Ver informes</button>
-                                    </form>
-                                </td>
+                            <td>
+                                <form action="<?= Enlaces::BASE_URL ?>informe/listar" method="POST"
+                                    onsubmit="return confirm('¿Deseas ver los informes de: <?=$paciente['nombre_paciente'] . ' ' . $paciente['apellidos_paciente'] ?>');">
+                                    <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
+                                    <button type="submit">📂 Ver informes</button>
+                                </form>
+                            </td>
 
-                                <td>
-                                    <form action="<?= Enlaces::BASE_URL ?>" method="POST"
-                                        onsubmit="return confirm('¿Deseas crear un INFORME para: <?= $paciente['nombre_paciente']. ' '.$paciente['apellidos_paciente'] ?>');">
-                                        <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
-                                        <button type="submit">📄 Crear informe</button>
-                                    </form>
-                                </td>
+                            <td>
+                                <form action="<?= Enlaces::BASE_URL . 'informe/crear' ?>" method="POST"
+                                    onsubmit="return confirm('¿Deseas crear un INFORME para: <?= $paciente['nombre_paciente'] . ' ' . $paciente['apellidos_paciente'] ?>');">
+                                    <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
+                                    <button type="submit">📄 Crear informe</button>
+                                </form>
+                            </td>
 
-                            </tr>
-                        <?php endif; ?>
+                        </tr>
+                    <?php endif; ?>
 
                     <!-- <?php endforeach; ?> -->
 

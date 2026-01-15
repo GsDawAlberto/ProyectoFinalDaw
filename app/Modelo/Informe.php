@@ -203,8 +203,9 @@ class Informe
 
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            $error =  'ERR_INFORME_01'; // Error al guardar informe
-            return $error;
+            die($e->getMessage());
+            /* $error =  'ERR_INFORME_01'; // Error al guardar informe
+            return $error; */
         }
     }
 
@@ -242,8 +243,27 @@ class Informe
                 return $informe ?: null;
             }
         } catch (PDOException $e) {
-            return 'ERR_INFORME_02'; // Error al mostrar informe
+            die($e->getMessage());
+            /* return 'ERR_INFORME_02'; // Error al mostrar informe */
         }
+    }
+    /**
+     * Método para listar los informes de un paciente
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_paciente. ID del paciente
+     * @return array Retornamos un array con los informes del paciente
+     */
+    public function listarPorPaciente(PDO $pdo, int $id_paciente): array
+    {
+        $sql = "SELECT id_informe, archivo_pdf_informe, fecha_generacion_informe
+            FROM informe
+            WHERE id_paciente = :id_paciente
+            ORDER BY fecha_generacion_informe DESC";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id_paciente' => $id_paciente]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -278,8 +298,9 @@ class Informe
             return $stmt->rowCount();
             //Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error =  'ERR_INFORME_04'; //Error al actualizar informe
-            return $error;
+            die($e->getMessage());
+            /* $error =  'ERR_INFORME_04'; //Error al actualizar informe
+            return $error; */
         }
     }
 
@@ -304,8 +325,9 @@ class Informe
             return $stmt->rowCount();
             //Capturamos el mensaje de error
         } catch (PDOException $e) {
-            $error = 'ERR_INFORME_05'; //Error al eliminar informe
-            return $error;
+            die($e->getMessage());
+            /*  $error = 'ERR_INFORME_05'; //Error al eliminar informe
+            return $error; */
         }
     }
 }

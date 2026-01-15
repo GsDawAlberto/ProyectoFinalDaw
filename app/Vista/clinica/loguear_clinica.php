@@ -1,16 +1,6 @@
 <?php
 
 use Mediagend\App\Config\Enlaces;
-use Mediagend\App\Config\BaseDatos;
-use Mediagend\App\Modelo\Administrador;
-
-
-/* USAR ESTA PARTE ?????? 
-$pdo = BaseDatos::getConexion();
-
-************************** ADMINISTRADORES ******************************
-$adminModel = new Administrador();
-$admins = $adminModel->mostrarAdmin($pdo, null); */
 
 ?>
 

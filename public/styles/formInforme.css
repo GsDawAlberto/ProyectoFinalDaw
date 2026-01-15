@@ -1,0 +1,121 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #e0f7fa;
+    background-image: url("../img/Logo_translucido_2.png");
+    background-repeat: repeat;
+    background-size: 500px 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* CONTENEDOR */
+.container.informe-form {
+    width: 100%;
+    max-width: 700px;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 15px 15px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* HEADER */
+header h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #0077b6;
+    margin-bottom: 30px;
+}
+
+/* FORM */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* GRUPO */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* LABEL */
+.form-group label {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #005f87;
+    margin-bottom: 8px;
+}
+
+/* TEXTAREA INFORME */
+.informe-textarea textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #90e0ef;
+    font-size: 1rem;
+    resize: vertical;
+    line-height: 1.6;
+    outline: none;
+    transition: 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+/* TEXTAREA GRANDE (Tratamiento) */
+.informe-textarea textarea[name="tratamiento"] {
+    min-height: 220px;
+}
+
+/* FOCUS */
+.informe-textarea textarea:focus {
+    border-color: #0077b6;
+    background-color: #ffffff;
+    box-shadow: 0 0 12px rgba(0, 119, 182, 0.2);
+}
+
+/* BOTÓN */
+.btn-submit {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    background: #0077b6;
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 119, 182, 0.3);
+    transition: 0.3s ease;
+}
+
+.btn-submit:hover {
+    background: #005f87;
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .container.informe-form {
+        padding: 30px 20px;
+    }
+
+    header h2 {
+        font-size: 1.6rem;
+    }
+
+    .informe-textarea textarea {
+        min-height: 150px;
+    }
+}

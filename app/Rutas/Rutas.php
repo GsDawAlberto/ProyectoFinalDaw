@@ -7,6 +7,7 @@ use Mediagend\App\Controlador\AdminController;
 use Mediagend\App\Controlador\ClinicaController;
 use Mediagend\App\Controlador\PacienteController;
 use Mediagend\App\Controlador\MedicoController;
+use Mediagend\App\Controlador\InformeController;
 
 class Rutas
 {
@@ -155,7 +156,7 @@ class Rutas
                 $controller->loguear();
                 break;
 
-           case 'paciente/registrar_paciente':
+            case 'paciente/registrar_paciente':
                 $controller = new PacienteController();
                 $controller->registrar();
                 break;
@@ -164,7 +165,7 @@ class Rutas
                 $controller = new PacienteController();
                 $controller->acceder();
                 break;
-            
+
             case 'paciente/modificar':
                 $controller = new PacienteController();
                 $controller->modificar();
@@ -175,7 +176,7 @@ class Rutas
                 $controller->eliminar();
                 break;
 
-                // ---------- MÉDICO ---------- //
+            // ---------- MÉDICO ---------- //
             //***********************************************************************************************//
             case 'medico/login_medico':
                 $controller = new MedicoController();
@@ -192,7 +193,7 @@ class Rutas
                 $controller->loguear();
                 break;
 
-           case 'medico/registrar_medico':
+            case 'medico/registrar_medico':
                 $controller = new MedicoController();
                 $controller->registrar();
                 break;
@@ -201,7 +202,7 @@ class Rutas
                 $controller = new MedicoController();
                 $controller->acceder();
                 break;
-            
+
             case 'medico/modificar':
                 $controller = new MedicoController();
                 $controller->modificar();
@@ -219,6 +220,27 @@ class Rutas
                 $controller->home_mis_pacientes();
                 break;
 
+            /************************* INFORMES ***********************/
+
+            case 'informe/crear':
+                $controller = new InformeController();
+                $controller->crear();
+                break;
+
+            case 'informe/guardar':
+                $controller = new InformeController();
+                $controller->guardar();
+                break;
+
+            case 'informe/listar':
+                $controller = new InformeController();
+                $controller->listar();
+                break;
+
+            case 'informe/ver':
+                $controller = new InformeController();
+                $controller->ver();
+                break;
 
             // ---------- ERROR ---------- //
             //***********************************************************************************************//
