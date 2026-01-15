@@ -245,4 +245,42 @@ public function ver()
     readfile($rutaPDF);
     exit;
 }
+public function eliminar()
+    {
+        session_start();
+
+        if (!isset($_SESSION['medico'])) {
+            header("Location: " . Enlaces::BASE_URL . "medico/login_medico");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: " . Enlaces::BASE_URL . "medico/home/pacientes");
+            exit;
+        }
+
+        $id_informe = filter_input(INPUT_POST, 'id_informe', FILTER_VALIDATE_INT);
+
+        if (!$id_informe) {
+            exit('Informe inválido');
+        }
+
+        $pdo = BaseDatos::getConexion();
+        $informeModel = new Informe();
+
+        // Obtener el informe para borrar el archivo PDF
+        $informe = $informeModel->mostrarInforme($pdo, $id_informe);
+        if ($informe && is_file(Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'])) {
+            unlink(Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe']);
+        }
+
+        // Eliminar el registro del informe en la base de datos
+        if (!$informeModel->eliminarInforme($pdo, $id_informe)) {
+            exit('Error al eliminar el informe');
+        }
+
+        header("Location: " . Enlaces::BASE_URL . "medico/home/pacientes");
+        exit;
+    }
+
 }

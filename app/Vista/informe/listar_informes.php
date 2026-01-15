@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Informe;
@@ -20,50 +21,61 @@ $informesBD = $informeModel->listarPorPaciente($pdo, $id_paciente);
 $rutaCarpeta = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/';
 
 // Filtrar solo los informes cuyo archivo existe
-$informes = array_filter($informesBD, function($inf) use ($rutaCarpeta) {
+$informes = array_filter($informesBD, function ($inf) use ($rutaCarpeta) {
     return !empty($inf['archivo_pdf_informe']) && is_file($rutaCarpeta . $inf['archivo_pdf_informe']);
 });
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Informes del Paciente</title>
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/listadoInformes.css">
 </head>
+
 <body>
 
-<div class="container">
-    <h2>📂 Informes del Paciente</h2>
+    <div class="container">
+        <h2>📂 Informes del Paciente</h2>
 
-    <?php if (empty($informes)): ?>
-        <div class="no-informes">
-            ⚠️ No hay informes disponibles para este paciente.
-        </div>
-    <?php else: ?>
-        <table class="tabla-informes">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Informe</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($informes as $informe): ?>
+        <?php if (empty($informes)): ?>
+            <div class="no-informes">
+                ⚠️ No hay informes disponibles para este paciente. ⚠️
+            </div>
+        <?php else: ?>
+            <table class="tabla-informes">
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($informe['fecha_generacion_informe']) ?></td>
-                        <td>
-                            <a class="pdf-link" href="<?= Enlaces::BASE_URL ?>informe/ver?id=<?= $informe['id_informe'] ?>" target="_blank">
-                                📄 Abrir PDF
-                            </a>
-                        </td>
+                        <th>Fecha</th>
+                        <th>Ver Informe</th>
+                        <th>Eliminar Informe</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
-</div>
+                </thead>
+                <tbody>
+                    <?php foreach ($informes as $informe): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($informe['fecha_generacion_informe']) ?></td>
+                            <td>
+                                <a class="pdf-link" href="<?= Enlaces::BASE_URL ?>informe/ver?id=<?= $informe['id_informe'] ?>" target="_blank">
+                                    📄 Abrir PDF
+                                </a>
+                            </td>
+                            <td>
+                                <form action="<?= Enlaces::BASE_URL ?>informe/eliminar" method="POST"
+                                    onsubmit="return confirm('¿Seguro que deseas ⚠️ ELIMINAR ⚠️ el informe <?= $informe['archivo_pdf_informe'] ?>?');">
+                                    <input type="hidden" name="id_informe" value="<?= $informe['id_informe'] ?>">
+                                    <button type="submit">🗑️ Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
 
 </body>
+
 </html>

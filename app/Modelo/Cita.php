@@ -123,7 +123,7 @@ class Cita
      * Método para establecer el ID del paciente
      * @param int $id_paciente
      */
-    public function setIdPaciente(int $id_paciente): void
+    public function setIdPaciente(?int $id_paciente): void
     {
         $this->id_paciente = $id_paciente;
     }
@@ -261,6 +261,63 @@ class Cita
     }
 
     /**
+     * Método para mostrar todas las citas de una clínica por su ID
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_clinica. ID de la clínica
+     * @return string|array Retornamos un array con las citas o ERR_CITA_03 en caso de error
+     */
+    public function mostrarPorClinica(PDO $pdo, int $id_clinica): string|array
+    {
+        //Intentamos capturar errores del PDO
+        try {
+            //Consulta SQL para obtener las citas por ID de clínica
+            $sql = "SELECT * FROM cita WHERE id_clinica = :id_clinica ORDER BY fecha_cita, hora_cita";
+            //Preparamos y ejecutamos la consulta
+            $stmt = $pdo->prepare($sql);
+
+            $stmt->execute([
+                ':id_clinica' => $id_clinica
+            ]);
+
+            //Guardamos el resultado en un array asociativo
+            $citas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            //Retornamos el array de citas
+            return $citas;
+        } catch (PDOException $e) {
+            return 'ERR_CITA_03'; //Error al mostar citas por clínica
+        }
+    }
+    /**
+     * Método para mostrar todas las citas de un médico por su ID
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_medico. ID del médico
+     * @return string|array Retornamos un array con las citas o ERR_CITA_03 en caso de error
+     */
+    public function mostrarPorMedico(PDO $pdo, int $id_medico): string|array
+    {
+        //Intentamos capturar errores del PDO
+        try {
+            //Consulta SQL para obtener las citas por ID de médico
+            $sql = "SELECT * FROM cita WHERE id_medico = :id_medico ORDER BY fecha_cita, hora_cita";
+            //Preparamos y ejecutamos la consulta
+            $stmt = $pdo->prepare($sql);
+
+            $stmt->execute([
+                ':id_medico' => $id_medico
+            ]);
+
+            //Guardamos el resultado en un array asociativo
+            $citas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            //Retornamos el array de citas
+            return $citas;
+        } catch (PDOException $e) {
+            return 'ERR_CITA_03'; //Error al mostar citas por médico
+        }
+    }
+
+    /**
      * Método para actualizar los datos de la cita en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_cita. ID de la cita a actualizar
@@ -299,6 +356,47 @@ class Cita
             $error = 'ERR_CITA_04'; //Error al actualizar cita
             return $error;
         }
+    }
+    /**
+     * Método para actualizar la asignación de paciente a una cita
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_cita. ID de la cita a actualizar
+     * @return bool Retorna true si la actualización fue exitosa, false en caso contrario
+     */
+    public function actualizarAsignacion(PDO $pdo, int $id_cita)
+    {
+        $sql = "UPDATE cita
+            SET id_paciente = :id_paciente,
+                motivo_cita = :motivo,
+                estado_cita = :estado
+            WHERE id_cita = :id_cita";
+
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([
+            ':id_paciente' => $this->id_paciente,
+            ':motivo' => $this->motivo_cita,
+            ':estado' => $this->estado_cita,
+            ':id_cita' => $id_cita
+        ]);
+    }
+
+    /**
+     * Método para actualizar el estado de una cita
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_cita. ID de la cita a actualizar
+     * @return bool Retorna true si la actualización fue exitosa, false en caso contrario
+     */
+    public function actualizarEstado(PDO $pdo, int $id_cita): bool
+    {
+        $sql = "UPDATE cita 
+            SET estado_cita = :estado
+            WHERE id_cita = :id_cita";
+
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([
+            ':estado'  => $this->estado_cita,
+            ':id_cita' => $id_cita
+        ]);
     }
 
     /**

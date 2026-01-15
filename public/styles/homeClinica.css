@@ -61,7 +61,7 @@ h1{
     display: flex;
     align-items: center;
     width: 90%;
-    height: 100px;
+    height: auto;
     margin: 5px;
     padding: 14px 16px;
     background-color: rgba(19, 163, 224, 0.15);

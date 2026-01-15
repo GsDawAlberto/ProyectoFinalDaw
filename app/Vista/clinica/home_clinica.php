@@ -46,6 +46,8 @@ $nombreUsuario = $_SESSION['clinica']['nombre_clinica'];
 
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>medico/loguear_medico')"><i class="fa-solid fa-file-import"></i>Insertar Médico</button>
 
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>citas/indice')"><i class="fa-solid fa-calendar-check"></i>Ver Agenda</button>
+
             <a class="menu-btn" href="<?= Enlaces::BASE_URL ?>medico/login_medico">
                 <i class="fa-solid fa-user-doctor"></i> Acceso Médico
             </a>

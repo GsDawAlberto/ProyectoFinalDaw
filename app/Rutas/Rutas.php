@@ -8,6 +8,8 @@ use Mediagend\App\Controlador\ClinicaController;
 use Mediagend\App\Controlador\PacienteController;
 use Mediagend\App\Controlador\MedicoController;
 use Mediagend\App\Controlador\InformeController;
+use Mediagend\App\Controlador\CitaController;
+
 
 class Rutas
 {
@@ -241,6 +243,35 @@ class Rutas
                 $controller = new InformeController();
                 $controller->ver();
                 break;
+
+            case 'informe/eliminar':
+                $controller = new InformeController();
+                $controller->eliminar();
+                break;
+
+            /****************************** CITAS ******************************/
+
+            case 'citas/indice':
+                $controller = new CitaController();
+                $controller->index();
+                break;
+
+            case 'citas/crear_hueco':
+                $controller = new CitaController();
+                $controller->crearHueco();
+                break;
+
+            case 'citas/asignar_paciente':
+                $controller = new CitaController();
+                $controller->asignarPaciente();
+                break;
+
+            case 'citas/cambiar_estado':
+                $controller = new CitaController();
+                $controller->cambiarEstado();
+                break;
+
+            
 
             // ---------- ERROR ---------- //
             //***********************************************************************************************//

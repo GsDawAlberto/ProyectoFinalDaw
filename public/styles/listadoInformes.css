@@ -1,81 +1,89 @@
 /* ===== Estilo general ===== */
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
 
-        h2 {
-            text-align: center;
-            margin: 20px 0;
-            color: #0077b6;
-            font-size: 1.8rem;
-        }
+h2 {
+    text-align: center;
+    margin: 20px 0;
+    color: #0077b6;
+    font-size: 1.8rem;
+}
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+.container {
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
 
-        /* ===== Tabla ===== */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+/* ===== Tabla ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-        thead tr {
-            background-color: #0077b6;
-            color: #fff;
-            text-align: left;
-        }
+thead tr {
+    background-color: #0077b6;
+    color: #fff;
+    text-align: left;
+}
 
-        th, td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
-            vertical-align: middle;
-        }
+th,
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
 
-        tbody tr:hover {
-            background-color: #e0f7fa;
-        }
+/* CELDAS */
+tbody td {
+    padding: 14px 12px;
+    color: #333;
+    border-bottom: 1px solid #e6eef5;
+}
 
-        a.pdf-link {
-            display: inline-block;
-            padding: 6px 12px;
-            background-color: #00b4d8;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
+tbody tr:hover {
+    background-color: #e0f7fa;
+}
 
-        a.pdf-link:hover {
-            background-color: #0077b6;
-            transform: translateY(-2px);
-        }
+a.pdf-link {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #00b4d8;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
 
-        /* ===== Mensaje sin informes ===== */
-        .no-informes {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 1.1rem;
-            color: #555;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-        }
+a.pdf-link:hover {
+    background-color: #0077b6;
+    transform: translateY(-2px);
+}
 
-        /* ===== Cabecera de paciente ===== */
-        .paciente-info {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 1.1rem;
-            color: #023e8a;
-        }
+/* ===== Mensaje sin informes ===== */
+.no-informes {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 1.1rem;
+    color: #555;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+/* ===== Cabecera de paciente ===== */
+.paciente-info {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.1rem;
+    color: #023e8a;
+}
