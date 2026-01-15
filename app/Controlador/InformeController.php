@@ -213,30 +213,35 @@ public function ver()
         exit('Acceso denegado');
     }
 
+    // Obtener el ID del informe
     $id_informe = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
     if (!$id_informe) {
         exit('Informe inválido');
     }
 
+    // Conexión y obtención del informe
     $pdo = BaseDatos::getConexion();
     $informeModel = new Informe();
-
     $informe = $informeModel->mostrarInforme($pdo, $id_informe);
 
     if (!$informe) {
-        exit('Informe no encontrado');
+        exit('Informe no encontrado en la base de datos');
     }
 
-    $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' .
-               $informe['archivo_pdf_informe'];
+    // Ruta física del archivo PDF
+    $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'];
 
-    if (!file_exists($rutaPDF)) {
-        exit('Archivo no encontrado');
+    // Validar que el archivo exista realmente
+    if (!is_file($rutaPDF)) {
+        exit('Archivo PDF no encontrado en la carpeta de informes');
     }
 
+    // Enviar PDF al navegador
     header('Content-Type: application/pdf');
-    header('Content-Disposition: inline; filename="'.$informe['archivo_pdf_informe'].'"');
+    header('Content-Disposition: inline; filename="' . basename($informe['archivo_pdf_informe']) . '"');
+    header('Content-Length: ' . filesize($rutaPDF));
+
+    // Mostrar archivo
     readfile($rutaPDF);
     exit;
 }
