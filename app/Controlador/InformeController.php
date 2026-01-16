@@ -6,6 +6,7 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Informe;
 use Mediagend\App\Modelo\Paciente;
+use Mediagend\App\Modelo\Clinica;
 // PDF
 use TCPDF;
 
@@ -79,13 +80,26 @@ class InformeController
             die("Paciente no encontrado");
         }
 
+        /******************** PREPARAR LOGO CLÍNICA PARA MOSTRAR EN PDF********************/
+        $clinica = $_SESSION['clinica'];
+        $logoClinica = '';
+
+        if (!empty($clinica['logo_clinica'])) {
+            $rutaLogo = Enlaces:: LOGOS_URL . $clinica['logo_clinica'];
+
+            if (file_exists($rutaLogo)) {
+                $logoClinica = '<img src="' . $rutaLogo . '" style="height:80px;">';
+            }
+        }
+
         $this->generarPDF(
             $rutaCarpeta . $nombrePDF,
             $diagnostico,
             $tratamiento,
             $_SESSION['clinica'],
             $_SESSION['medico'],
-            $paciente
+            $paciente,
+            $logoClinica
         );
 
         /* ===== GUARDAR EN BD ===== */
@@ -103,19 +117,23 @@ class InformeController
         if (!$informe->guardarInforme($pdo)) {
             die("Error al guardar el informe");
         }
+        
+
+        /********************************** REDIRECCIONAR AL HOME DE PACIENTES **********************************/
 
         header("Location: " . Enlaces::BASE_URL . "medico/home/pacientes");
         exit;
     }
 
-    /******************** GENERAR PDF ********************/
+    /************************************ GENERAR PDF *******************************************/
     private function generarPDF(
         string $rutaFinal,
         string $diagnostico,
         string $tratamiento,
         array $clinica,
         array $medico,
-        array $paciente
+        array $paciente,
+        string $logoClinica
     ) {
         $pdf = new TCPDF('P', 'mm', 'A4');
         $pdf->SetMargins(15, 20, 15);
@@ -128,6 +146,7 @@ class InformeController
         $html = <<<HTML
 <style>
     h1 { text-align:center; font-size:18px; color:#003366; }
+    .logo-clinica { text-align:center; margin-bottom:10px; }
     .sub { text-align:center; font-size:11px; color:#555; }
     .box { border:1px solid #ccc; padding:10px; margin-bottom:12px; }
     .box_diagnostico { border:1px solid #ccc; padding:10px; margin-bottom:12px; background-color:#f9f9f9; height: 500px; }
@@ -137,7 +156,8 @@ class InformeController
 </style>
 
 <h1>INFORME MÉDICO</h1>
-<div class="sub">{$clinica['nombre_clinica']}</div>
+<div class="logo-clinica"> {$logoClinica}</div>
+<div class="sub"><h1>{$clinica['nombre_clinica']}</h1></div>
 
 <br>
 <h3>Datos del Médico</h3>
@@ -176,76 +196,76 @@ HTML;
         $pdf->Output($rutaFinal, 'F');
     }
 
-public function listar()
-{
-    session_start();
+    public function listar()
+    {
+        session_start();
 
-    if (!isset($_SESSION['medico'])) {
-        header("Location: " . Enlaces::BASE_URL . "medico/login_medico");
+        if (!isset($_SESSION['medico'])) {
+            header("Location: " . Enlaces::BASE_URL . "medico/login_medico");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: " . Enlaces::BASE_URL . "medico/home/pacientes");
+            exit;
+        }
+
+        $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
+
+        if (!$id_paciente) {
+            exit('Paciente inválido');
+        }
+
+        $pdo = BaseDatos::getConexion();
+        $informeModel = new Informe();
+
+        $informes = $informeModel->listarPorPaciente($pdo, $id_paciente);
+
+        // Pasas datos reales a la vista
+        require Enlaces::VIEW_PATH . 'informe/listar_informes.php';
+    }
+
+    public function ver()
+    {
+        session_start();
+
+        if (!isset($_SESSION['medico'])) {
+            exit('Acceso denegado');
+        }
+
+        // Obtener el ID del informe
+        $id_informe = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$id_informe) {
+            exit('Informe inválido');
+        }
+
+        // Conexión y obtención del informe
+        $pdo = BaseDatos::getConexion();
+        $informeModel = new Informe();
+        $informe = $informeModel->mostrarInforme($pdo, $id_informe);
+
+        if (!$informe) {
+            exit('Informe no encontrado en la base de datos');
+        }
+
+        // Ruta física del archivo PDF
+        $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'];
+
+        // Validar que el archivo exista realmente
+        if (!is_file($rutaPDF)) {
+            exit('Archivo PDF no encontrado en la carpeta de informes');
+        }
+
+        // Enviar PDF al navegador
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: inline; filename="' . basename($informe['archivo_pdf_informe']) . '"');
+        header('Content-Length: ' . filesize($rutaPDF));
+
+        // Mostrar archivo
+        readfile($rutaPDF);
         exit;
     }
-
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header("Location: " . Enlaces::BASE_URL . "medico/home/pacientes");
-        exit;
-    }
-
-    $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
-
-    if (!$id_paciente) {
-        exit('Paciente inválido');
-    }
-
-    $pdo = BaseDatos::getConexion();
-    $informeModel = new Informe();
-
-    $informes = $informeModel->listarPorPaciente($pdo, $id_paciente);
-
-    // Pasas datos reales a la vista
-    require Enlaces::VIEW_PATH . 'informe/listar_informes.php';
-}
-
-public function ver()
-{
-    session_start();
-
-    if (!isset($_SESSION['medico'])) {
-        exit('Acceso denegado');
-    }
-
-    // Obtener el ID del informe
-    $id_informe = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-    if (!$id_informe) {
-        exit('Informe inválido');
-    }
-
-    // Conexión y obtención del informe
-    $pdo = BaseDatos::getConexion();
-    $informeModel = new Informe();
-    $informe = $informeModel->mostrarInforme($pdo, $id_informe);
-
-    if (!$informe) {
-        exit('Informe no encontrado en la base de datos');
-    }
-
-    // Ruta física del archivo PDF
-    $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'];
-
-    // Validar que el archivo exista realmente
-    if (!is_file($rutaPDF)) {
-        exit('Archivo PDF no encontrado en la carpeta de informes');
-    }
-
-    // Enviar PDF al navegador
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: inline; filename="' . basename($informe['archivo_pdf_informe']) . '"');
-    header('Content-Length: ' . filesize($rutaPDF));
-
-    // Mostrar archivo
-    readfile($rutaPDF);
-    exit;
-}
-public function eliminar()
+    public function eliminar()
     {
         session_start();
 
@@ -282,5 +302,4 @@ public function eliminar()
         header("Location: " . Enlaces::BASE_URL . "medico/home/pacientes");
         exit;
     }
-
 }
