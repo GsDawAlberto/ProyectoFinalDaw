@@ -114,7 +114,7 @@ CREATE TABLE informe (
 CREATE TABLE cita (
   id_cita INT AUTO_INCREMENT PRIMARY KEY,
   id_clinica INT NOT NULL,
-  id_paciente INT,
+  id_paciente INT NULL,
   id_medico INT NOT NULL,
   id_informe INT,
   fecha_cita DATE NOT NULL,

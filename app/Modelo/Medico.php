@@ -397,4 +397,19 @@ class Medico
             die($e->getMessage());
         }
     }
+
+    /***************************************************************************************************/
+    /***************************************  OTROS MÉTODOS ************************************************/
+    public function listarPorClinica(PDO $pdo, int $id_clinica): array
+{
+    $sql = "SELECT id_medico, nombre_medico, apellidos_medico
+            FROM medico
+            WHERE id_clinica = :id_clinica
+            ORDER BY nombre_medico";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_clinica' => $id_clinica]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

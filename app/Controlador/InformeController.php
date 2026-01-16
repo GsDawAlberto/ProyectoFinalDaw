@@ -64,6 +64,9 @@ class InformeController
         /* ===== GENERAR PDF ===== */
         $nombrePDF = 'informe_' . time() . '.pdf';
         $rutaCarpeta = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/';
+        $horaVisita = date('Y-m-d H:i:s');
+
+         // Crear la carpeta si no existe
 
         if (!is_dir($rutaCarpeta)) {
             mkdir($rutaCarpeta, 0777, true);
@@ -81,7 +84,7 @@ class InformeController
         }
 
         /******************** PREPARAR LOGO CLÍNICA PARA MOSTRAR EN PDF********************/
-        $clinica = $_SESSION['clinica'];
+        /* $clinica = $_SESSION['clinica'];
         $logoClinica = '';
 
         if (!empty($clinica['logo_clinica'])) {
@@ -90,7 +93,7 @@ class InformeController
             if (file_exists($rutaLogo)) {
                 $logoClinica = '<img src="' . $rutaLogo . '" style="height:80px;">';
             }
-        }
+        } */
 
         $this->generarPDF(
             $rutaCarpeta . $nombrePDF,
@@ -99,7 +102,9 @@ class InformeController
             $_SESSION['clinica'],
             $_SESSION['medico'],
             $paciente,
-            $logoClinica
+            $horaVisita
+
+            /* $logoClinica */
         );
 
         /* ===== GUARDAR EN BD ===== */
@@ -133,7 +138,7 @@ class InformeController
         array $clinica,
         array $medico,
         array $paciente,
-        string $logoClinica
+        string $horaVisita
     ) {
         $pdf = new TCPDF('P', 'mm', 'A4');
         $pdf->SetMargins(15, 20, 15);
@@ -146,6 +151,7 @@ class InformeController
         $html = <<<HTML
 <style>
     h1 { text-align:center; font-size:18px; color:#003366; }
+    h2 { text-align:center; font-size:16px; color:#004c73; }
     .logo-clinica { text-align:center; margin-bottom:10px; }
     .sub { text-align:center; font-size:11px; color:#555; }
     .box { border:1px solid #ccc; padding:10px; margin-bottom:12px; }
@@ -156,8 +162,8 @@ class InformeController
 </style>
 
 <h1>INFORME MÉDICO</h1>
-<div class="logo-clinica"> {$logoClinica}</div>
-<div class="sub"><h1>{$clinica['nombre_clinica']}</h1></div>
+
+<div class="sub"><h2>{$clinica['nombre_clinica']}</h2></div>
 
 <br>
 <h3>Datos del Médico</h3>
@@ -188,7 +194,8 @@ class InformeController
 </div>
 </div>
 <div class="pie">
-    Documento médico generado automáticamente · Mediagend
+    <h3>{$clinica['nombre_clinica']} · Informe generado el {$horaVisita}</h3>
+    <p>Documento médico generado automáticamente · Mediagend ©</p>
 </div>
 HTML;
 

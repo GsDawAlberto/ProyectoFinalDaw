@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+}
+
+.agenda-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #003366;
+}
+
+.agenda {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.agenda th,
+.agenda td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.agenda th {
+    background: #e9f1f7;
+}
+
+.hora {
+    font-weight: bold;
+    background: #f7f7f7;
+}
+
+.celda.libre {
+    background: #fdfdfd;
+}
+
+.celda.pendiente {
+    background: #fff3cd;
+}
+
+.celda.confirmada {
+    background: #d4edda;
+}
+
+.celda.cancelada {
+    background: #f8d7da;
+}
+
+.estado {
+    font-size: 11px;
+    color: #555;
+}
+
+.btn-hueco {
+    background: #0275d8;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-hueco:hover {
+    opacity: 0.85;
+}

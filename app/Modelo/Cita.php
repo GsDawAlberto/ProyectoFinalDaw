@@ -218,8 +218,9 @@ class Cita
 
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            $error =  'ERR_CITA_01'; // Error al guardar cita
-            return $error;
+            die($e->getMessage());
+            /* $error =  'ERR_CITA_01'; // Error al guardar cita
+            return $error; */
         }
     }
 

@@ -47,7 +47,7 @@ $nombreMedico = $_SESSION['medico']['nombre_medico'];
 
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>medico/home/pacientes')"><i class="fa-regular fa-user"></i>Mis Pacientes</button>
 
-            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>medico/home/citas')"><i class="fa-solid fa-user-doctor"></i>Citas</button>
+            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>citas/indice')"><i class="fa-solid fa-calendar-check"></i>Ver citas</button>
 
             <!-- <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/home/configuracion')"><i class="fa-solid fa-gears"></i>Configuración</button> -->
             <a href="<?= Enlaces::BASE_URL ?>clinica/login_clinica"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>

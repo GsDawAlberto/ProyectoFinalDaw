@@ -251,10 +251,10 @@ class Rutas
 
             /****************************** CITAS ******************************/
 
-            case 'citas/indice':
+            /* case 'citas/indice':
                 $controller = new CitaController();
                 $controller->index();
-                break;
+                break; */
 
             case 'citas/crear_hueco':
                 $controller = new CitaController();
@@ -271,7 +271,15 @@ class Rutas
                 $controller->cambiarEstado();
                 break;
 
-            
+            case 'citas/ver_agenda':
+                $controller = new CitaController();
+                $controller->agendaClinica();
+                break;
+
+            case 'citas/form_crear':
+                $controller = new CitaController();
+                $controller->formCrear();
+                break;
 
             // ---------- ERROR ---------- //
             //***********************************************************************************************//

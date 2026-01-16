@@ -22,6 +22,6 @@ use Mediagend\App\Config\Enlaces;
 <body>
     <img src="<?= Enlaces::BASE_URL ?>img/Error 404_2.png" alt="Imagen de error 404">
     <h1>Error 404 - Página no encontrada</h1>
-    <p>Lo sentimos, la página que buscas no existe.</p>
+    <p>Lo sentimos, pero <strong>Mediagend</strong> no puede encontrar la página solicitada.</p>
 </body>
 </html>

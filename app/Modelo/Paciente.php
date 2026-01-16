@@ -430,4 +430,19 @@ class Paciente
             return $error;
         }
     }
+
+    /**************************************************************************************************************/
+    /********************************************** OTROS MÉTODOS ************************************************/
+    public function listarPorClinica(PDO $pdo, int $id_clinica): array
+{
+    $sql = "SELECT id_paciente, nombre_paciente, apellidos_paciente
+            FROM paciente
+            WHERE id_clinica = :id_clinica
+            ORDER BY nombre_paciente";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_clinica' => $id_clinica]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

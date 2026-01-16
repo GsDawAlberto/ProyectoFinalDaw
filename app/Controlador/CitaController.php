@@ -5,10 +5,12 @@ namespace Mediagend\App\Controlador;
 use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Cita;
+use Mediagend\App\Modelo\Medico;
+use Mediagend\App\Modelo\Paciente;
 
 class CitaController
 {
-    public function index() // Ver agenda (home_clinica)
+    public function agendaClinica() // Ver agenda semanal (agenda_calendario)
     {
         session_start();
 
@@ -24,9 +26,9 @@ class CitaController
             $_SESSION['clinica']['id_clinica']
         );
 
-        require Enlaces::VIEW_PATH . 'citas/home_clinica.php';
+        require Enlaces::VIEW_PATH . 'cita/agenda_calendario.php';
     }
-    public function crearHueco() // Crear hueco
+    /* public function index() // Ver agenda (home_clinica)
     {
         session_start();
 
@@ -34,19 +36,55 @@ class CitaController
             exit('Acceso denegado');
         }
 
-        $cita = new Cita();
-        $cita->setIdClinica($_SESSION['clinica']['id_clinica']);
-        $cita->setIdMedico((int)$_POST['id_medico']);
-        $cita->setFechaCita($_POST['fecha']);
-        $cita->setHoraCita($_POST['hora']);
-        $cita->setEstadoCita('pendiente');
-        $cita->setIdPaciente(null);
-
         $pdo = BaseDatos::getConexion();
-        $cita->guardarCita($pdo);
+        $citaModel = new Cita();
 
-        header('Location: ' . Enlaces::BASE_URL . 'citas');
+        $citas = $citaModel->mostrarPorClinica(
+            $pdo,
+            $_SESSION['clinica']['id_clinica']
+        );
+
+        require Enlaces::VIEW_PATH . 'cita/listado_citas.php';
+    } */
+
+    public function formCrear()
+    {
+        session_start();
+
+        if (!isset($_SESSION['clinica'])) {
+            exit('Acceso denegado');
+        }
+
+        $fecha = $_POST['fecha'];
+        $hora  = $_POST['hora'];
+
+        require Enlaces::VIEW_PATH . 'cita/crear_cita.php';
     }
+    public function crearHueco()
+{
+    session_start();
+
+    if (!isset($_SESSION['clinica'])) {
+        exit('Acceso denegado');
+    }
+
+    $idMedico   = (int)$_POST['id_medico'];
+    $idPaciente = !empty($_POST['id_paciente']) ? (int)$_POST['id_paciente'] : null;
+
+    $cita = new Cita();
+    $cita->setIdClinica($_SESSION['clinica']['id_clinica']);
+    $cita->setIdMedico($idMedico);
+    $cita->setFechaCita($_POST['fecha']);
+    $cita->setHoraCita($_POST['hora']);
+    $cita->setEstadoCita('pendiente');
+    $cita->setIdPaciente($idPaciente);
+
+    $pdo = BaseDatos::getConexion();
+    $cita->guardarCita($pdo);
+
+    header('Location: ' . Enlaces::BASE_URL . 'citas/ver_agenda');
+    exit;
+}
     public function asignarPaciente() // Asignar paciente
     {
         session_start();

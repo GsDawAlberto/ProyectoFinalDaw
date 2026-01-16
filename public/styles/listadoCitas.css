@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #003366;
+}
+
+.no-citas {
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px dashed #ccc;
+    text-align: center;
+}
+
+.tabla-citas {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-citas th,
+.tabla-citas td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.tabla-citas th {
+    background: #e9f1f7;
+}
+
+.libre {
+    color: #999;
+    font-style: italic;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.badge.pendiente { background: #f0ad4e; }
+.badge.confirmada { background: #5cb85c; }
+.badge.cancelada { background: #d9534f; }
+.badge.realizada { background: #5bc0de; }
+
+.acciones {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.btn {
+    border: none;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn.asignar { background: #0275d8; color: #fff; }
+.btn.confirmar { background: #5cb85c; color: #fff; }
+.btn.cancelar { background: #d9534f; color: #fff; }
+
+.btn:hover {
+    opacity: 0.9;
+}

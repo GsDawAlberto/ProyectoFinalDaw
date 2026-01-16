@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.form-cita {
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.form-cita h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #003366;
+}
+
+.form-cita label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-cita select {
+    width: 100%;
+    padding: 9px 10px;
+    margin-bottom: 18px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.form-cita select:focus {
+    outline: none;
+    border-color: #005f87;
+}
+
+.form-cita button {
+    width: 100%;
+    padding: 10px;
+    background-color: #005f87;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.form-cita button:hover {
+    background-color: #004766;
+}
