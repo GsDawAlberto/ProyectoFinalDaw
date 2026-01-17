@@ -83,10 +83,12 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                             <td><?= htmlspecialchars($paciente['email_paciente']) ?></td>
 
                             <td>
-                                <form action="<?= Enlaces::BASE_URL ?>" method="GET"
-                                    onsubmit="return confirm('¿Deseas citar al paciente: <?= $paciente['nombre_paciente'] . ' ' . $paciente['apellidos_paciente'] ?>');">
+                                <form action="<?= Enlaces::BASE_URL ?>citas/pacientes" method="GET"
+                                    onsubmit="return confirm('¿Deseas ver las citas del paciente: <?= $paciente['nombre_paciente'] . ' ' . $paciente['apellidos_paciente'] ?>');">
                                     <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
-                                    <button type="submit">✏️ Citar</button>
+                                    <input type="hidden" name="nombre_paciente" value="<?= $paciente['nombre_paciente'] ?>">
+                                    <input type="hidden" name="apellidos_paciente" value="<?= $paciente['apellidos_paciente'] ?>">
+                                    <button type="submit">📅 Citas</button>
                                 </form>
                             </td>
 

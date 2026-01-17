@@ -119,7 +119,7 @@ CREATE TABLE cita (
   id_informe INT,
   fecha_cita DATE NOT NULL,
   hora_cita TIME NOT NULL,
-  estado_cita ENUM('pendiente', 'confirmada', 'cancelada', 'realizada') DEFAULT 'pendiente',
+  estado_cita ENUM('pendiente', 'confirmada', 'no_asiste', 'realizada') DEFAULT 'pendiente',
   motivo_cita VARCHAR(255),
 
   CONSTRAINT fk_cita_clinica

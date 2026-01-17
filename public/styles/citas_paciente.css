@@ -1,0 +1,112 @@
+/* === RESET BÁSICO === */
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 30px;
+    color: #333;
+}
+
+.citas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* === TÍTULO === */
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #003366;
+}
+
+/* === MENSAJE SIN CITAS === */
+p {
+    text-align: center;
+    font-size: 15px;
+    color: #666;
+}
+
+/* === TARJETA DE CITA === */
+.cita-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* izquierda / derecha */
+    gap: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 0 auto 15px auto;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-left: 6px solid #ccc;
+}
+
+/* Opcional: cada bloque ocupa el 50% */
+.cita-card > div {
+    width: 50%;
+}
+
+
+.cita-card p {
+    margin: 6px 0;
+    font-size: 14px;
+    text-align: left;
+}
+
+/* === ESTADOS === */
+.color-estado-pendiente {
+    border-left-color: #f1c40f;
+    background-color: #fffbea;
+}
+
+.color-estado-confirmada {
+    border-left-color: #3498db;
+    background-color: #f0f7ff;
+}
+
+.color-estado-realizada {
+    border-left-color: #2ecc71;
+    background-color: #f1fcf4;
+}
+
+.color-estado-cancelada,
+.color-estado-no\ asiste {
+    border-left-color: #e74c3c;
+    background-color: #fff1f1;
+}
+
+/* === ETIQUETAS === */
+.cita-card strong {
+    color: #003366;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    .cita-card {
+        padding: 14px;
+    }
+
+    .citas-container {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+}

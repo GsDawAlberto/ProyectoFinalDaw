@@ -271,20 +271,35 @@ class Cita
     {
         //Intentamos capturar errores del PDO
         try {
-            //Consulta SQL para obtener las citas por ID de clínica
-            $sql = "SELECT * FROM cita WHERE id_clinica = :id_clinica ORDER BY fecha_cita, hora_cita";
-            //Preparamos y ejecutamos la consulta
+            $sql = "
+        SELECT
+            c.id_cita,
+            c.fecha_cita,
+            c.hora_cita,
+            c.estado_cita,
+            c.id_medico,
+            c.id_paciente,
+
+            m.nombre_medico,
+            m.apellidos_medico,
+
+            p.nombre_paciente,
+            p.apellidos_paciente
+
+        FROM cita c
+        INNER JOIN medico m ON c.id_medico = m.id_medico
+        LEFT JOIN paciente p ON c.id_paciente = p.id_paciente
+        WHERE c.id_clinica = :id_clinica
+    ";
+
             $stmt = $pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    ':id_clinica' => $id_clinica
+                ]
+            );
 
-            $stmt->execute([
-                ':id_clinica' => $id_clinica
-            ]);
-
-            //Guardamos el resultado en un array asociativo
-            $citas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            //Retornamos el array de citas
-            return $citas;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             die($e->getMessage());
             /* return 'ERR_CITA_03'; //Error al mostar citas por clínica */
@@ -294,30 +309,56 @@ class Cita
      * Método para mostrar todas las citas de un médico por su ID
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_medico. ID del médico
-     * @return string|array Retornamos un array con las citas o ERR_CITA_03 en caso de error
+     * @return array Retornamos un array con las citas
      */
-    public function mostrarPorMedico(PDO $pdo, int $id_medico): string|array
-    {
-        //Intentamos capturar errores del PDO
-        try {
-            //Consulta SQL para obtener las citas por ID de médico
-            $sql = "SELECT * FROM cita WHERE id_medico = :id_medico ORDER BY fecha_cita, hora_cita";
-            //Preparamos y ejecutamos la consulta
-            $stmt = $pdo->prepare($sql);
+    public function mostrarPorMedico(PDO $pdo, int $id_medico)
+{
+    $sql = "SELECT c.*, 
+                   m.nombre_medico, m.apellidos_medico,
+                   p.nombre_paciente, p.apellidos_paciente
+            FROM cita c
+            LEFT JOIN medico m ON c.id_medico = m.id_medico
+            LEFT JOIN paciente p ON c.id_paciente = p.id_paciente
+            WHERE c.id_medico = :id_medico
+            ORDER BY c.fecha_cita, c.hora_cita";
 
-            $stmt->execute([
-                ':id_medico' => $id_medico
-            ]);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_medico' => $id_medico]);
 
-            //Guardamos el resultado en un array asociativo
-            $citas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+    /**
+     * Método para mostrar todas las citas de un paciente por su ID
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $idPaciente. ID del paciente
+     * @return array Retornamos un array con las citas
+     */
+    public function mostrarPorPaciente(PDO $pdo, int $idPaciente): array
+{
+    $sql = "
+        SELECT
+            c.id_cita,
+            c.fecha_cita,
+            c.hora_cita,
+            c.estado_cita,
+            c.motivo_cita,
 
-            //Retornamos el array de citas
-            return $citas;
-        } catch (PDOException $e) {
-            return 'ERR_CITA_03'; //Error al mostar citas por médico
-        }
-    }
+            m.nombre_medico,
+            m.apellidos_medico
+
+        FROM cita c
+        INNER JOIN medico m ON c.id_medico = m.id_medico
+        WHERE c.id_paciente = :id_paciente
+        ORDER BY c.fecha_cita ASC, c.hora_cita ASC
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'id_paciente' => $idPaciente
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     /**
      * Método para actualizar los datos de la cita en la base de datos
@@ -421,8 +462,9 @@ class Cita
             return $stmt->rowCount();
             //Capturamos el mensaje de error
         } catch (PDOException $e) {
-            $error =  'ERR_CITA_05'; //Error al eliminar la cita
-            return $error;
+            die($e->getMessage());
+            /* $error =  'ERR_CITA_05'; //Error al eliminar la cita
+            return $error; */
         }
     }
 }

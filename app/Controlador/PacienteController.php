@@ -145,6 +145,7 @@ class PacienteController
         $_SESSION['paciente'] = [
             'id_paciente' => $resultado['id_paciente'],
             'id_medico'   => $resultado['id_medico'],
+            'id_clinica'  => $resultado['id_clinica'],
             'nombre'      => $resultado['nombre_paciente'],
             'apellidos'   => $resultado['apellidos_paciente'],
             'dni'         => $resultado['dni_paciente'],

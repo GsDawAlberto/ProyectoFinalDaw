@@ -14,6 +14,20 @@ h2 {
 }
 
 /* ===============================
+   ESTILO LINK MODIFICAR CITA
+================================ */
+.cita-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.cita-link:hover .cita-ocupada {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+/* ===============================
    TABLA AGENDA
 ================================ */
 .agenda {
@@ -22,6 +36,7 @@ h2 {
     background: #fff;
 }
 
+/* Ancho general */
 .agenda th,
 .agenda td {
     border: 1px solid #ddd;
@@ -29,6 +44,17 @@ h2 {
     text-align: center;
     vertical-align: top;
 }
+
+/* Primera columna (Hora) */
+.agenda th:first-child,
+.agenda td:first-child {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    background: #f7f7f7;
+    font-weight: bold;
+}
+
 
 .agenda th {
     background: #e9f1f7;
@@ -47,6 +73,7 @@ h2 {
 .btn-hueco {
     background: #0275d8;
     color: white;
+    width: 100%;
     border: none;
     padding: 6px 10px;
     border-radius: 4px;
@@ -62,11 +89,10 @@ h2 {
    CITA OCUPADA (BASE)
 ================================ */
 .cita-ocupada {
-    padding: 10px;
+    padding: 3px;
     border-radius: 6px;
-    border: 1px solid #ccc;
     font-size: 14px;
-    height: 100%;
+    height: auto;
     box-sizing: border-box;
 }
 
@@ -93,9 +119,15 @@ h2 {
 }
 
 /* Cancelada */
-.color-estado-cancelada {
+.color-estado-no_asiste {
     background-color: #e74c3c;
     color: #fff;
+}
+
+/* Ocupada (otro médico) */
+.color-estado-ocupada {
+    background-color: #383838;
+    color: #ffffff;
 }
 
 /* ===============================

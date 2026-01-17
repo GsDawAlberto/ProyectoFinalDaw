@@ -20,6 +20,7 @@ $pacientes = $pacienteModel->listarPorClinica($pdo, $_SESSION['clinica']['id_cli
 
 $fecha = $_POST['fecha'] ?? '';
 $hora  = $_POST['hora'] ?? '';
+$idMedico = (int)$_POST['id_medico'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,16 +39,8 @@ $hora  = $_POST['hora'] ?? '';
 
     <input type="hidden" name="fecha" value="<?= $fecha ?>">
     <input type="hidden" name="hora" value="<?= $hora ?>">
+    <input type="hidden" name="id_medico" value="<?= $idMedico ?>">
 
-    <label>Médico</label>
-    <select name="id_medico" required>
-        <option value="">Selecciona médico</option>
-        <?php foreach ($medicos as $m): ?>
-            <option value="<?= $m['id_medico'] ?>">
-                <?= $m['nombre_medico'] ?> <?= $m['apellidos_medico'] ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
 
     <label>Paciente (opcional)</label>
     <select name="id_paciente">

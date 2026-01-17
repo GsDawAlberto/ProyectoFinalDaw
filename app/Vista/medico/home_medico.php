@@ -38,7 +38,7 @@ $nombreMedico = $_SESSION['medico']['nombre_medico'];
         <!-- Sidebar -->
         <aside class="sidebar">
             <h1>PANEL MEDICO</h1>
-            <h2>Bienvenid@, <?= htmlspecialchars($nombreMedico) ?></h2>
+            <h2>Bienvenid@, <?= $_SESSION['medico']['nombre_medico']. ' ' . $_SESSION['medico']['apellidos_medico'] ?></h2>
             <div class="layout_header">
                 <img class="logo_clinica" src="<?= Enlaces::IMG_MEDICO_URL . $_SESSION['medico']['foto_medico'] ?>"
                 alt="Foto médico"
@@ -47,7 +47,7 @@ $nombreMedico = $_SESSION['medico']['nombre_medico'];
 
             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>medico/home/pacientes')"><i class="fa-regular fa-user"></i>Mis Pacientes</button>
 
-            <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>citas/indice')"><i class="fa-solid fa-calendar-check"></i>Ver citas</button>
+             <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>citas/ver_agenda_medico')"><i class="fa-solid fa-calendar-check"></i>Mi Agenda</button>
 
             <!-- <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/home/configuracion')"><i class="fa-solid fa-gears"></i>Configuración</button> -->
             <a href="<?= Enlaces::BASE_URL ?>clinica/login_clinica"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>
@@ -55,7 +55,7 @@ $nombreMedico = $_SESSION['medico']['nombre_medico'];
 
         <!-- Contenedor derecho -->
         <main class="contenido">
-            <iframe id="visor" src="<?= Enlaces::BASE_URL ?>medico/home/medicos" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+            <iframe id="visor" src="<?= Enlaces::BASE_URL ?>citas/ver_agenda_medico" frameborder="0" style="width: 100%; height: 100%;"></iframe>
         </main>
 
     </div>

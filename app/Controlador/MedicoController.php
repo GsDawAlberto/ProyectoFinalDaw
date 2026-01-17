@@ -153,6 +153,7 @@ class MedicoController
         //Guardar sesión
         $_SESSION['medico'] = [
             'id_medico'             => $resultado['id_medico'],
+            'id_clinica'            => $resultado['id_clinica'],
             'nombre_medico'         => $resultado['nombre_medico'],
             'apellidos_medico'      => $resultado['apellidos_medico'],
             'numero_colegiado'      => $resultado['numero_colegiado'],

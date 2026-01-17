@@ -256,6 +256,16 @@ class Rutas
                 $controller->index();
                 break; */
 
+            case 'citas/form_editar':
+                $controller = new CitaController();
+                $controller->formEditar();
+                break;
+
+            case 'citas/modificar':
+                $controller = new CitaController();
+                $controller->modificar();
+                break;
+
             case 'citas/crear_hueco':
                 $controller = new CitaController();
                 $controller->crearHueco();
@@ -266,9 +276,9 @@ class Rutas
                 $controller->asignarPaciente();
                 break;
 
-            case 'citas/cambiar_estado':
+            case 'citas/pacientes':
                 $controller = new CitaController();
-                $controller->cambiarEstado();
+                $controller->agendaPaciente();
                 break;
 
             case 'citas/ver_agenda':
@@ -276,9 +286,19 @@ class Rutas
                 $controller->agendaClinica();
                 break;
 
+            case 'citas/ver_agenda_medico':
+                $controller = new CitaController();
+                $controller->agendaMedico();
+                break;
+
             case 'citas/form_crear':
                 $controller = new CitaController();
                 $controller->formCrear();
+                break;
+
+            case 'citas/eliminar':
+                $controller = new CitaController();
+                $controller->eliminar();
                 break;
 
             // ---------- ERROR ---------- //
