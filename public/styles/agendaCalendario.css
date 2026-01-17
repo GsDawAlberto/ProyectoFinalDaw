@@ -1,24 +1,25 @@
+/* ===============================
+   ESTILOS GENERALES
+================================ */
 body {
     font-family: Arial, sans-serif;
     background: #f4f6f8;
-}
-
-.agenda-container {
-    max-width: 1200px;
-    margin: 30px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
+    margin: 0;
+    padding: 0;
 }
 
 h2 {
-    margin-bottom: 15px;
+    margin: 20px;
     color: #003366;
 }
 
+/* ===============================
+   TABLA AGENDA
+================================ */
 .agenda {
     width: 100%;
     border-collapse: collapse;
+    background: #fff;
 }
 
 .agenda th,
@@ -26,38 +27,23 @@ h2 {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
+    vertical-align: top;
 }
 
 .agenda th {
     background: #e9f1f7;
+    font-weight: bold;
 }
 
 .hora {
     font-weight: bold;
     background: #f7f7f7;
+    width: 70px;
 }
 
-.celda.libre {
-    background: #fdfdfd;
-}
-
-.celda.pendiente {
-    background: #fff3cd;
-}
-
-.celda.confirmada {
-    background: #d4edda;
-}
-
-.celda.cancelada {
-    background: #f8d7da;
-}
-
-.estado {
-    font-size: 11px;
-    color: #555;
-}
-
+/* ===============================
+   BOTÓN HUECO LIBRE
+================================ */
 .btn-hueco {
     background: #0275d8;
     color: white;
@@ -65,8 +51,61 @@ h2 {
     padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .btn-hueco:hover {
     opacity: 0.85;
+}
+
+/* ===============================
+   CITA OCUPADA (BASE)
+================================ */
+.cita-ocupada {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* ===============================
+   ESTADOS DE LA CITA
+================================ */
+
+/* Pendiente */
+.color-estado-pendiente {
+    background-color: #f1c40f;
+    color: #000;
+}
+
+/* Confirmada */
+.color-estado-confirmada {
+    background-color: #3498db;
+    color: #fff;
+}
+
+/* Realizada */
+.color-estado-realizada {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+/* Cancelada */
+.color-estado-cancelada {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+/* ===============================
+   MEJORAS VISUALES
+================================ */
+.cita-ocupada strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.agenda td form {
+    margin: 0;
 }

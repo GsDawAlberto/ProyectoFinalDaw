@@ -286,7 +286,8 @@ class Cita
             //Retornamos el array de citas
             return $citas;
         } catch (PDOException $e) {
-            return 'ERR_CITA_03'; //Error al mostar citas por clínica
+            die($e->getMessage());
+            /* return 'ERR_CITA_03'; //Error al mostar citas por clínica */
         }
     }
     /**
