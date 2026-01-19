@@ -233,6 +233,68 @@ HTML;
     }
 
     public function ver()
+{
+    session_start();
+
+    if (!isset($_SESSION['medico']) && !isset($_SESSION['paciente'])) {
+        exit('Acceso denegado');
+    }
+
+    // ID del informe
+    $idInforme = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    if (!$idInforme) {
+        exit('Informe inválido');
+    }
+
+    $pdo = BaseDatos::getConexion();
+    $informeModel = new Informe();
+
+    /* Obtener informe con paciente y clínica */
+    $informe = $informeModel->listarPorId($pdo, $idInforme);
+
+    if (!$informe) {
+        exit('Informe no encontrado');
+    }
+
+    /* ===============================
+       SEGURIDAD
+    =============================== */
+
+    // 🧑‍🦱 PACIENTE
+    if (isset($_SESSION['paciente'])) {
+
+        if ($informe['id_paciente'] != $_SESSION['paciente']['id_paciente']) {
+            exit('Acceso no autorizado');
+        }
+    }
+
+    // 👨‍⚕️ MÉDICO
+    elseif (isset($_SESSION['medico'])) {
+
+        if ($informe['id_clinica'] != $_SESSION['clinica']['id_clinica']) {
+            exit('Acceso no autorizado');
+        }
+    }
+
+    /* ===============================
+       MOSTRAR PDF
+    =============================== */
+
+    $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'];
+
+    if (!is_file($rutaPDF)) {
+        exit('Archivo PDF no encontrado');
+    }
+
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: inline; filename="' . basename($rutaPDF) . '"');
+    header('Content-Length: ' . filesize($rutaPDF));
+
+    readfile($rutaPDF);
+    exit;
+}
+
+    /* public function ver()
     {
         session_start();
 
@@ -271,7 +333,7 @@ HTML;
         // Mostrar archivo
         readfile($rutaPDF);
         exit;
-    }
+    } */
     public function eliminar()
     {
         session_start();

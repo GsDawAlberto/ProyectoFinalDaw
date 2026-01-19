@@ -28,6 +28,7 @@ use Mediagend\App\Config\Enlaces;
 
         <!-- ID oculto -->
         <input type="hidden" name="id_clinica" value="<?= $clinica['id_clinica'] ?>">
+        <input type="hidden" name="usuario_admin_clinica" value="<?php $nombreAdmin ?>">
 
         <div class="form-group">
             <label>Nombre de la Clínica</label>

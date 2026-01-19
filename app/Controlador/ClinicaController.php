@@ -5,6 +5,7 @@ namespace Mediagend\App\Controlador;
 use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Modelo\Clinica;
 use Mediagend\App\Config\BaseDatos;
+use Mediagend\App\Modelo\Administrador;
 
 class ClinicaController
 {
@@ -48,12 +49,17 @@ class ClinicaController
         }
 
         $idAdmin = $_SESSION['admin']['id_admin'];
-        $userAdmin = $_SESSION['admin']['usuario_admin'];
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header("Location: " . Enlaces::BASE_URL . "clinica/loguear_clinica");
             exit;
         }
+
+        $pdo = BaseDatos::getConexion();
+        $adminModel = new Administrador();
+        $id_admin = $idAdmin ?? null;
+        $userAdmin = $adminModel->mostrarAdmin($pdo, $id_admin);
+
 
         // Sanitizar entrada
         $nombre     = trim(filter_input(INPUT_POST, 'nombre_clinica', FILTER_SANITIZE_STRING));
@@ -114,7 +120,7 @@ class ClinicaController
         $clinica->setEmailClinica($email);
         $clinica->setUsuarioClinica($usuario);
         $clinica->setPasswordClinica($pass1);
-        $clinica->setUsuarioAdminClinica($userAdmin);
+        $clinica->setUsuarioAdminClinica($userAdmin['usuario_admin']);
         $clinica->setFotoClinica($fotoRuta);
 
 

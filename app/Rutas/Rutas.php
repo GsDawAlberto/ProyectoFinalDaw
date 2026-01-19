@@ -178,6 +178,17 @@ class Rutas
                 $controller->eliminar();
                 break;
 
+            /****************   VISTAS PACIENTE HOME ****************/
+            case 'paciente/home/citas':
+                $controller = new PacienteController();
+                $controller->home_mis_citas();
+                break;
+
+            case 'paciente/home/informes':
+                $controller = new PacienteController();
+                $controller->home_mis_informes();
+                break;
+
             // ---------- MÉDICO ---------- //
             //***********************************************************************************************//
             case 'medico/login_medico':

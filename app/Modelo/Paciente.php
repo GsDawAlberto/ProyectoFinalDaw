@@ -251,15 +251,15 @@ class Paciente
      * @param string $password_paciente. Contraseña del paciente
      * @return string|array|bool Retornamos un array con los datos del paciente, false si no se encuentra o ERR_PACIENTE_02 en caso de error
      */
-    public function autenticarPaciente(PDO $pdo, string $email_paciente, string $password_paciente): string|array|bool
+    public function autenticarPaciente(PDO $pdo, string $usuario_paciente, string $password_paciente): string|array|bool
     {
         //Intentamos capturar errores del PDO
         try {
             //Consulta SQL para autenticar un paciente
-            $sql = "SELECT * FROM paciente WHERE email_paciente = :email_paciente";
+            $sql = "SELECT * FROM paciente WHERE usuario_paciente = :usuario_paciente";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(
-                [':email_paciente' => $email_paciente]
+                [':usuario_paciente' => $usuario_paciente]
             );
 
             //Guardamos el resultado en un array asociativo
@@ -293,8 +293,9 @@ class Paciente
 
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_PACIENTE_02'; // Error al autenticar paciente
-            return $error;
+            die($e->getMessage());
+            /* $error = 'ERR_PACIENTE_02'; // Error al autenticar paciente
+            return $error; */
         }
     }
     /**

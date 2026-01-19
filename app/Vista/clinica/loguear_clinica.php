@@ -1,7 +1,6 @@
 <?php
 
 use Mediagend\App\Config\Enlaces;
-
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +23,7 @@ use Mediagend\App\Config\Enlaces;
         </header>
 
         <form action="<?= Enlaces::BASE_URL ?>clinica/registrar_clinica" method="POST" enctype="multipart/form-data" class="form">
+            <input type="hidden" name="usuario_admin_clinica" value="<?php $nombreAdmin ?>">
 
             <div class="form-group">
                 <label>Foto de la clínica</label>

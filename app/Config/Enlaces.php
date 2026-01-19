@@ -22,6 +22,8 @@ class Enlaces
     public const IMG_MEDICO_URL = '/mediagend/app/imagenes_registros/imagenes_medicos/';
     // Ruta absoluta en el sistema de archivos (no URL)
 
+    public const PDF_INFORMES_URL = '/mediagend/app/imagenes_registros/informes_clinicos/';
+
     /******************************** PATHS *********************************/
     public const BASE_PATH = __DIR__ . "/../../";
 
@@ -32,6 +34,10 @@ class Enlaces
     public const VIEW_CONTENT_ADMIN_PATH = self::VIEW_PATH . "admin/contenido_admin_home/";
 
      public const VIEW_CONTENT_CLINICA_PATH = self::VIEW_PATH . "clinica/contenido_clinica_home/";
+
+    public const VIEW_CONTENT_MEDICO_PATH = self::VIEW_PATH . "medico/contenido_medico_home/";
+
+    public const VIEW_CONTENT_PACIENTE_PATH = self::VIEW_PATH . "paciente/contenido_paciente_home/";
     // Ruta layouts
     public const LAYOUT_PATH = self::VIEW_PATH . "layout/";
 

@@ -22,6 +22,29 @@ class PacienteController
         require Enlaces::VIEW_PATH . "paciente/loguear_paciente.php";
     }
 
+    /**************************** VISTA HOME PACIENTE *************************/
+    public function home_mis_citas()
+    {
+        session_start();
+
+        if (!isset($_SESSION['paciente'])) {
+            exit('Acceso denegado');
+        }
+
+        require Enlaces::VIEW_CONTENT_PACIENTE_PATH . "citas_pacientes.php";
+    }
+
+    public function home_mis_informes()
+    {
+        session_start();
+
+        if (!isset($_SESSION['paciente'])) {
+            exit('Acceso denegado');
+        }
+
+        require Enlaces::VIEW_CONTENT_PACIENTE_PATH . "mis_informes.php";
+    }
+
     /**************************** PROCESAR REGISTRO *************************/
     public function registrar()
     {
@@ -146,12 +169,12 @@ class PacienteController
             'id_paciente' => $resultado['id_paciente'],
             'id_medico'   => $resultado['id_medico'],
             'id_clinica'  => $resultado['id_clinica'],
-            'nombre'      => $resultado['nombre_paciente'],
-            'apellidos'   => $resultado['apellidos_paciente'],
-            'dni'         => $resultado['dni_paciente'],
-            'telefono'    => $resultado['telefono_paciente'],
-            'email'       => $resultado['email_paciente'],
-            'usuario'     => $resultado['usuario_paciente']
+            'nombre_paciente'      => $resultado['nombre_paciente'],
+            'apellidos_paciente'   => $resultado['apellidos_paciente'],
+            'dni_paciente'         => $resultado['dni_paciente'],
+            'telefono_paciente'    => $resultado['telefono_paciente'],
+            'email_paciente'       => $resultado['email_paciente'],
+            'usuario_paciente'     => $resultado['usuario_paciente']
         ];
 
         header("Location: " . Enlaces::BASE_URL . "paciente/home_paciente");

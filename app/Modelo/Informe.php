@@ -267,6 +267,28 @@ class Informe
     }
 
     /**
+     * Método para obtener un informe por su ID, incluyendo el ID de la clínica
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $idInforme. ID del informe
+     * @return array|false Retornamos un array con los datos del informe o false si no se encuentra
+     */
+    public function listarPorId(PDO $pdo, int $idInforme)
+{
+    $sql = "
+        SELECT i.*, p.id_clinica
+        FROM informe i
+        INNER JOIN paciente p ON i.id_paciente = p.id_paciente
+        WHERE i.id_informe = ?
+        LIMIT 1
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$idInforme]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+    /**
      * Método para actualizar los datos del informe en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_informe. ID del informe a actualizar

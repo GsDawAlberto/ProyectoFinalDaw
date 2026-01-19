@@ -58,8 +58,10 @@ $informes = array_filter($informesBD, function ($inf) use ($rutaCarpeta) {
                         <tr>
                             <td><?= htmlspecialchars($informe['fecha_generacion_informe']) ?></td>
                             <td>
-                                <a class="pdf-link" href="<?= Enlaces::BASE_URL ?>informe/ver?id=<?= $informe['id_informe'] ?>" target="_blank">
-                                    📄 Abrir PDF
+                                <a class="pdf-link"
+                                    href="<?= Enlaces::BASE_URL ?>informe/ver?id=<?= $informe['id_informe'] ?>"
+                                    target="_blank">
+                                    📄 Ver informe
                                 </a>
                             </td>
                             <td>

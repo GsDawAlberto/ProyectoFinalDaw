@@ -271,8 +271,9 @@ class Clinica
 
             // Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_CLINICA_02'; // Error al autenticar clínica
-            return $error;
+            die($e->getMessage());
+            /* $error = 'ERR_CLINICA_02'; // Error al autenticar clínica
+            return $error; */
         }
     }
 
@@ -310,8 +311,9 @@ class Clinica
                 return $clinica ?: null;
             }
         } catch (PDOException $e) {
-            $error = 'ERR_CLINICA_03'; // Error al mostrar clínica
-            return $error;
+            die($e->getMessage());
+            /* $error = 'ERR_CLINICA_03'; // Error al mostrar clínica
+            return $error; */
         }
     }
 
@@ -402,9 +404,10 @@ class Clinica
 
             //Capturamos cualquier error de PDO
         } catch (PDOException $e) {
+            die($e->getMessage());
             //Devolvemos el mensaje de error
-            $error = 'ERR_ADMIN_05'; // Error al eliminar clínica
-            return $error;
+            /* $error = 'ERR_ADMIN_05'; // Error al eliminar clínica
+            return $error; */
         }
     }
 }
