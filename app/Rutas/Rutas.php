@@ -173,9 +173,24 @@ class Rutas
                 $controller->modificar();
                 break;
 
+            case 'paciente/modificar_mis_datos':
+                $controller = new PacienteController();
+                $controller->modificar_mis_datos();
+                break;
+
+            case 'paciente/modificar_password':
+                $controller = new PacienteController();
+                $controller->modificar_password();
+                break;
+
             case 'paciente/eliminar':
                 $controller = new PacienteController();
                 $controller->eliminar();
+                break;
+
+            case 'paciente/logout':
+                $controller = new PacienteController();
+                $controller->logout();
                 break;
 
             /****************   VISTAS PACIENTE HOME ****************/
@@ -187,6 +202,11 @@ class Rutas
             case 'paciente/home/informes':
                 $controller = new PacienteController();
                 $controller->home_mis_informes();
+                break;
+
+            case 'paciente/home/ajustes':
+                $controller = new PacienteController();
+                $controller->home_mis_ajustes();
                 break;
 
             // ---------- MÉDICO ---------- //

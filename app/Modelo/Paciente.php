@@ -1,6 +1,7 @@
 <?php
 
 namespace Mediagend\App\Modelo;
+use Mediagend\App\Controlador\Helper;
 
 use PDO;
 use PDOException;
@@ -131,7 +132,7 @@ class Paciente
      * Método para establecer el ID del médico
      * @param int|null $id_medico
      */
-    public function setIdMedico(int $id_medico): void
+    public function setIdMedico(?int $id_medico): void
     {
         $this->id_medico = $id_medico;
     }
@@ -219,7 +220,7 @@ class Paciente
 
             $stmt->execute([
                 ':id_clinica' => $this->id_clinica,
-                ':id_medico' => $this->id_medico,
+                ':id_medico' => $this->id_medico ?? null,
                 ':nombre_paciente' => $this->nombre_paciente,
                 ':apellidos_paciente' => $this->apellidos_paciente,
                 ':dni_paciente' => $this->dni_paciente,
@@ -319,15 +320,13 @@ class Paciente
             }
 
             // CON BÚSQUEDA → BUSCAR EN VARIOS CAMPOS
-            $sql = "
-            SELECT * FROM paciente
+            $sql = "SELECT * FROM paciente
             WHERE nombre_paciente     LIKE :busqueda
                OR apellidos_paciente  LIKE :busqueda
                OR dni_paciente        LIKE :busqueda
                OR telefono_paciente   LIKE :busqueda
                OR email_paciente      LIKE :busqueda
-               OR usuario_paciente    LIKE :busqueda
-        ";
+               OR usuario_paciente    LIKE :busqueda";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
@@ -369,8 +368,7 @@ class Paciente
     public function actualizarPaciente(PDO $pdo, int $id_paciente): bool
     {
         try {
-            $sql = "
-            UPDATE paciente SET
+            $sql = "UPDATE paciente SET
                 dni_paciente        = :dni,
                 id_medico           = :id_medico,
                 nombre_paciente     = :nombre,
@@ -379,8 +377,7 @@ class Paciente
                 email_paciente      = :email,
                 usuario_paciente    = :usuario,
                 foto_paciente       = :foto
-            WHERE id_paciente = :id_paciente
-        ";
+            WHERE id_paciente = :id_paciente";
 
             $stmt = $pdo->prepare($sql);
 
@@ -402,6 +399,35 @@ class Paciente
             return false;
         }
     }
+    /**
+     * Método para actualizar la contraseña de un paciente en la base de datos
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param int $id_paciente. ID del paciente a actualizar
+     * @param string $nueva_password. Nueva contraseña del paciente
+     * @return bool Retornamos true si se actualizó correctamente o false en caso de error
+     */
+    public function actualizarPassword(PDO $pdo, int $id_paciente, string $nueva_password): bool
+{
+    try {
+        $sql = "UPDATE paciente 
+                SET password_paciente = :password 
+                WHERE id_paciente = :id_paciente";
+
+        $stmt = $pdo->prepare($sql);
+
+        // Hashear la nueva contraseña
+        $hashPassword = password_hash($nueva_password, PASSWORD_BCRYPT);
+
+        return $stmt->execute([
+            ':password'    => $hashPassword,
+            ':id_paciente' => $id_paciente
+        ]);
+
+    } catch (PDOException $e) {
+        error_log("Error actualizarPassword: " . $e->getMessage());
+        return false;
+    }
+}
 
     /**
      * Método para eliminar un paciente por su ID

@@ -17,7 +17,7 @@
    BODY
 ========================== */
 body {
-    background: #f4f6f8;
+    background: #000000;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -50,6 +50,7 @@ header {
     margin-top: var(--header-height);
     margin-bottom: var(--bottom-height);
 }
+
 
 /* ==========================
    CONTENIDO

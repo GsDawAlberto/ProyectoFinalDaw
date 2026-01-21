@@ -290,15 +290,13 @@ class Medico
         }
 
         // CON BÚSQUEDA
-        $sql = "
-            SELECT * FROM medico
+        $sql = "SELECT * FROM medico
             WHERE nombre_medico       LIKE :busqueda
                OR apellidos_medico    LIKE :busqueda
                OR numero_colegiado    LIKE :busqueda
                OR telefono_medico     LIKE :busqueda
                OR email_medico        LIKE :busqueda
-               OR especialidad_medico LIKE :busqueda
-        ";
+               OR especialidad_medico LIKE :busqueda";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
