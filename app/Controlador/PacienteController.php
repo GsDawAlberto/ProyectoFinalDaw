@@ -5,7 +5,6 @@ namespace Mediagend\App\Controlador;
 use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Modelo\Paciente;
 use Mediagend\App\Config\BaseDatos;
-use Mediagend\App\Controlador\Helper;
 
 class PacienteController
 {

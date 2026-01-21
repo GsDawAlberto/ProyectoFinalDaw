@@ -5,8 +5,6 @@ namespace Mediagend\App\Controlador;
 use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Cita;
-use Mediagend\App\Modelo\Medico;
-use Mediagend\App\Modelo\Paciente;
 
 class CitaController
 {

@@ -6,7 +6,6 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Informe;
 use Mediagend\App\Modelo\Paciente;
-use Mediagend\App\Modelo\Clinica;
 // PDF
 use TCPDF;
 
