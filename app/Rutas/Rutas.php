@@ -209,6 +209,11 @@ class Rutas
                 $controller->home_mis_ajustes();
                 break;
 
+            case 'paciente/home/inicio':
+                $controller = new PacienteController();
+                $controller->home_inicio();
+                break;
+
             // ---------- MÉDICO ---------- //
             //***********************************************************************************************//
             case 'medico/login_medico':

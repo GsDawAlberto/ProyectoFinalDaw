@@ -23,6 +23,9 @@ $apellidosPaciente = $_SESSION['paciente']['apellidos_paciente'];
 
 /* Citas del paciente */
 $citas = $citaModel->mostrarPorPaciente($pdo, $idPaciente);
+
+/* Fecha de hoy (sin hora) */
+$hoy = date('Y-m-d');
 ?>
 
 <!DOCTYPE html>
@@ -38,37 +41,47 @@ $citas = $citaModel->mostrarPorPaciente($pdo, $idPaciente);
 <body>
 
     <h2>📋 Mis citas</h2>
+
     <p class="paciente-nombre">
         <?= htmlspecialchars($nombrePaciente . ' ' . $apellidosPaciente) ?>
     </p>
+
     <p>🟡 Pendiente · 🔵 Confirmada · 🟢 Realizada · 🔴 Cancelada</p>
 
     <div class="citas-container">
 
-        <?php if (empty($citas)): ?>
-            <p class="sin-citas">No tienes citas programadas.</p>
-        <?php endif; ?>
+        <?php
+        $hayCitas = false;
+        foreach ($citas as $cita):
 
-        <?php foreach ($citas as $cita):
+            /* ❌ No mostrar citas pasadas */
+            if ($cita['fecha_cita'] < $hoy) {
+                continue;
+            }
 
+            $hayCitas = true;
             $estado = strtolower($cita['estado_cita']);
         ?>
-            
+
             <div class="cita-card color-estado-<?= $estado ?>">
 
                 <div class="cita-col">
                     <p><strong>📅 Fecha:</strong>
                         <?= date('d/m/Y', strtotime($cita['fecha_cita'])) ?>
                     </p>
+
                     <p><strong>⏰ Hora:</strong>
                         <?= substr($cita['hora_cita'], 0, 5) ?>
                     </p>
+
                     <p><strong>👨‍⚕️ Médico:</strong><br>
                         <?= htmlspecialchars(
                             $cita['nombre_medico'] . ' ' . $cita['apellidos_medico']
                         ) ?>
                     </p>
-                    <p class="estado"><strong>Estado de la cita: </strong>
+
+                    <p class="estado">
+                        <strong>Estado de la cita:</strong>
                         <?= ucfirst($estado) ?>
                     </p>
                 </div>
@@ -77,11 +90,15 @@ $citas = $citaModel->mostrarPorPaciente($pdo, $idPaciente);
                     <p><strong>📝 Motivo:</strong><br>
                         <?= htmlspecialchars($cita['motivo_cita'] ?: 'No especificado') ?>
                     </p>
-
                 </div>
 
             </div>
+
         <?php endforeach; ?>
+
+        <?php if (!$hayCitas): ?>
+            <p class="sin-citas">No tienes citas futuras programadas.</p>
+        <?php endif; ?>
 
     </div>
 

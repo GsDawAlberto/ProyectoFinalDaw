@@ -23,20 +23,38 @@ use Mediagend\App\Config\Enlaces;
                 method="POST"
                 enctype="multipart/form-data"
                 class="form">
-                <!-- Definición de rol de entrada para redirección de pagina, este formulario accede igual que clinica, según el rol volverá a paciente o clinica -->
-                <input type="hidden" name="rol" value="paciente">
-                <label for="nombre">Nombre:</label>
-                <input type="text" name="nombre" value="<?= $_SESSION['paciente']['nombre_paciente'] ?>">
-                <label for="apellidos">Apellidos:</label>
-                <input type="text" name="apellidos" value="<?= $_SESSION['paciente']['apellidos_paciente'] ?>">
-                <label for="email">Email:</label>
-                <input type="email" name="email" value="<?= $_SESSION['paciente']['email_paciente'] ?>">
-                <label for="telefono">Teléfono:</label>
-                <input type="tel" name="telefono" value="<?= $_SESSION['paciente']['telefono_paciente'] ?>">
-                <button>Guardar cambios</button>
+
+                <input type="hidden" name="id_paciente" value="<?= $paciente['id_paciente'] ?>">
+                
+                <p>Nombre: <?= htmlspecialchars($_SESSION['paciente']['nombre_paciente']) ?></p>
+                <p>Apellidos: <?= htmlspecialchars($_SESSION['paciente']['apellidos_paciente']) ?></p>
+
+                <!-- Email -->
+                <label for="email_paciente">Email:</label>
+                <input type="email"
+                    id="email_paciente"
+                    name="email_paciente"
+                    value="<?= htmlspecialchars($_SESSION['paciente']['email_paciente']) ?>"
+                    placeholder="ejemplo@correo.com"
+                    required
+                    maxlength="100">
+
+                <!-- Teléfono -->
+                <label for="telefono_paciente">Teléfono:</label>
+                <input type="tel"
+                    id="telefono_paciente"
+                    name="telefono_paciente"
+                    value="<?= htmlspecialchars($_SESSION['paciente']['telefono_paciente']) ?>"
+                    placeholder="123456789"
+                    pattern="[0-9]{9}"
+                    title="Introduce 9 dígitos"
+                    required>
+
+                <button type="submit">Guardar cambios</button>
             </form>
         </fieldset>
     </section>
+
 
     <section>
         <fieldset>

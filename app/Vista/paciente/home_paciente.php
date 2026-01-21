@@ -29,7 +29,7 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
 
 <body>
     <header>
-        <h3>Bienvenido <br><?= $nombrePaciente ?></h3>
+        <h3><?= $nombrePaciente ?></h3>
     </header>
     
     <div class="layout">
@@ -39,7 +39,7 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
             <iframe
                 class="contenedor_iframe"
                 id="visor"
-                src="<?= Enlaces::BASE_URL ?>paciente/home/citas"
+                src="<?= Enlaces::BASE_URL ?>paciente/home/inicio"
                 frameborder="0">
             </iframe>
         </main>
@@ -50,6 +50,11 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
      BARRA INFERIOR
 ================================ -->
     <nav class="bottom-bar">
+
+        <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>paciente/home/inicio')">
+            <i class="fa-solid fa-house"></i>
+            <span>Inicio</span>
+        </button>
 
         <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>paciente/home/citas')">
             <i class="fa-solid fa-calendar-plus"></i>

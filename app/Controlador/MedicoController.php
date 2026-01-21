@@ -166,6 +166,7 @@ class MedicoController
         header("Location: " . Enlaces::BASE_URL . "medico/home_medico");
         exit;
     }
+    
 
     /*************************  HOME MEDICO *************************/
     public function home()
