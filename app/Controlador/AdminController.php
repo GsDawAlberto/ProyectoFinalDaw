@@ -6,40 +6,64 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Modelo\Administrador;
 use Mediagend\App\Config\BaseDatos;
 
+/**
+ * Controlador para las acciones del Administrador
+ */
 class AdminController
 {
-    /**********************   RUTA DE VISTAS ***********************************/
-
-    public function home_clinicas()
+    /***********************************************   RUTA DE VISTAS ***********************************/
+    /**
+     * Método para mostrar la vista de gestión de clínicas
+     * @return void
+     */
+    public function home_clinicas(): void
     {
         require Enlaces::VIEW_CONTENT_ADMIN_PATH . "clinicas.php";
     }
 
-    public function home_configuracion()
+    /**
+     * Método para mostrar la vista de configuración del administrador
+     * @return void
+     */
+    public function home_configuracion(): void
     {
         require Enlaces::VIEW_CONTENT_ADMIN_PATH . "configuracion.php";
     }
 
-    public function home_insertar()
+    /**
+     * Método para mostrar la vista de inserción de datos
+     * @return void
+     */
+    public function home_insertar(): void
     {
         require Enlaces::VIEW_CONTENT_ADMIN_PATH . "insertar.php";
     }
 
-    /********************  FORMULARIO LOGIN *******************/
-    public function login()
+    /************************************************  FORMULARIOS **********************************************/
+    /**
+     * Método para mostrar la vista de login del administrador
+     * @return void
+     */
+    public function login(): void
     {
         require Enlaces::VIEW_PATH . "admin/login_admin.php";
     }
 
-
-    /******************** FORMULARIO REGISTRO *******************/
-    public function loguear()
+    /**
+     * Método para mostrar la vista de registro del administrador
+     * @return void
+     */
+    public function loguear(): void
     {
         require Enlaces::VIEW_PATH . "admin/loguear_admin.php";
     }
 
 
-    /********************* PROCESAR REGISTRO *********************/
+    /********************************************** PROCESAR REGISTRO *************************************************/
+    /**
+     * Método para procesar el registro de un nuevo administrador
+     * @return never
+     */
     public function registrar()
     {
         session_start();
@@ -50,15 +74,37 @@ class AdminController
         }
 
         // Sanitizar entrada
-        $nombre     = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING));
-        $usuario    = trim(filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_STRING));
-        $email      = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
+        $nombre     = trim(filter_input(INPUT_POST, 'nombre_admin', FILTER_SANITIZE_STRING));
+        $apellidos  = trim(filter_input(INPUT_POST, 'apellidos_admin', FILTER_SANITIZE_STRING));
+        $dni        = trim(filter_input(INPUT_POST, 'dni_admin', FILTER_SANITIZE_STRING));
+        $usuario    = trim(filter_input(INPUT_POST, 'usuario_admin', FILTER_SANITIZE_STRING));
+        $email      = trim(filter_input(INPUT_POST, 'email_admin', FILTER_SANITIZE_EMAIL));
         $pass1      = trim($_POST['password'] ?? '');
         $pass2      = trim($_POST['password_2'] ?? '');
 
-        // Validar contraseñas
-        if ($pass1 !== $pass2) {
-            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
+        /* VALIDACIONES */
+        if (strlen($nombre) < 3 || strlen($nombre) > 20) {
+            die("El nombre debe tener entre 3 y 20 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
+        }
+
+        if (strlen($apellidos) < 10 || strlen($apellidos) > 50) {
+            die("Los apellidos debe tener entre 10 y 50 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
+        }
+
+        if (strlen($dni) != 9) {
+            die("El dni debe contener un formato valido, 8 caracteres seguido de una letra.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
+        }
+
+        if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+            die("El usuario debe tener entre 3 y 15 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            die("El email no es válido.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
+        }
+
+        if ($pass1 !== $pass2 || strlen($pass1) < 6) {
+            die("Las contraseñas no coinciden o son demasiado cortas (mínimo 6 caracteres).<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
         }
 
         // Conexión BD
@@ -67,6 +113,8 @@ class AdminController
         // Crear modelo
         $admin = new Administrador();
         $admin->setNombreAdmin($nombre);
+        $admin->setApellidosAdmin($apellidos);
+        $admin->setDniAdmin($dni);
         $admin->setUsuarioAdmin($usuario);
         $admin->setEmailAdmin($email);
         $admin->setPasswordAdmin($pass1);
@@ -84,8 +132,12 @@ class AdminController
     }
 
 
-    /********************************* PROCESAR LOGIN *********************************/
-    public function acceder()
+    /************************************************* PROCESAR ACESO A LOGIN ********************************************************/
+    /**
+     * Método para procesar el acceso del administrador
+     * @return void
+     */
+    public function acceder(): void
     {
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -96,6 +148,18 @@ class AdminController
         // Sanitizar entrada
         $usuario = trim(filter_input(INPUT_POST, 'usuario_admin', FILTER_SANITIZE_STRING));
         $password = trim($_POST['password_admin'] ?? '');
+
+        if ($usuario === '' || $password === '') {
+            die("Todos los campos son obligatorios.<br><a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>");
+        }
+
+        if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+            die("El usuario debe tener entre 3 y 15 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>");
+        }
+
+        if (strlen($password) < 6) {
+            die("La contraseña debe tener al menos 6 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>");
+        }
 
         // Conexión BD
         $pdo = BaseDatos::getConexion();
@@ -109,15 +173,17 @@ class AdminController
             echo "<a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>";
             exit;
         }
-
+        
         session_start();
 
         // Guardar sesión
         $_SESSION['admin'] = [
-            'id_admin'       => $resultado['id_admin'],
-            'nombre_admin'   => $resultado['nombre_admin'],
-            'usuario_admin'  => $resultado['usuario_admin'],
-            'email_admin'    => $resultado['email_admin']
+            'id_admin'          => $resultado['id_admin'],
+            'nombre_admin'      => $resultado['nombre_admin'],
+            'apellidos_admin'   => $resultado['apellidos_admin'],
+            'dni_admin'         => $resultado['dni_admin'],
+            'usuario_admin'     => $resultado['usuario_admin'],
+            'email_admin'       => $resultado['email_admin']
         ];
 
         header("Location: " . Enlaces::BASE_URL . "admin/home_admin");
@@ -125,8 +191,12 @@ class AdminController
     }
 
 
-    /*************************  HOME ADMINISTRADOR *************************/
-    public function home()
+    /*******************************************  HOME ADMINISTRADOR *****************************************************/
+    /**
+     * Método para mostrar la vista principal del administrador
+     * @return void
+     */
+    public function home(): void
     {
         session_start();
         if (!isset($_SESSION['admin'])) {
@@ -138,8 +208,12 @@ class AdminController
     }
 
 
-    /************************* CERRAR SESIÓN ******************************/
-    public function logout()
+    /*************************************************** CERRAR SESIÓN *********************************************************/
+    /**
+     * Método para cerrar la sesión del administrador
+     * @return void
+     */
+    public function logout(): void
     {
         session_start(); // Reanudar sesión
         session_unset(); // Eliminar todas las variables de sesión
@@ -148,7 +222,13 @@ class AdminController
         exit;
     }
 
-    /************************* GUARDAR CONFIGURACIÓN ADMIN ******************************/
+    /********************************************** GUARDAR CONFIGURACIÓN ADMIN *************************************************/
+
+    /************************************** NO HE USADO ESTE MÉTODO **************************************************************/
+    /**
+ * Método para guardar la configuración del administrador
+ * @return never
+ */
     /* public function guardar_configuracion()
 {
     session_start();

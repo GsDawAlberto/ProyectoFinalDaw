@@ -12,6 +12,7 @@ class Clinica
     private ?int $id_admin = null;
     private ?string $usuario_admin_clinica = null;
     private ?string $nombre_clinica = null;
+    private ?string $nif_clinica = null;
     private ?string $direccion_clinica = null;
     private ?string $telefono_clinica = null;
     private ?string $email_clinica = null;
@@ -52,6 +53,14 @@ class Clinica
     public function getNombreClinica(): ?string
     {
         return $this->nombre_clinica;
+    }
+    /**
+     * Método para obtener el nif de la clinica
+     * @return string|null
+     */
+    public function getNifClinica(): ?string
+    {
+        return $this->nif_clinica;
     }
     /**
      * método para obtener la dirección de la clínica
@@ -98,7 +107,7 @@ class Clinica
         return $this->foto_clinica;
     }
 
-    // Setters
+    //////////////////////////////// Setters ////////////////////////////////////
     /**
      * método para establecer el ID de la clínica
      * @param int $id_clinica
@@ -131,6 +140,10 @@ class Clinica
     public function setNombreClinica(string $nombre_clinica): void
     {
         $this->nombre_clinica = $nombre_clinica;
+    }
+    public function setNifClinica(string $nif_clinica): void
+    {
+        $this->nif_clinica = $nif_clinica;
     }
     /**
      * método para establecer la dirección de la clínica
@@ -192,21 +205,22 @@ class Clinica
 
         try {
             //Consulta SQL para insertar una nueva clínica
-            $sql = "INSERT INTO clinica (id_admin, usuario_admin_clinica, nombre_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica, foto_clinica) 
-                    VALUES (:id_admin, :usuario_admin_clinica, :nombre_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica, :foto_clinica)";
+            $sql = "INSERT INTO clinica (id_admin, usuario_admin_clinica, nombre_clinica, nif_clinica, direccion_clinica, telefono_clinica, email_clinica, usuario_clinica, password_clinica, foto_clinica) 
+                    VALUES (:id_admin, :usuario_admin_clinica, :nombre_clinica, :nif_clinica, :direccion_clinica, :telefono_clinica, :email_clinica, :usuario_clinica, :password_clinica, :foto_clinica)";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
 
-                ':id_admin'          => $this->id_admin,
-                ':usuario_admin_clinica'     => $this->usuario_admin ?? '',
-                ':nombre_clinica'    => $this->nombre_clinica,
-                ':direccion_clinica' => $this->direccion_clinica,
-                ':telefono_clinica'  => $this->telefono_clinica,
-                ':email_clinica'     => $this->email_clinica,
-                ':usuario_clinica'   => $this->usuario_clinica,
-                ':password_clinica'  => password_hash($this->password_clinica, PASSWORD_BCRYPT),
-                ':foto_clinica'      => $this->foto_clinica
+                ':id_admin'                     => $this->id_admin,
+                ':usuario_admin_clinica'        => $this->usuario_admin_clinica,
+                ':nombre_clinica'               => $this->nombre_clinica,
+                ':nif_clinica'                  => $this->nif_clinica,
+                ':direccion_clinica'            => $this->direccion_clinica,
+                ':telefono_clinica'             => $this->telefono_clinica,
+                ':email_clinica'                => $this->email_clinica,
+                ':usuario_clinica'              => $this->usuario_clinica,
+                ':password_clinica'             => password_hash($this->password_clinica, PASSWORD_BCRYPT),
+                ':foto_clinica'                 => $this->foto_clinica
 
             ]);
 
@@ -259,6 +273,7 @@ class Clinica
             $this->id_clinica = $clinica['id_clinica'];
             $this->usuario_admin_clinica = $clinica['usuario_admin_clinica'];
             $this->nombre_clinica = $clinica['nombre_clinica'];
+            $this->nif_clinica = $clinica['nif_clinica'];
             $this->direccion_clinica = $clinica['direccion_clinica'];
             $this->telefono_clinica = $clinica['telefono_clinica'];
             $this->email_clinica = $clinica['email_clinica'];
@@ -343,43 +358,41 @@ class Clinica
      * @return string|int Retorna el número de filas afectadas o ERR_CLINICA_04 en caso de error al actualizar clínica
      */
     public function actualizarClinica(PDO $pdo, int $id_clinica): string|int
-    {
-        // Intentamos capturar errores de PDO
-        try {
-            // Consulta SQL para actualizar la clínica
-            $sql = "UPDATE clinica 
-                    SET nombre_clinica = :nombre_clinica, 
-                        direccion_clinica = :direccion_clinica, 
-                        telefono_clinica = :telefono_clinica, 
-                        email_clinica = :email_clinica, 
-                        usuario_clinica = :usuario_clinica,
-                        foto_clinica = :foto_clinica
-                    WHERE id_clinica = :id_clinica";
+{
+    try {
+        $sql = "UPDATE clinica 
+                SET nombre_clinica = :nombre_clinica, 
+                    nif_clinica = :nif_clinica,
+                    direccion_clinica = :direccion_clinica, 
+                    telefono_clinica = :telefono_clinica, 
+                    email_clinica = :email_clinica, 
+                    usuario_clinica = :usuario_clinica,
+                    foto_clinica = :foto_clinica,
+                    usuario_admin_clinica = :usuario_admin_clinica
+                WHERE id_clinica = :id_clinica";
 
-            // Preparar y ejecutar la consulta
-            $stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare($sql);
 
-            // Ejecutar la consulta con los datos actualizados
-            $stmt->execute([
-                ':nombre_clinica'    => $this->nombre_clinica,
-                ':direccion_clinica' => $this->direccion_clinica,
-                ':telefono_clinica'  => $this->telefono_clinica,
-                ':email_clinica'     => $this->email_clinica,
-                ':usuario_clinica'   => $this->usuario_clinica,
-                ':foto_clinica'      => $this->foto_clinica,
-                ':id_clinica'       => $id_clinica
-            ]);
+        $stmt->execute([
+            ':nombre_clinica'        => $this->nombre_clinica,
+            ':nif_clinica'           => $this->nif_clinica,
+            ':direccion_clinica'     => $this->direccion_clinica,
+            ':telefono_clinica'      => $this->telefono_clinica,
+            ':email_clinica'         => $this->email_clinica,
+            ':usuario_clinica'       => $this->usuario_clinica,
+            ':foto_clinica'          => $this->foto_clinica,
+            ':usuario_admin_clinica' => $this->usuario_admin_clinica,
+            ':id_clinica'            => $id_clinica
+        ]);
 
-            // Retornamos la cantidad de filas afectadas
-            return $stmt->rowCount();
+         return true;
 
-            // Capturamos errores de PDO
-        } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error = 'ERR_CLINICA_04'; // Error al actualizar clínica
-            return $error; */
-        }
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        return false; 
     }
+}
+
 
     /**
      * Método para eliminar una clínica por su ID

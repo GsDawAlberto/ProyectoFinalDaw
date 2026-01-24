@@ -7,6 +7,7 @@ use Mediagend\App\Config\Enlaces;
 <head>
     <meta charset="UTF-8">
     <title>Lobby Mediagend</title>
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Solo_logo.png">
 
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">

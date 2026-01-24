@@ -67,6 +67,13 @@ h2 {
     width: 70px;
 }
 
+.sin_medicos {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
 /* ===============================
    BOTÓN HUECO LIBRE
 ================================ */

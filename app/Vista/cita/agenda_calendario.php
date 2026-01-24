@@ -16,30 +16,37 @@ $citaModel   = new Cita();
 $medicoModel = new Medico();
 
 /* DATOS */
-$mostrarCita = $citaModel->mostrarPorClinica(
-    $pdo,
-    $_SESSION['clinica']['id_clinica']
-);
+$idClinica = $_SESSION['clinica']['id_clinica'];
 
-$medicos = $medicoModel->listarPorClinica(
-    $pdo,
-    $_SESSION['clinica']['id_clinica']
-);
+/* Obtener médicos de la clínica */
+$medicos = $medicoModel->listarPorClinica($pdo, $idClinica);
 
-/* HORAS */
+/* Obtener todas las citas de la clínica */
+$mostrarCita = $citaModel->mostrarPorClinica($pdo, $idClinica);
+
+/* HORAS DE TRABAJO */
 $horas = [
-    '09:00','10:00','11:00','12:00','13:00',
-    '15:00','16:00','17:00','18:00','19:00','20:00'
+    '09:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00'
 ];
 
-/* SEMANA (L–V) */
+/* SEMANA LABORAL (Lunes a Viernes) */
 $semana = [];
 $dia = new DateTime('monday this week');
 for ($i = 0; $i < 5; $i++) {
     $semana[] = (clone $dia)->modify("+$i day");
 }
 
-/* DÍAS EN ESPAÑOL */
+/* Nombres de días en español */
 $dias = [
     'Monday'    => 'Lunes',
     'Tuesday'   => 'Martes',
@@ -50,7 +57,6 @@ $dias = [
 
 /* INDEXAR CITAS POR fecha → hora → medico */
 $citasIndexadas = [];
-
 foreach ($mostrarCita as $c) {
     $fecha = $c['fecha_cita'];
     $hora  = substr($c['hora_cita'], 0, 5);
@@ -58,94 +64,105 @@ foreach ($mostrarCita as $c) {
 
     $citasIndexadas[$fecha][$hora][$idMed] = $c;
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Agenda Clínica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>agenda_calendario.css">
 </head>
 
 <body>
 
-<h2>📅 Agenda semanal de la clínica</h2>
-<p>🟡 Pendiente · 🔵 Confirmada · 🟢 Realizada · 🔴 Cancelada</p>
+    <h2>📅 Agenda semanal de la clínica</h2>
+    <p>🟡 Pendiente · 🔵 Confirmada · 🟢 Realizada · 🔴 Cancelada</p>
 
-<div class="agenda-wrapper">
-<table class="agenda">
+    <?php if (empty($medicos)): ?>
+        <p class="sin_medicos">
+            No tiene agenda. Para agendar, la clínica tiene que tener algún médico insertado.
+        </p>
+    <?php else: ?>
 
-    <!-- CABECERA -->
-    <thead>
-        <tr>
-            <th>Hora</th>
+        <div class="agenda-wrapper">
+            <table class="agenda">
 
-            <?php foreach ($semana as $d): ?>
-                <?php foreach ($medicos as $m): ?>
-                    <th>
-                        <?= $dias[$d->format('l')] ?><br>
-                        <small><?= $d->format('d/m') ?></small><br>
-                        <strong><?= htmlspecialchars($m['nombre_medico']) ?></strong>
-                    </th>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-        </tr>
-    </thead>
+                <!-- CABECERA -->
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <?php foreach ($semana as $d): ?>
+                            <?php foreach ($medicos as $m): ?>
+                                <th>
+                                    <?= $dias[$d->format('l')] ?><br>
+                                    <small><?= $d->format('d/m') ?></small><br>
+                                    <strong><?= htmlspecialchars($m['nombre_medico']) ?></strong>
+                                </th>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </tr>
+                </thead>
 
-    <!-- CUERPO -->
-    <tbody>
-        <?php foreach ($horas as $hora): ?>
-            <tr>
-                <td class="hora"><?= $hora ?></td>
+                <!-- CUERPO -->
+                <tbody>
+                    <?php foreach ($horas as $hora): ?>
+                        <tr>
+                            <td class="hora"><?= $hora ?></td>
 
-                <?php foreach ($semana as $d): ?>
-                    <?php foreach ($medicos as $m): ?>
+                            <?php foreach ($semana as $d): ?>
+                                <?php foreach ($medicos as $m): ?>
 
-                        <?php
-                        $fecha = $d->format('Y-m-d');
-                        $idMed = $m['id_medico'];
-                        $cita  = $citasIndexadas[$fecha][$hora][$idMed] ?? null;
-                        ?>
+                                    <?php
+                                    $fecha = $d->format('Y-m-d');
+                                    $idMed = $m['id_medico'];
+                                    $cita  = $citasIndexadas[$fecha][$hora][$idMed] ?? null;
+                                    ?>
 
-                        <td>
+                                    <td>
 
-                            <?php if ($cita): ?>
-                                <?php $estado = strtolower($cita['estado_cita']); ?>
+                                        <?php if ($cita): ?>
+                                            <?php $estado = strtolower($cita['estado_cita']); ?>
 
-                                <a href="<?= Enlaces::BASE_URL ?>citas/form_editar?id=<?= $cita['id_cita'] ?>" class="cita-link">
-                                    <div class="cita-ocupada color-estado-<?= $estado ?>">
-                                        <strong>
-                                            <?= htmlspecialchars(
-                                                ($cita['nombre_paciente'] ?? 'Hueco libre') . ' ' .
-                                                ($cita['apellidos_paciente'] ?? '')
-                                            ) ?>
-                                        </strong>
-                                        <?= ucfirst($estado) ?>
-                                    </div>
-                                </a>
+                                            <a href="<?= Enlaces::BASE_URL ?>citas/form_editar?id=<?= $cita['id_cita'] ?>" class="cita-link">
+                                                <div class="cita-ocupada color-estado-<?= $estado ?>">
+                                                    <strong>
+                                                        <?= htmlspecialchars(
+                                                            ($cita['nombre_paciente'] ?? 'Hueco libre') . ' ' .
+                                                                ($cita['apellidos_paciente'] ?? '')
+                                                        ) ?>
+                                                    </strong>
+                                                    <?= ucfirst($estado) ?>
+                                                </div>
+                                            </a>
 
-                            <?php else: ?>
+                                        <?php else: ?>
 
-                                <form action="<?= Enlaces::BASE_URL ?>citas/form_crear" method="POST">
-                                    <input type="hidden" name="fecha" value="<?= $fecha ?>">
-                                    <input type="hidden" name="hora" value="<?= $hora ?>">
-                                    <input type="hidden" name="id_medico" value="<?= $idMed ?>">
-                                    <button class="btn-hueco">Libre</button>
-                                </form>
+                                            <form action="<?= Enlaces::BASE_URL ?>citas/form_crear" method="POST">
+                                                <input type="hidden" name="fecha" value="<?= $fecha ?>">
+                                                <input type="hidden" name="hora" value="<?= $hora ?>">
+                                                <input type="hidden" name="id_medico" value="<?= $idMed ?>">
+                                                <button class="btn-hueco">Libre</button>
+                                            </form>
 
-                            <?php endif; ?>
+                                        <?php endif; ?>
 
-                        </td>
+                                    </td>
 
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </tr>
                     <?php endforeach; ?>
-                <?php endforeach; ?>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
+                </tbody>
 
-</table>
-</div>
+            </table>
+        </div>
+
+    <?php endif; ?>
 
 </body>
+
 </html>

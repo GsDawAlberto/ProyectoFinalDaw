@@ -50,7 +50,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
         <?php endforeach; ?>
     </select>
 
-    <!-- <button type="submit">Buscar</button> -->
+    <!-- <button type="submit">Buscar</button> --> <!-- No es necesario con el onchange en el select -->
 </form>
 
 <?php if ($resultado === 'ERR_CLINICA_03'): ?>
@@ -68,6 +68,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
             <th>Administrador</th>
             <th>Clínica</th>
             <th>Nombre</th>
+            <th>NIF</th>
             <th>Dirección</th>
             <th>Email</th>
             <th>Teléfono</th>
@@ -90,6 +91,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
             <td><?= $clinica['usuario_admin_clinica'] ?></td>
             <td><?= $clinica['usuario_clinica'] ?></td>
             <td><?= $clinica['nombre_clinica'] ?></td>
+            <td><?= $clinica['nif_clinica'] ?></td>
             <td><?= $clinica['direccion_clinica'] ?></td>
             <td><?= $clinica['email_clinica'] ?></td>
             <td><?= $clinica['telefono_clinica'] ?></td>

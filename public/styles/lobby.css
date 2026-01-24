@@ -1,16 +1,54 @@
-/* RESET BÁSICO */
+/* =====================
+   RESET
+===================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* =====================
+   ANIMACIONES
+===================== */
 
+/* Desde arriba */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Desde abajo */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Solo fade */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* =====================
+   BODY
+===================== */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-image: url("../img/Logo_translucido_2.png");
     background-repeat: repeat;
-    background-size: 500px 500px; /* Tamaño que tú quieras */
+    background-size: 350px 350px;
     color: #333;
     display: flex;
     justify-content: center;
@@ -18,89 +56,145 @@ body {
     min-height: 100vh;
 }
 
+/* =====================
+   CONTENEDOR
+===================== */
 .container {
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    padding: 40px 30px;
+    width: 92%;
+    max-width: 420px;
+    padding: 35px 25px;
     background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 15px 15px 15px rgba(0,0,0,0.1);
+    border-radius: 22px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    text-align: center;
 }
 
+/* =====================
+   HEADER
+===================== */
+header {
+    animation: slideDown 0.6s ease-out forwards;
+}
+
+/* Icono 90x90 */
+.lobby-icon {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    animation: slideDown 0.6s ease-out forwards;
+}
+
+/* Título */
 header h1 {
     color: #0077b6;
-    font-size: 2.2rem;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    margin-bottom: 8px;
 }
 
+/* Texto */
 header p {
     color: #023e8a;
-    margin-bottom: 30px;
     font-size: 1rem;
+    margin-bottom: 30px;
 }
 
-/* BOTONES GRANDES LOBBY */
+/* =====================
+   BOTONES (SOLO FADE)
+===================== */
 .lobby-nav {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
+    animation: fadeIn 0.6s ease-out forwards;
+    opacity: 0;
+    animation-delay: 0.3s;
 }
 
+/* Botón base */
 .lobby-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    width: 100%;
+    gap: 14px;
     padding: 20px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 700;
+    border-radius: 18px;
     text-decoration: none;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
     color: #fff;
-    outline: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Iconos */
 .lobby-btn i {
     font-size: 2rem;
 }
 
-/* BOTONES POR TIPO */
+/* Hover / Tap (sin mover entrada) */
+.lobby-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+.lobby-btn:active {
+    transform: scale(0.97);
+}
+
+/* =====================
+   COLORES
+===================== */
 .btn-admin {
     background-color: #0077b6;
 }
-
-.btn-admin:hover,
-.btn-admin:focus {
+.btn-admin:hover {
     background-color: #005f87;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,119,182,0.4);
 }
 
 .btn-clinica {
     background-color: #00b894;
 }
-
-.btn-clinica:hover,
-.btn-clinica:focus {
+.btn-clinica:hover {
     background-color: #008f6e;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,184,148,0.4);
 }
 
 .btn-usuario {
     background-color: #ff7f50;
 }
-
-.btn-usuario:hover,
-.btn-usuario:focus {
+.btn-usuario:hover {
     background-color: #e65c33;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(255,127,80,0.4);
 }
-footer{
-    margin-top: 100px;
+
+/* =====================
+   FOOTER
+===================== */
+footer {
+    margin-top: 80px;
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+/* =====================
+   DESKTOP
+===================== */
+@media (min-width: 768px) {
+
+    body {
+        background-size: 500px 500px;
+    }
+
+    .container {
+        max-width: 400px;
+        padding: 45px 35px;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    .lobby-btn {
+        font-size: 1.4rem;
+    }
 }

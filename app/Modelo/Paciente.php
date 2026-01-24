@@ -392,6 +392,8 @@ class Paciente
                 ':foto'        => $this->foto_paciente,
                 ':id_paciente' => $id_paciente
             ]);
+
+            return true;
         } catch (PDOException $e) {
             /* $error = 'ERR_PACIENTE_04'; // Error al actualizar paciente
             return $error; */

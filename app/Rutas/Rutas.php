@@ -56,6 +56,11 @@ class Rutas
                 $controller->acceder();
                 break;
 
+            case 'admin/logout':
+                $controller = new AdminController();
+                $controller->logout();
+                break;
+
             // ---------- VISTAS ADMIN HOME ----------
 
             /* case 'admin/home/citas':

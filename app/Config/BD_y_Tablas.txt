@@ -9,6 +9,8 @@ USE mediagend;
 CREATE TABLE administrador (
   id_admin INT AUTO_INCREMENT PRIMARY KEY,
   nombre_admin VARCHAR(100) NOT NULL,
+  apellidos_admin VARCHAR(100) NOT NULL, # ----- CAMBIO ------ #
+  dni_admin VARCHAR(9) NOT NULL, # ----- CAMBIO ------ #
   email_admin VARCHAR(100) UNIQUE NOT NULL,
   usuario_admin VARCHAR(50) UNIQUE NOT NULL,
   password_admin VARCHAR(255) NOT NULL
@@ -22,6 +24,7 @@ CREATE TABLE clinica (
   foto_clinica VARCHAR(150),
   usuario_admin_clinica VARCHAR(50),
   nombre_clinica VARCHAR(150) NOT NULL,
+  nif_clinica VARCHAR(9) NOT NULL, # ----- CAMBIO ------ #
   direccion_clinica VARCHAR(200),
   telefono_clinica VARCHAR(20),
   email_clinica VARCHAR(100),

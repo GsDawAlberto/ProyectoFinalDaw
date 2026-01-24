@@ -22,7 +22,9 @@ class Enlaces
     public const IMG_MEDICO_URL = '/mediagend/app/imagenes_registros/imagenes_medicos/';
     // Ruta absoluta en el sistema de archivos (no URL)
 
+    public const IMG_ICONO_URL = '/mediagend/public/img/';
     public const PDF_INFORMES_URL = '/mediagend/app/imagenes_registros/informes_clinicos/';
+    // Ruta absoluta en el sistema de archivos (no URL)
 
     /******************************** PATHS *********************************/
     public const BASE_PATH = __DIR__ . "/../../";

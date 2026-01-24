@@ -1,3 +1,4 @@
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -10,10 +11,9 @@ html, body {
     background-color: #f4f8fb;
 }
 
-h1{
-    text-align: center;
-    margin: 20px 0;
-    color: #333333;
+/* TITULOS */
+h1, h2 {
+    color: #fff;
 }
 
 /* Layout principal */
@@ -21,45 +21,52 @@ h1{
     display: flex;
     height: 100vh;
     width: 100%;
-}
-
-.layout_header {
-    filter: drop-shadow(0px 8px 15px rgb(255, 255, 255));
+    overflow: hidden;
 }
 
 /* Sidebar izquierda */
 .sidebar {
-    width: 20%; /* 1/5 del ancho */
+    width: 20%;
+    min-width: 200px;
     background: linear-gradient(180deg, #0d6efd, #0bbcd6);
     color: white;
     padding: 25px 15px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: center;
 }
 
-/* Título */
-.sidebar h2 {
+/* Títulos dentro del sidebar */
+.sidebar h1 {
+    color: #ffffff;
     text-align: center;
-    margin-bottom: 30px;
-    font-weight: 600;
-    letter-spacing: 1px;
+    margin-bottom: 15px;
 }
 
-/* Botones del menú */
-.menu-btn {
+.sidebar h2.welcome-msg {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Botones del menú y logout */
+.menu-btn,
+.sidebar a.menu-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 90%;
     height: 100px;
-    margin: 5px;
-    padding: 14px 16px;
+    margin: 5px 0;
+    padding: 10px 20px;
     background-color: rgba(19, 163, 224, 0.15);
     border: 3px solid white;
     border-radius: 10px;
     color: white;
     font-size: 20px;
     cursor: pointer;
+    text-decoration: none;
     transition: all 0.3s ease;
 }
 
@@ -68,12 +75,9 @@ h1{
     padding-right: 20px;
 }
 
-.menu-btn a {
-    text-decoration: none;
-}
-
-
-.menu-btn:hover,  .menu-btn a:hover {
+/* Hover y animación suave */
+.menu-btn:hover,
+.sidebar a.menu-btn:hover {
     background-color: white;
     color: #0d6efd;
     transform: translateX(5px);
@@ -81,7 +85,7 @@ h1{
 
 /* Contenido derecho */
 .contenido {
-    width: 80%; /* 4/5 del ancho */
+    width: 80%;
     height: 100%;
     background-color: #ffffff;
     padding: 10px;
@@ -94,4 +98,68 @@ h1{
     border-radius: 12px;
     border: none;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* Mensaje para móviles */
+.mobile-warning {
+    display: none;
+    color: #ffffff;
+    text-align: center;
+    font-weight: 700;
+    padding: 20px;
+    font-size: 1.2rem;
+}
+
+/* =====================
+   MEDIA QUERIES PARA MOVILES
+===================== */
+@media (max-width: 1000px) {
+    /* Ocultar todos los botones excepto logout, mensaje y títulos */
+    .sidebar .menu-btn:not(.logout-btn),
+    .layout_header,
+    .welcome-msg,
+    main.contenido {
+        display: none;
+    }
+
+    /* Mostrar mensaje */
+    .mobile-warning {
+        display: block;
+    }
+
+    /* Sidebar centrado */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 20px;
+        background: #0d6efd;
+    }
+
+    /* Logout centrado y más pequeño */
+    .logout-btn {
+        width: 80%;
+        height: 60px;
+        font-size: 18px;
+    }
+
+    #visor {
+        display: none;
+    }
+}
+
+/* Ajustes para móviles pequeños (<500px) */
+@media (max-width: 500px) {
+    .logout-btn {
+        width: 100%;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .mobile-warning {
+        font-size: 1rem;
+        padding: 15px;
+    }
 }

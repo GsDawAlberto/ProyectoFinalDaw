@@ -10,6 +10,8 @@ class Administrador
     // Propiedades
     private ?int $id_admin = null;
     private ?string $nombre_admin = null;
+    private ?string $apellidos_admin = null;
+    private ?string $dni_admin = null;
     private ?string $email_admin = null;
     private ?string $usuario_admin = null;
     private ?string $password_admin = null;
@@ -30,6 +32,22 @@ class Administrador
     public function getNombreAdmin(): ?string
     {
         return $this->nombre_admin;
+    }
+    /**
+     * método para obtener los apellidos del administrador
+     * @return string|null
+     */
+    public function getApellidosAdmin(): ?string
+    {
+        return $this->apellidos_admin;
+    }
+    /**
+     * método para obterner el dni del administrador
+     * @return string|null
+     */
+    public function getDniAdmin(): ?string
+    {
+        return $this->dni_admin;
     }
     /**
      * método para obtener el email del administrador
@@ -56,7 +74,7 @@ class Administrador
         return $this->password_admin;
     }
 
-    // Setters
+    ////////////////////////////// Setters ///////////////////////////////////////
     /**
      * método para establecer el ID del administrador
      * @param int $id_admin
@@ -72,6 +90,22 @@ class Administrador
     public function setNombreAdmin(string $nombre_admin): void
     {
         $this->nombre_admin = $nombre_admin;
+    }
+    /**
+     * método para establecer los apellidos del administrador
+     * @param string $apellidos_admin
+     */
+    public function setApellidosAdmin(string $apellidos_admin): void
+    {
+        $this->apellidos_admin = $apellidos_admin;
+    }
+    /**
+     * método para establecer el dni del administrador
+     * @param string $dni_admin
+     */
+    public function setDniAdmin($dni_admin): void
+    {
+        $this->dni_admin = $dni_admin;
     }
     /**
      * método para establecer el email del administrador
@@ -111,13 +145,15 @@ class Administrador
         try {
             // Consulta SQL para insertar un nuevo administrador
             $sql = "INSERT INTO administrador 
-                        (nombre_admin, email_admin, usuario_admin, password_admin) 
+                        (nombre_admin, apellidos_admin, dni_admin, email_admin, usuario_admin, password_admin) 
                     VALUES 
-                        (:nombre_admin, :email_admin, :usuario_admin, :password_admin)";
+                        (:nombre_admin, :apellidos_admin, :dni_admin, :email_admin, :usuario_admin, :password_admin)";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':nombre_admin'  => $this->nombre_admin,
+                ':apellidos_admin' => $this->apellidos_admin,
+                ':dni_admin' => $this->dni_admin,
                 ':email_admin'   => $this->email_admin,
                 ':usuario_admin' => $this->usuario_admin,
                 ':password_admin' => password_hash($this->password_admin, PASSWORD_BCRYPT)
@@ -168,10 +204,11 @@ class Administrador
             }
 
             // Cargar datos dentro del objeto
-            $this->id_admin      = $admin['id_admin'];
-            $this->nombre_admin  = $admin['nombre_admin'];
-            $this->email_admin   = $admin['email_admin'];
-            $this->usuario_admin = $admin['usuario_admin'];
+            $this->id_admin         = $admin['id_admin'];
+            $this->nombre_admin     = $admin['nombre_admin'];
+            $this->apellidos_admin  = $admin['apellidos_admin'];
+            $this->email_admin      = $admin['email_admin'];
+            $this->usuario_admin    = $admin['usuario_admin'];
 
             // Retornamos el array con los datos del administrador
             return $admin;
@@ -236,6 +273,8 @@ class Administrador
             // Consulta SQL para actualizar el administrador
             $sql = "UPDATE administrador
                     SET nombre_admin  = :nombre_admin,
+                        apellidos_admin = :apellidos_admin,
+                        dni_admin = :dni_admin,
                         email_admin   = :email_admin,
                         usuario_admin = :usuario_admin,
                         password_admin = :password_admin
@@ -246,15 +285,17 @@ class Administrador
 
             // Ejecutamos la consulta con los datos del objeto
             $stmt->execute([
-                ':nombre_admin'  => $this->nombre_admin,
-                ':email_admin'   => $this->email_admin,
-                ':usuario_admin' => $this->usuario_admin,
-                ':password_admin' => password_hash($this->password_admin, PASSWORD_BCRYPT),
-                ':id_admin'      => $id_admin
+                ':nombre_admin'     => $this->nombre_admin,
+                ':apellidos_admin'  => $this->apellidos_admin,
+                ':dni_admin'        => $this->dni_admin,
+                ':email_admin'      => $this->email_admin,
+                ':usuario_admin'    => $this->usuario_admin,
+                ':password_admin'   => password_hash($this->password_admin, PASSWORD_BCRYPT),
+                ':id_admin'         => $id_admin
             ]);
 
             // Retornamos true si se actualizó al menos una fila
-            return $stmt->rowCount();
+            return true;
 
             // Capturamos errores de PDO
         } catch (PDOException $e) {

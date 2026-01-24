@@ -40,101 +40,127 @@ class ClinicaController
 
     /********************* PROCESAR REGISTRO *********************/
     public function registrar()
-    {
-        session_start();
+{
+    session_start();
 
-        if (!isset($_SESSION['admin'])) {
-            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
-            exit;
-        }
-
-        $idAdmin = $_SESSION['admin']['id_admin'];
-
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            header("Location: " . Enlaces::BASE_URL . "clinica/loguear_clinica");
-            exit;
-        }
-
-        $pdo = BaseDatos::getConexion();
-        $adminModel = new Administrador();
-        $id_admin = $idAdmin ?? null;
-        $userAdmin = $adminModel->mostrarAdmin($pdo, $id_admin);
-
-
-        // Sanitizar entrada
-        $nombre     = trim(filter_input(INPUT_POST, 'nombre_clinica', FILTER_SANITIZE_STRING));
-        $direccion  = trim(filter_input(INPUT_POST, 'direccion_clinica', FILTER_SANITIZE_STRING));
-        $telefono   = trim(filter_input(INPUT_POST, 'telefono_clinica', FILTER_SANITIZE_STRING));
-        $email      = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
-        $usuario    = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING));
-        $fotoRuta = trim($_FILES['foto_clinica']['name']);
-        $pass1      = trim($_POST['password_clinica'] ?? '');
-        $pass2      = trim($_POST['password2_clinica'] ?? '');
-
-        // Validar contraseñas
-        if ($pass1 !== $pass2) {
-            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
-        }
-
-        // Control de la ruta de la foto introducida
-        if (!empty($_FILES['foto_clinica']['name'])) {
-
-            // RUTA FÍSICA REAL
-            $directorioFisico = Enlaces::BASE_PATH . 'app/imagenes_registros/imagenes_clinicas/';
-
-            if (!is_dir($directorioFisico)) {
-                mkdir($directorioFisico, 0777, true);
-            }
-
-            $extension = strtolower(pathinfo($_FILES['foto_clinica']['name'], PATHINFO_EXTENSION));
-
-            $extPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
-            if (!in_array($extension, $extPermitidas)) {
-                die('Formato de imagen no permitido');
-            }
-
-            $nombreArchivo = 'clinica_' . time() . '.' . $extension;
-            $rutaFisicaFinal = $directorioFisico . $nombreArchivo;
-
-            if (move_uploaded_file($_FILES['foto_clinica']['tmp_name'], $rutaFisicaFinal)) {
-
-                //SOLO guardamos la RUTA RELATIVA para la BD
-                $fotoRuta = $nombreArchivo;
-            }
-        }
-
-        // Imagen por defecto
-        if (!$fotoRuta) {
-            $fotoRuta = 'imagen_clinica_por_defecto.png';
-        }
-
-        // Conexión BD
-        $pdo = BaseDatos::getConexion();
-
-        // Crear modelo
-        $clinica = new Clinica();
-        $clinica->setIdAdmin($idAdmin);
-        $clinica->setNombreClinica($nombre);
-        $clinica->setDireccionClinica($direccion);
-        $clinica->setTelefonoClinica($telefono);
-        $clinica->setEmailClinica($email);
-        $clinica->setUsuarioClinica($usuario);
-        $clinica->setPasswordClinica($pass1);
-        $clinica->setUsuarioAdminClinica($userAdmin['usuario_admin']);
-        $clinica->setFotoClinica($fotoRuta);
-
-
-        // Guardar
-        $guardado = $clinica->guardarClinica($pdo);
-
-        if (!$guardado) {
-            die("Error al registrar la clínica.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
-        }
-
-        // Redirigir a home admin
-        header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
+    if (!isset($_SESSION['admin'])) {
+        header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
         exit;
     }
+
+    $idAdmin = $_SESSION['admin']['id_admin'];
+    $usuarioAdministrador = $_SESSION['admin']['usuario_admin'];
+
+    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+        header("Location: " . Enlaces::BASE_URL . "clinica/loguear_clinica");
+        exit;
+    }
+
+    /* =====================
+       SANITIZAR ENTRADAS
+    ===================== */
+    $nombre     = trim(filter_input(INPUT_POST, 'nombre_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+    $nif        = strtoupper(trim(filter_input(INPUT_POST, 'nif_clinica', FILTER_SANITIZE_SPECIAL_CHARS)));
+    $direccion  = trim(filter_input(INPUT_POST, 'direccion_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+    $telefono   = trim(filter_input(INPUT_POST, 'telefono_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+    $email      = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
+    $usuario    = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+    $fotoRuta   = trim($_FILES['foto_clinica']['name'] ?? '');
+    $pass1      = trim($_POST['password_clinica'] ?? '');
+    $pass2      = trim($_POST['password2_clinica'] ?? '');
+
+    /* =====================
+       VALIDACIONES
+    ===================== */
+
+    if (strlen($nombre) < 3 || strlen($nombre) > 30) {
+        die("El nombre debe tener entre 3 y 30 caracteres.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    // NIF → DNI o CIF
+    $dniRegex = '/^[0-9]{8}[A-Z]$/';
+    $cifRegex = '/^[A-Z][0-9]{8}$/';
+
+    if (!preg_match($dniRegex, $nif) && !preg_match($cifRegex, $nif)) {
+        die("El NIF debe ser un DNI o CIF válido.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    if (strlen($direccion) < 5 || strlen($direccion) > 100) {
+        die("La dirección debe tener entre 5 y 100 caracteres.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+        die("El teléfono debe contener 9 dígitos numéricos.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("El email no tiene un formato válido.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+        die("El usuario debe tener entre 3 y 15 caracteres.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    if ($pass1 !== $pass2 || strlen($pass1) < 6) {
+        die("Las contraseñas deben coincidir y tener al menos 6 caracteres.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    /* =====================
+       GESTIÓN DE IMAGEN
+    ===================== */
+    if (!empty($_FILES['foto_clinica']['name'])) {
+
+        $directorioFisico = Enlaces::BASE_PATH . 'app/imagenes_registros/imagenes_clinicas/';
+
+        if (!is_dir($directorioFisico)) {
+            mkdir($directorioFisico, 0777, true);
+        }
+
+        $extension = strtolower(pathinfo($_FILES['foto_clinica']['name'], PATHINFO_EXTENSION));
+        $extPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+
+        if (!in_array($extension, $extPermitidas)) {
+            die("Formato de imagen no permitido.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+        }
+
+        $nombreArchivo = 'clinica_' . time() . '.' . $extension;
+        $rutaFisicaFinal = $directorioFisico . $nombreArchivo;
+
+        if (move_uploaded_file($_FILES['foto_clinica']['tmp_name'], $rutaFisicaFinal)) {
+            $fotoRuta = $nombreArchivo;
+        }
+    }
+
+    if (!$fotoRuta) {
+        $fotoRuta = 'imagen_clinica_por_defecto.png';
+    }
+
+    /* =====================
+       BD + MODELO
+    ===================== */
+    $pdo = BaseDatos::getConexion();
+
+    $clinica = new Clinica();
+    $clinica->setIdAdmin($idAdmin);
+    $clinica->setNombreClinica($nombre);
+    $clinica->setNifClinica($nif);
+    $clinica->setDireccionClinica($direccion);
+    $clinica->setTelefonoClinica($telefono);
+    $clinica->setEmailClinica($email);
+    $clinica->setUsuarioClinica($usuario);
+    $clinica->setPasswordClinica($pass1);
+    $clinica->setUsuarioAdminClinica($usuarioAdministrador);
+    $clinica->setFotoClinica($fotoRuta);
+
+    $guardado = $clinica->guardarClinica($pdo);
+
+    if (!$guardado) {
+        die("Error al registrar la clínica.<br><a href='" . Enlaces::BASE_URL . "clinica/loguear_clinica'>Volver</a>");
+    }
+
+    header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
+    exit;
+}
 
     /***************************** PROCESAR LOGIN  *************************************/
     public function acceder()
@@ -149,6 +175,14 @@ class ClinicaController
         // Sanitizar entrada
         $usuario = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_STRING) ?? '');
         $password = trim(filter_input(INPUT_POST, 'password_clinica', FILTER_SANITIZE_STRING) ?? '');
+
+        if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+            die("El usuario debe tener entre 3 y 15 caracteres.<br><a href='" . Enlaces::BASE_URL . "clinica/login_clinica'>Volver</a>");
+        }
+
+        if (strlen($password) < 6) {
+            die("La contraseña debe tener al menos 6 caracteres.<br><a href='" . Enlaces::BASE_URL . "clinica/login_clinica'>Volver</a>");
+        }
 
         // Conexión BD
         $pdo = BaseDatos::getConexion();
@@ -169,6 +203,7 @@ class ClinicaController
         $_SESSION['clinica'] = [
             'id_clinica'       => $resultado['id_clinica'],
             'nombre_clinica'   => $resultado['nombre_clinica'],
+            'nif_clinica'      => $resultado['nif_clinica'],
             'usuario_clinica'  => $resultado['usuario_clinica'],
             'usuario_admin_clinica'    => $resultado['usuario_admin_clinica'],
             'email_clinica'    => $resultado['email_clinica'],
@@ -250,8 +285,9 @@ class ClinicaController
     }
 
 
- /************************* MODIFICAR CLINICA *************************/
-public function modificar()
+    /************************* MODIFICAR CLINICA *************************/
+    /************************* MODIFICAR CLINICA *************************/
+    public function modificar()
 {
     session_start();
 
@@ -284,7 +320,6 @@ public function modificar()
             die("No tienes permisos para modificar esta clínica");
         }
 
-        // Cargar la vista de edición
         require Enlaces::VIEW_PATH . "clinica/editar_clinica.php";
         exit;
     }
@@ -309,38 +344,89 @@ public function modificar()
             die("No tienes permisos");
         }
 
-        // Datos
-        $nombre    = trim($_POST['nombre_clinica']);
-        $direccion = trim($_POST['direccion_clinica']);
-        $telefono  = trim($_POST['telefono_clinica']);
-        $email     = trim($_POST['email_clinica']);
-        $usuario   = trim($_POST['usuario_clinica']);
+        /* =====================
+           DATOS FORMULARIO
+        ===================== */
+        $nombre    = trim(filter_input(INPUT_POST, 'nombre_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+        $nif       = strtoupper(trim(filter_input(INPUT_POST, 'nif_clinica', FILTER_SANITIZE_SPECIAL_CHARS)));
+        $direccion = trim(filter_input(INPUT_POST, 'direccion_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+        $telefono  = trim(filter_input(INPUT_POST, 'telefono_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+        $email     = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
+        $usuario   = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
+        $usuarioAdmin = trim($_POST['usuario_admin_clinica'] ?? $clinica['usuario_admin_clinica']);
 
-        // LOGO
-        $logo = $clinica['foto_clinica']; // Mantener logo actual
+        /* =====================
+           VALIDACIONES
+        ===================== */
+        if (strlen($nombre) < 3 || strlen($nombre) > 30) {
+            die("El nombre debe tener entre 3 y 30 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/home/clinicas'>Volver</a>");
+        }
+
+        // NIF → DNI o CIF
+        $dniRegex = '/^[0-9]{8}[A-Z]$/';
+        $cifRegex = '/^[A-Z][0-9]{8}$/';
+
+        if (!preg_match($dniRegex, $nif) && !preg_match($cifRegex, $nif)) {
+            die("El NIF debe ser un DNI o CIF válido.<br><a href='" . Enlaces::BASE_URL . "admin/home/clinicas'>Volver</a>");
+        }
+
+        if (strlen($direccion) < 5 || strlen($direccion) > 100) {
+            die("La dirección debe tener entre 5 y 100 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/home/clinicas'>Volver</a>");
+        }
+
+        if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+            die("El teléfono debe contener 9 dígitos numéricos.<br><a href='" . Enlaces::BASE_URL . "admin/home/clinicas'>Volver</a>");
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            die("El email no tiene un formato válido.<br><a href='" . Enlaces::BASE_URL . "admin/home/clinicas'>Volver</a>");
+        }
+
+        if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+            die("El usuario debe tener entre 3 y 15 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/home/clinicas'>Volver</a>");
+        }
+
+        /* =====================
+           LOGO
+        ===================== */
+        $logo = $clinica['foto_clinica'];
 
         if (!empty($_FILES['foto_clinica']['name'])) {
-            $logo = uniqid() . '_' . $_FILES['foto_clinica']['name'];
+
+            $extension = strtolower(pathinfo($_FILES['foto_clinica']['name'], PATHINFO_EXTENSION));
+            $extPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+
+            if (!in_array($extension, $extPermitidas)) {
+                die("Formato de imagen no permitido.<br><a href='" . Enlaces::BASE_URL . "clinica/modificar?id_clinica={$id_clinica}'>Volver</a>");
+            }
+
+            $logo = 'clinica_' . time() . '.' . $extension;
+
             move_uploaded_file(
                 $_FILES['foto_clinica']['tmp_name'],
                 Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_clinicas/" . $logo
             );
         }
 
-        // Setear modelo
+        /* =====================
+           MODELO
+        ===================== */
         $clinicaModel->setNombreClinica($nombre);
+        $clinicaModel->setNifClinica($nif);
         $clinicaModel->setDireccionClinica($direccion);
         $clinicaModel->setTelefonoClinica($telefono);
         $clinicaModel->setEmailClinica($email);
         $clinicaModel->setUsuarioClinica($usuario);
         $clinicaModel->setFotoClinica($logo);
+        $clinicaModel->setUsuarioAdminClinica($usuarioAdmin);
 
         if (!$clinicaModel->actualizarClinica($pdo, $id_clinica)) {
-            die("Error al actualizar la clínica");
+            die("Error al actualizar la clínica.<br><a href='" . Enlaces::BASE_URL . "admin/home/clinicas'>Volver</a>");
         }
 
         header("Location: " . Enlaces::BASE_URL . "admin/home/clinicas");
         exit;
     }
 }
+
 }
