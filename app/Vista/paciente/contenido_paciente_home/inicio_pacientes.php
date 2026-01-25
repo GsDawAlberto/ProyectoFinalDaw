@@ -19,8 +19,11 @@ if (!isset($_SESSION['paciente'])) {
 $paciente = $_SESSION['paciente'];
 
 /* FOTO DEL PACIENTE */
-$fotoPaciente = $paciente['foto_paciente'];
-$fotoURL      = Enlaces::IMG_PACIENTE_URL . $fotoPaciente;
+$fotoPaciente = isset($paciente['foto_paciente']) && $paciente['foto_paciente'] !== ''
+    ? $paciente['foto_paciente']
+    : 'imagen_paciente_por_defecto.jpg';
+
+$fotoURL = Enlaces::IMG_PACIENTE_URL . $fotoPaciente;
 
 
 
@@ -49,15 +52,6 @@ if (!empty($paciente['id_clinica'])) {
    MÉDICO ASIGNADO (SI EXISTE)
 =========================== */
 $nombreMedico = null;
-if (!empty($paciente['id_medico'])) {
-    $medico = $medicoModel->mostrarMedicoPorId($pdo, $paciente['id_medico']);
-    if ($medico) {
-        $nombreMedico = $medico['nombre_medico'] . ' ' . $medico['apellidos_medico'];
-    }
-}
-
-
-
 if (!empty($paciente['id_medico'])) {
     $medico = $medicoModel->mostrarMedicoPorId($pdo, $paciente['id_medico']);
     if ($medico) {
@@ -109,7 +103,7 @@ foreach ($citas as $cita) {
     <!-- MÉDICO -->
     <div class="card">
         <h3>Médico asignado</h3>
-            <p><strong><?= htmlspecialchars($nombreMedico)?? 'Medico no asignado' ?></strong></p>
+            <p><strong><?= htmlspecialchars($nombreMedico ?? 'No tienes un médico asignado') ?></strong></p>
     </div>
 
     <!-- PRÓXIMA CITA -->

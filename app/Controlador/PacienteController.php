@@ -93,7 +93,6 @@ class PacienteController
         $telefono   = trim(filter_input(INPUT_POST, 'telefono_paciente', FILTER_SANITIZE_STRING));
         $email      = trim(filter_input(INPUT_POST, 'email_paciente', FILTER_SANITIZE_EMAIL));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_paciente', FILTER_SANITIZE_STRING));
-        /* $id_medico  = trim($_POST['id_medico']) ?? null; */
         $fotoRuta = trim($_FILES['foto_paciente']['name']);
         $pass1      = trim($_POST['password_paciente'] ?? '');
         $pass2      = trim($_POST['password2_paciente'] ?? '');
@@ -157,6 +156,7 @@ class PacienteController
 
 
         // Control de la ruta de la foto introducida
+        $fotoRuta = null;
         if (!empty($_FILES['foto_paciente']['name'])) {
 
             // RUTA FÍSICA REAL
@@ -263,6 +263,7 @@ class PacienteController
             'id_paciente' => $resultado['id_paciente'],
             'id_medico'   => $resultado['id_medico'],
             'id_clinica'  => $resultado['id_clinica'],
+            'foto_paciente' => $resultado['foto_paciente'] ?: 'imagen_paciente_por_defecto.jpg',
             'nombre_paciente'      => $resultado['nombre_paciente'],
             'apellidos_paciente'   => $resultado['apellidos_paciente'],
             'dni_paciente'         => $resultado['dni_paciente'],
@@ -467,14 +468,41 @@ class PacienteController
 
 
             // FOTO
-            $foto = $paciente['foto_paciente'];
+            $foto = $paciente['foto_paciente']; // mantener la actual por defecto
 
             if (!empty($_FILES['foto_paciente']['name'])) {
-                $foto = uniqid() . '_' . $_FILES['foto_paciente']['name'];
-                move_uploaded_file(
-                    $_FILES['foto_paciente']['tmp_name'],
-                    Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_pacientes/" . $foto
-                );
+
+                $directorioFisico = Enlaces::BASE_PATH . 'app/imagenes_registros/imagenes_pacientes/';
+
+                if (!is_dir($directorioFisico)) {
+                    mkdir($directorioFisico, 0777, true);
+                }
+
+                $extension = strtolower(pathinfo($_FILES['foto_paciente']['name'], PATHINFO_EXTENSION));
+
+                $extPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+                if (!in_array($extension, $extPermitidas)) {
+                    die("Formato de imagen no permitido");
+                }
+
+                $nombreArchivo = 'paciente_' . uniqid() . '.' . $extension;
+                $rutaFinal = $directorioFisico . $nombreArchivo;
+
+                if (move_uploaded_file($_FILES['foto_paciente']['tmp_name'], $rutaFinal)) {
+
+                    // borrar foto anterior si no es la por defecto
+                    if (
+                        !empty($paciente['foto_paciente']) &&
+                        $paciente['foto_paciente'] !== 'imagen_paciente_por_defecto.jpg'
+                    ) {
+                        $fotoAnterior = $directorioFisico . $paciente['foto_paciente'];
+                        if (file_exists($fotoAnterior)) {
+                            unlink($fotoAnterior);
+                        }
+                    }
+
+                    $foto = $nombreArchivo;
+                }
             }
 
             $pacienteModel->setNombrePaciente($nombre);

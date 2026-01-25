@@ -46,9 +46,8 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
 
     </div>
 
-    <!-- ===============================
-     BARRA INFERIOR
-================================ -->
+    
+     <!--   *******************        BARRA INFERIOR      *********************      -->
     <nav class="bottom-bar">
 
         <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>paciente/home/inicio')">

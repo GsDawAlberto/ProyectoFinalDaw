@@ -83,7 +83,7 @@ h1, h2 {
     transform: translateX(5px);
 }
 
-.logout-btn{
+a{
     text-decoration: none;
 }
 

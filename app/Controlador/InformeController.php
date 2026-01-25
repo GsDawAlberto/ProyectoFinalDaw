@@ -65,7 +65,7 @@ class InformeController
         $rutaCarpeta = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/';
         $horaVisita = date('Y-m-d H:i:s');
 
-         // Crear la carpeta si no existe
+        // Crear la carpeta si no existe
 
         if (!is_dir($rutaCarpeta)) {
             mkdir($rutaCarpeta, 0777, true);
@@ -76,23 +76,9 @@ class InformeController
 
         $paciente = $pacienteModel->mostrarPacientePorId($pdo, $id_paciente);
 
-
-
         if (!$paciente) {
             die("Paciente no encontrado");
         }
-
-        /******************** PREPARAR LOGO CLÍNICA PARA MOSTRAR EN PDF********************/
-        /* $clinica = $_SESSION['clinica'];
-        $logoClinica = '';
-
-        if (!empty($clinica['logo_clinica'])) {
-            $rutaLogo = Enlaces:: LOGOS_URL . $clinica['logo_clinica'];
-
-            if (file_exists($rutaLogo)) {
-                $logoClinica = '<img src="' . $rutaLogo . '" style="height:80px;">';
-            }
-        } */
 
         $this->generarPDF(
             $rutaCarpeta . $nombrePDF,
@@ -103,7 +89,6 @@ class InformeController
             $paciente,
             $horaVisita
 
-            /* $logoClinica */
         );
 
         /* ===== GUARDAR EN BD ===== */
@@ -121,7 +106,7 @@ class InformeController
         if (!$informe->guardarInforme($pdo)) {
             die("Error al guardar el informe");
         }
-        
+
 
         /********************************** REDIRECCIONAR AL HOME DE PACIENTES **********************************/
 
@@ -147,56 +132,58 @@ class InformeController
         $diagnostico = nl2br(htmlspecialchars($diagnostico));
         $tratamiento = nl2br(htmlspecialchars($tratamiento));
 
+        // CREACIÓN DEL MAQUETADO DE LA VISTA PDF
+
         $html = <<<HTML
-<style>
-    h1 { text-align:center; font-size:18px; color:#003366; }
-    h2 { text-align:center; font-size:16px; color:#004c73; }
-    .logo-clinica { text-align:center; margin-bottom:10px; }
-    .sub { text-align:center; font-size:11px; color:#555; }
-    .box { border:1px solid #ccc; padding:10px; margin-bottom:12px; }
-    .box_diagnostico { border:1px solid #ccc; padding:10px; margin-bottom:12px; background-color:#f9f9f9; height: 500px; }
-    .box-tratamiento { border:1px solid #ccc; padding:10px; margin-bottom:12px; background-color:#f1f1f1; height: 500px; }
-    .titulo { font-weight:bold; color:#005f87; margin-bottom:5px; }
-    .pie { font-size:9px; text-align:center; color:#777; margin-top:20px; }
-</style>
+            <style>
+                h1 { text-align:center; font-size:18px; color:#003366; }
+                h2 { text-align:center; font-size:16px; color:#004c73; }
+                .logo-clinica { text-align:center; margin-bottom:10px; }
+                .sub { text-align:center; font-size:11px; color:#555; }
+                .box { border:1px solid #ccc; padding:10px; margin-bottom:12px; }
+                .box_diagnostico { border:1px solid #ccc; padding:10px; margin-bottom:12px; background-color:#f9f9f9; height: 500px; }
+                .box-tratamiento { border:1px solid #ccc; padding:10px; margin-bottom:12px; background-color:#f1f1f1; height: 500px; }
+                .titulo { font-weight:bold; color:#005f87; margin-bottom:5px; }
+                .pie { font-size:9px; text-align:center; color:#777; margin-top:20px; }
+            </style>
 
-<h1>INFORME MÉDICO</h1>
+            <h1>INFORME MÉDICO</h1>
 
-<div class="sub"><h2>{$clinica['nombre_clinica']}</h2></div>
+            <div class="sub"><h2>{$clinica['nombre_clinica']}</h2></div>
 
-<br>
-<h3>Datos del Médico</h3>
-<div class="box">
-    <div class="titulo">Nombre y Apellidos</div>
-    {$medico['nombre_medico']} {$medico['apellidos_medico']}<br>
-    <div class="titulo">Nº Colegiado</div>
-    {$medico['numero_colegiado']}
-</div>
+            <br>
+                <h3>Datos del Médico</h3>
+                <div class="box">
+                    <div class="titulo">Nombre y Apellidos</div>
+                    {$medico['nombre_medico']} {$medico['apellidos_medico']}<br>
+                    <div class="titulo">Nº Colegiado</div>
+                    {$medico['numero_colegiado']}
+                </div>
 
-<h3>Datos del Paciente</h3>
-<div class="box">
-    <div class="titulo">Nombre y Apellidos</div>
-    {$paciente['nombre_paciente']} {$paciente['apellidos_paciente']}<br>
-    <div class="titulo">Codigo de paciente</div>
-    {$paciente['usuario_paciente']}
-</div>
+            <h3>Datos del Paciente</h3>
+            <div class="box">
+                <div class="titulo">Nombre y Apellidos</div>
+                {$paciente['nombre_paciente']} {$paciente['apellidos_paciente']}<br>
+                <div class="titulo">Codigo de paciente</div>
+                {$paciente['usuario_paciente']}
+            </div>
 
-<div class="box">
-<div class="box_diagnostico">
-    <div class="titulo">Diagnóstico</div>
-    {$diagnostico}
-</div>
+            <div class="box">
+            <div class="box_diagnostico">
+                <div class="titulo">Diagnóstico</div>
+                {$diagnostico}
+            </div>
 
-<div class="box-tratamiento">
-    <div class="titulo">Tratamiento</div>
-    {$tratamiento}
-</div>
-</div>
-<div class="pie">
-    <h3>{$clinica['nombre_clinica']} · Informe generado el {$horaVisita}</h3>
-    <p>Documento médico generado automáticamente · Mediagend ©</p>
-</div>
-HTML;
+            <div class="box-tratamiento">
+                <div class="titulo">Tratamiento</div>
+                {$tratamiento}
+            </div>
+            </div>
+            <div class="pie">
+                <h3>{$clinica['nombre_clinica']} · Informe generado el {$horaVisita}</h3>
+                <p>Documento médico generado automáticamente · Mediagend ©</p>
+            </div>
+            HTML;
 
         $pdf->writeHTML($html, true, false, true, false, '');
         $pdf->Output($rutaFinal, 'F');
@@ -227,112 +214,70 @@ HTML;
 
         $informes = $informeModel->listarPorPaciente($pdo, $id_paciente);
 
-        // Pasas datos reales a la vista
+        // Pasamos los datos reales a la vista
         require Enlaces::VIEW_PATH . 'informe/listar_informes.php';
     }
 
     public function ver()
-{
-    session_start();
-
-    if (!isset($_SESSION['medico']) && !isset($_SESSION['paciente'])) {
-        exit('Acceso denegado');
-    }
-
-    // ID del informe
-    $idInforme = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-    if (!$idInforme) {
-        exit('Informe inválido');
-    }
-
-    $pdo = BaseDatos::getConexion();
-    $informeModel = new Informe();
-
-    /* Obtener informe con paciente y clínica */
-    $informe = $informeModel->listarPorId($pdo, $idInforme);
-
-    if (!$informe) {
-        exit('Informe no encontrado');
-    }
-
-    /* ===============================
-       SEGURIDAD
-    =============================== */
-
-    // 🧑‍🦱 PACIENTE
-    if (isset($_SESSION['paciente'])) {
-
-        if ($informe['id_paciente'] != $_SESSION['paciente']['id_paciente']) {
-            exit('Acceso no autorizado');
-        }
-    }
-
-    // 👨‍⚕️ MÉDICO
-    elseif (isset($_SESSION['medico'])) {
-
-        if ($informe['id_clinica'] != $_SESSION['clinica']['id_clinica']) {
-            exit('Acceso no autorizado');
-        }
-    }
-
-    /* ===============================
-       MOSTRAR PDF
-    =============================== */
-
-    $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'];
-
-    if (!is_file($rutaPDF)) {
-        exit('Archivo PDF no encontrado');
-    }
-
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: inline; filename="' . basename($rutaPDF) . '"');
-    header('Content-Length: ' . filesize($rutaPDF));
-
-    readfile($rutaPDF);
-    exit;
-}
-
-    /* public function ver()
     {
         session_start();
 
-        if (!isset($_SESSION['medico'])) {
+        if (!isset($_SESSION['medico']) && !isset($_SESSION['paciente'])) {
             exit('Acceso denegado');
         }
 
-        // Obtener el ID del informe
-        $id_informe = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        if (!$id_informe) {
+        // ID del informe
+        $idInforme = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$idInforme) {
             exit('Informe inválido');
         }
 
-        // Conexión y obtención del informe
         $pdo = BaseDatos::getConexion();
         $informeModel = new Informe();
-        $informe = $informeModel->mostrarInforme($pdo, $id_informe);
+
+        /* Obtener informe con paciente y clínica */
+        $informe = $informeModel->listarPorId($pdo, $idInforme);
 
         if (!$informe) {
-            exit('Informe no encontrado en la base de datos');
+            exit('Informe no encontrado');
         }
 
-        // Ruta física del archivo PDF
+        
+       // SEGURIDAD
+
+        //  PACIENTE
+        if (isset($_SESSION['paciente'])) {
+
+            if ($informe['id_paciente'] != $_SESSION['paciente']['id_paciente']) {
+                exit('Acceso no autorizado');
+            }
+        }
+
+        //  MÉDICO
+        elseif (isset($_SESSION['medico'])) {
+
+            if ($informe['id_clinica'] != $_SESSION['clinica']['id_clinica']) {
+                exit('Acceso no autorizado');
+            }
+        }
+
+        
+       // MOSTRAR PDF
+
         $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'];
 
-        // Validar que el archivo exista realmente
         if (!is_file($rutaPDF)) {
-            exit('Archivo PDF no encontrado en la carpeta de informes');
+            exit('Archivo PDF no encontrado');
         }
 
-        // Enviar PDF al navegador
         header('Content-Type: application/pdf');
-        header('Content-Disposition: inline; filename="' . basename($informe['archivo_pdf_informe']) . '"');
+        header('Content-Disposition: inline; filename="' . basename($rutaPDF) . '"');
         header('Content-Length: ' . filesize($rutaPDF));
 
-        // Mostrar archivo
         readfile($rutaPDF);
         exit;
-    } */
+    }
+
     public function eliminar()
     {
         session_start();
@@ -347,6 +292,7 @@ HTML;
             exit;
         }
 
+        // Sanitizado
         $id_informe = filter_input(INPUT_POST, 'id_informe', FILTER_VALIDATE_INT);
 
         if (!$id_informe) {

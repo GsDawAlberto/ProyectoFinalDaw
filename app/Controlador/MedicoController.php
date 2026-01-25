@@ -130,6 +130,7 @@ class MedicoController
 
 
         // Control de la ruta de la foto introducida
+        $fotoRuta = null;
         if (!empty($_FILES['foto_medico']['name'])) {
 
             // RUTA FÍSICA REAL
@@ -203,7 +204,7 @@ class MedicoController
         $password = trim(filter_input(INPUT_POST, 'password_medico', FILTER_SANITIZE_STRING) ?? '');
 
         // Validaciones
-        
+
         // Campos obligatorios
         if (!$colegiado || !$password) {
             die("Todos los campos son obligatorios.<br>
@@ -342,9 +343,9 @@ class MedicoController
         $pdo = BaseDatos::getConexion();
         $medicoModel = new Medico();
 
-        /* =======================
-       MOSTRAR FORMULARIO
-    ======================= */
+
+        //MOSTRAR FORMULARIO CON GET
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             $id_medico = filter_input(INPUT_GET, 'id_medico', FILTER_VALIDATE_INT);
@@ -368,9 +369,8 @@ class MedicoController
             exit;
         }
 
-        /* =======================
-       GUARDAR CAMBIOS
-    ======================= */
+
+        // GUARDAR CAMBIOS Y ENVIARLOS POR POST A SU RUTA
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $id_medico = filter_input(INPUT_POST, 'id_medico', FILTER_VALIDATE_INT);
@@ -388,7 +388,7 @@ class MedicoController
                 die("No tienes permisos");
             }
 
-            // Sanitizar datos
+            // eNTRADA DE DATOS MEDIANTE POST
             $nombre              = trim($_POST['nombre_medico']);
             $apellidos           = trim($_POST['apellidos_medico']);
             $dni                 = trim($_POST['dni_medico']);
@@ -456,17 +456,41 @@ class MedicoController
 
 
             // FOTO
-            $foto = $medico['foto_medico']; // Mantener foto actual por defecto
+            $foto = $medico['foto_medico']; // mantener la actual
 
             if (!empty($_FILES['foto_medico']['name'])) {
-                $foto = uniqid() . '_' . $_FILES['foto_medico']['name'];
-                move_uploaded_file(
-                    $_FILES['foto_medico']['tmp_name'],
-                    Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_medicos/" . $foto
-                );
+
+                $directorioFisico = Enlaces::BASE_PATH . 'app/imagenes_registros/imagenes_medicos/';
+
+                if (!is_dir($directorioFisico)) {
+                    mkdir($directorioFisico, 0777, true);
+                }
+
+                $extension = strtolower(pathinfo($_FILES['foto_medico']['name'], PATHINFO_EXTENSION));
+
+                $extPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
+                if (!in_array($extension, $extPermitidas)) {
+                    die("Formato de imagen no permitido");
+                }
+
+                $nombreArchivo = 'medico_' . uniqid() . '.' . $extension;
+                $rutaFinal = $directorioFisico . $nombreArchivo;
+
+                if (move_uploaded_file($_FILES['foto_medico']['tmp_name'], $rutaFinal)) {
+
+                    // borrar foto anterior si existe
+                    if (!empty($medico['foto_medico'])) {
+                        $fotoAnterior = $directorioFisico . $medico['foto_medico'];
+                        if (file_exists($fotoAnterior)) {
+                            unlink($fotoAnterior);
+                        }
+                    }
+
+                    $foto = $nombreArchivo;
+                }
             }
 
-            // Setear modelo
+            // Entrada de datos al modelo
             $medicoModel->setNombreMedico($nombre);
             $medicoModel->setApellidosMedico($apellidos);
             $medicoModel->setNumeroColegiado($numero_colegiado);

@@ -82,7 +82,7 @@ class AdminController
         $pass1      = trim($_POST['password'] ?? '');
         $pass2      = trim($_POST['password_2'] ?? '');
 
-        /* VALIDACIONES */
+        // VALIDACIONES
         if (strlen($nombre) < 3 || strlen($nombre) > 20) {
             die("El nombre debe tener entre 3 y 20 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
         }
@@ -221,33 +221,4 @@ class AdminController
         header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
         exit;
     }
-
-    /********************************************** GUARDAR CONFIGURACIÓN ADMIN *************************************************/
-
-    /************************************** NO HE USADO ESTE MÉTODO **************************************************************/
-    /**
- * Método para guardar la configuración del administrador
- * @return never
- */
-    /* public function guardar_configuracion()
-{
-    session_start();
-
-    $id_admin = $_SESSION['admin']['id_admin'];
-
-    $data = [
-        'tema'   => $_POST['tema'],
-        'fuente' => $_POST['fuente'],
-        'color'  => $_POST['color']
-    ];
-
-    $pdo = BaseDatos::getConexion();
-    $config = new Administrador();
-    $config->guardarConfiguracionAdmin($pdo, $id_admin, $data);
-
-    // Guardar en sesión para aplicar instantáneo
-    $_SESSION['config'] = $data;
-
-    header("Location: " . Enlaces::BASE_URL . "admin/home/configuracion");
-} */
 }

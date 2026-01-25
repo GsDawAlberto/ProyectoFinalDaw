@@ -37,7 +37,7 @@ use Mediagend\App\Config\Enlaces;
 
         <div class="form-group">
             <label>Contraseña</label>
-            <input type="password" name="password_paciente" id="password_paciente" required>
+            <input type="password" name="password_paciente" id="password_paciente" placeholder="******" required>
             <small class="error-msg"></small>
         </div>
 
