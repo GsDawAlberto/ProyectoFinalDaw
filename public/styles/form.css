@@ -71,6 +71,32 @@ header p {
     transition: 0.3s ease;
 }
 
+/* CONTROL DE LA CONTRASEÑA */
+#box_pass{
+    position: relative;
+}
+
+#password, #password_2{
+    width: 100%;
+}
+
+#ver_pass_1, #ver_pass_2{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transform: translateX(1%);
+    cursor: pointer;
+    font-size: 14px;
+    color: #0078ff;
+    user-select: none;
+    opacity: 0;
+}
+#password:focus-within + #ver_pass_1,
+#password_2:focus-within + #ver_pass_2 {
+    opacity: 1;
+}
+
 /* FOOTER */
 footer {
     margin-top: 20px;

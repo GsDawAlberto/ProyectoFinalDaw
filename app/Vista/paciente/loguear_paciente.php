@@ -19,213 +19,251 @@ use Mediagend\App\Config\Enlaces;
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <header>
-        <h2>Registrar Nuevo Paciente</h2>
-    </header>
+        <header>
+            <h2>Registrar Nuevo Paciente</h2>
+        </header>
 
-    <!-- MENSAJE GLOBAL -->
-    <div id="formErrorGlobal" class="form-error-global">
-        Todas las entradas deben ser validadas
+        <!-- MENSAJE GLOBAL -->
+        <div id="formErrorGlobal" class="form-error-global">
+            Todas las entradas deben ser validadas
+        </div>
+
+        <form action="<?= Enlaces::BASE_URL ?>paciente/registrar_paciente"
+            method="POST"
+            enctype="multipart/form-data"
+            class="form"
+            id="formPaciente">
+
+            <div class="form-group">
+                <label>Nombre del Paciente</label>
+                <input type="text" name="nombre_paciente" id="nombre_paciente" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Apellidos Paciente</label>
+                <input type="text" name="apellidos_paciente" id="apellidos_paciente" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
+                <label>DNI Paciente</label>
+                <input type="text" name="dni_paciente" id="dni_paciente" placeholder="00000000A" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Foto del Paciente</label>
+                <input type="file" name="foto_paciente" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" name="telefono_paciente" id="telefono_paciente" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email_paciente" id="email_paciente" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" name="usuario_paciente" id="usuario_paciente" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group" id="box_pass">
+                <label>Contraseña:</label>
+                <input type="password" name="password" id="password" placeholder="Ingresa una contraseña" required>
+                <span id="ver_pass_1">Mostrar</span>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group" id="box_pass">
+                <label>Repetir Contraseña:</label>
+                <input type="password" name="password_2" id="password_2" placeholder="Repite la contraseña" required>
+                <span id="ver_pass_2">Mostrar</span>
+                <small class="error-msg"></small>
+            </div>
+            <button type="reset" class="btn-reset">Borrar todo</button>
+            <button type="submit" class="btn-submit">Registrar Paciente</button>
+        </form>
+
     </div>
+    <!-- =====================
+     MOSTRAR CONTRASEÑA
+===================== -->
+    <script>
+        function togglePass(inputId, btnId) {
+            const input = document.getElementById(inputId);
+            const btn = document.getElementById(btnId);
 
-    <form action="<?= Enlaces::BASE_URL ?>paciente/registrar_paciente"
-          method="POST"
-          enctype="multipart/form-data"
-          class="form"
-          id="formPaciente">
+            btn.addEventListener("click", () => {
+                if (input.type === "password") {
+                    input.type = "text";
+                    btn.textContent = "Ocultar";
+                } else {
+                    input.type = "password";
+                    btn.textContent = "Mostrar";
+                }
+            });
+        }
 
-        <div class="form-group">
-            <label>Nombre del Paciente</label>
-            <input type="text" name="nombre_paciente" id="nombre_paciente" required>
-            <small class="error-msg"></small>
-        </div>
+        togglePass("password", "ver_pass_1");
+        togglePass("password_2", "ver_pass_2");
+    </script>
 
-        <div class="form-group">
-            <label>Apellidos Paciente</label>
-            <input type="text" name="apellidos_paciente" id="apellidos_paciente" required>
-            <small class="error-msg"></small>
-        </div>
+    <script>
+        const form = document.getElementById('formPaciente');
+        const errorGlobal = document.getElementById('formErrorGlobal');
 
-        <div class="form-group">
-            <label>DNI Paciente</label>
-            <input type="text" name="dni_paciente" id="dni_paciente" placeholder="00000000A" required>
-            <small class="error-msg"></small>
-        </div>
+        const nombre = document.getElementById('nombre_paciente');
+        const apellidos = document.getElementById('apellidos_paciente');
+        const dni = document.getElementById('dni_paciente');
+        const telefono = document.getElementById('telefono_paciente');
+        const email = document.getElementById('email_paciente');
+        const usuario = document.getElementById('usuario_paciente');
+        const pass1 = document.getElementById('password_paciente');
+        const pass2 = document.getElementById('password2_paciente');
 
-        <div class="form-group">
-            <label>Foto del Paciente</label>
-            <input type="file" name="foto_paciente" accept="image/*">
-        </div>
+        /* =====================
+           FUNCIONES UI
+        ===================== */
+        function setError(input, message) {
+            const group = input.parentElement;
+            group.classList.add('error');
+            group.classList.remove('success');
+            group.querySelector('.error-msg').innerText = message;
+        }
 
-        <div class="form-group">
-            <label>Teléfono</label>
-            <input type="text" name="telefono_paciente" id="telefono_paciente" required>
-            <small class="error-msg"></small>
-        </div>
+        function setSuccess(input) {
+            const group = input.parentElement;
+            group.classList.remove('error');
+            group.classList.add('success');
+            group.querySelector('.error-msg').innerText = '';
+        }
 
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email_paciente" id="email_paciente" required>
-            <small class="error-msg"></small>
-        </div>
+        /* =====================
+           VALIDACIONES
+        ===================== */
+        function validarTexto(input, min, max) {
+            const value = input.value.trim();
+            if (value.length < min || value.length > max) {
+                setError(input, `Debe tener entre ${min} y ${max} caracteres`);
+                return false;
+            }
+            setSuccess(input);
+            return true;
+        }
 
-        <div class="form-group">
-            <label>Usuario</label>
-            <input type="text" name="usuario_paciente" id="usuario_paciente" required>
-            <small class="error-msg"></small>
-        </div>
+        function validarEmail(input) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!regex.test(input.value.trim())) {
+                setError(input, 'Email no válido');
+                return false;
+            }
+            setSuccess(input);
+            return true;
+        }
 
-        <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password_paciente" id="password_paciente" required>
-            <small class="error-msg"></small>
-        </div>
+        function validarTelefono(input) {
+            const regex = /^[0-9]{9}$/;
+            if (!regex.test(input.value.trim())) {
+                setError(input, 'Debe tener 9 dígitos numéricos');
+                return false;
+            }
+            setSuccess(input);
+            return true;
+        }
 
-        <div class="form-group">
-            <label>Repetir contraseña</label>
-            <input type="password" name="password2_paciente" id="password2_paciente" required>
-            <small class="error-msg"></small>
-        </div>
-        <button type="reset" class="btn-reset">Borrar todo</button>
-        <button type="submit" class="btn-submit">Registrar Paciente</button>
-    </form>
+        function validarPasswords() {
+            let valido = true;
 
-</div>
+            // Validar longitud pass1
+            if (pass1.value.length < 6) {
+                setError(pass1, 'Mínimo 6 caracteres');
+                valido = false;
+            } else {
+                setSuccess(pass1);
+            }
 
-<script>
-const form = document.getElementById('formPaciente');
-const errorGlobal = document.getElementById('formErrorGlobal');
+            // Solo validar coincidencia si pass2 tiene algo escrito
+            if (pass2.value.length > 0) {
+                if (pass1.value !== pass2.value) {
+                    setError(pass2, 'Las contraseñas no coinciden');
+                    valido = false;
+                } else {
+                    setSuccess(pass2);
+                }
+            } else {
+                // si aún no escribió, no muestres error
+                setSuccess(pass2);
+            }
 
-const nombre = document.getElementById('nombre_paciente');
-const apellidos = document.getElementById('apellidos_paciente');
-const dni = document.getElementById('dni_paciente');
-const telefono = document.getElementById('telefono_paciente');
-const email = document.getElementById('email_paciente');
-const usuario = document.getElementById('usuario_paciente');
-const pass1 = document.getElementById('password_paciente');
-const pass2 = document.getElementById('password2_paciente');
+            return valido;
+        }
 
-/* =====================
-   FUNCIONES UI
-===================== */
-function setError(input, message) {
-    const group = input.parentElement;
-    group.classList.add('error');
-    group.classList.remove('success');
-    group.querySelector('.error-msg').innerText = message;
-}
+        function validarDNI(input) {
+            const value = input.value.trim().toUpperCase();
+            const dniRegex = /^[0-9]{8}[A-Z]$/;
 
-function setSuccess(input) {
-    const group = input.parentElement;
-    group.classList.remove('error');
-    group.classList.add('success');
-    group.querySelector('.error-msg').innerText = '';
-}
+            if (!dniRegex.test(value)) {
+                setError(input, 'DNI inválido, debe contener 9 digitos seguido de una letra');
+                return false;
+            }
 
-/* =====================
-   VALIDACIONES
-===================== */
-function validarTexto(input, min, max) {
-    const value = input.value.trim();
-    if (value.length < min || value.length > max) {
-        setError(input, `Debe tener entre ${min} y ${max} caracteres`);
-        return false;
-    }
-    setSuccess(input);
-    return true;
-}
+            const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            const numero = value.substring(0, 8);
+            const letra = value.charAt(8);
 
-function validarEmail(input) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(input.value.trim())) {
-        setError(input, 'Email no válido');
-        return false;
-    }
-    setSuccess(input);
-    return true;
-}
+            if (letras[numero % 23] !== letra) {
+                setError(input, 'Letra del DNI incorrecta');
+                return false;
+            }
 
-function validarTelefono(input) {
-    const regex = /^[0-9]{9}$/;
-    if (!regex.test(input.value.trim())) {
-        setError(input, 'Debe tener 9 dígitos numéricos');
-        return false;
-    }
-    setSuccess(input);
-    return true;
-}
+            setSuccess(input);
+            return true;
+        }
 
-function validarPassword() {
-    if (pass1.value.length < 6) {
-        setError(pass1, 'Mínimo 6 caracteres');
-        return false;
-    }
-    if (pass1.value !== pass2.value) {
-        setError(pass2, 'Las contraseñas no coinciden');
-        return false;
-    }
-    setSuccess(pass1);
-    setSuccess(pass2);
-    return true;
-}
+        /* =====================
+           TIEMPO REAL
+        ===================== */
+        nombre.addEventListener('input', () => validarTexto(nombre, 3, 30));
+        apellidos.addEventListener('input', () => validarTexto(apellidos, 3, 50));
+        dni.addEventListener('input', () => validarDNI(dni));
+        telefono.addEventListener('input', () => validarTelefono(telefono));
+        email.addEventListener('input', () => validarEmail(email));
+        usuario.addEventListener('input', () => validarTexto(usuario, 3, 15));
+        pass1.addEventListener('input', validarPassword);
+        pass2.addEventListener('input', validarPassword);
 
-function validarDNI(input) {
-    const value = input.value.trim().toUpperCase();
-    const dniRegex = /^[0-9]{8}[A-Z]$/;
+        /* =====================
+           ENVÍO
+        ===================== */
+        form.addEventListener('submit', e => {
+            const valido =
+                validarTexto(nombre, 3, 30) &&
+                validarTexto(apellidos, 3, 50) &&
+                validarDNI(dni) &&
+                validarTelefono(telefono) &&
+                validarEmail(email) &&
+                validarTexto(usuario, 3, 15) &&
+                validarPassword();
 
-    if (!dniRegex.test(value)) {
-        setError(input, 'DNI inválido, debe contener 9 digitos seguido de una letra');
-        return false;
-    }
-
-    const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-    const numero = value.substring(0, 8);
-    const letra = value.charAt(8);
-
-    if (letras[numero % 23] !== letra) {
-        setError(input, 'Letra del DNI incorrecta');
-        return false;
-    }
-
-    setSuccess(input);
-    return true;
-}
-
-/* =====================
-   TIEMPO REAL
-===================== */
-nombre.addEventListener('input', () => validarTexto(nombre, 3, 30));
-apellidos.addEventListener('input', () => validarTexto(apellidos, 3, 50));
-dni.addEventListener('input', () => validarDNI(dni));
-telefono.addEventListener('input', () => validarTelefono(telefono));
-email.addEventListener('input', () => validarEmail(email));
-usuario.addEventListener('input', () => validarTexto(usuario, 3, 15));
-pass1.addEventListener('input', validarPassword);
-pass2.addEventListener('input', validarPassword);
-
-/* =====================
-   ENVÍO
-===================== */
-form.addEventListener('submit', e => {
-    const valido =
-        validarTexto(nombre, 3, 30) &&
-        validarTexto(apellidos, 3, 50) &&
-        validarDNI(dni) &&
-        validarTelefono(telefono) &&
-        validarEmail(email) &&
-        validarTexto(usuario, 3, 15) &&
-        validarPassword();
-
-    if (!valido) {
-        e.preventDefault();
-        errorGlobal.classList.add('visible');
-    } else {
-        errorGlobal.classList.remove('visible');
-    }
-});
-</script>
+            if (!valido) {
+                e.preventDefault();
+                errorGlobal.classList.add('visible');
+            } else {
+                errorGlobal.classList.remove('visible');
+            }
+        });
+    </script>
 
 </body>
+
 </html>

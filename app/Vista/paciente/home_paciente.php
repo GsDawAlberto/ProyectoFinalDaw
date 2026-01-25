@@ -5,6 +5,22 @@ use Mediagend\App\Config\Enlaces;
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+/****** Cookie de bienvenida, solo una vez ***********/
+$mostrarBienvenida = false;
+
+if (!isset($_COOKIE['bienvenida_paciente'])) {
+    $mostrarBienvenida = true;
+
+    setcookie(
+        "bienvenida_paciente",
+        "1",
+        time() + (60 * 60 * 24 * 30), // 30 días
+        "/",
+        "",
+        false,
+        true
+    );
+}
 
 if (!isset($_SESSION['paciente'])) {
     exit('Acceso denegado');
@@ -32,7 +48,17 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
     <header>
         <h3><?= $nombrePaciente ?></h3>
     </header>
-    
+    <!-- ESTA COOKIE SOLO SE MOSTRARÁ EN EL HOME DEL PACIENTE NO EN OTRO -->
+    <!-- Mensaje de bienvenida, solo la primera vez que inicia con el disposivo -->
+    <?php if ($mostrarBienvenida): ?>
+        <div class="bienvenido-box" id="bienvenido">
+            👋 Bienvenido/a, <strong><?= htmlspecialchars($nombrePaciente) ?></strong>
+            <button class="close-bienvenido" onclick="document.getElementById('bienvenido').remove()">×</button>
+        </div>
+    <?php endif; ?>
+
+
+
     <div class="layout">
 
         <!-- CONTENIDO -->
@@ -47,8 +73,8 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
 
     </div>
 
-    
-     <!--   *******************        BARRA INFERIOR      *********************      -->
+
+    <!--   *******************        BARRA INFERIOR      *********************      -->
     <nav class="bottom-bar">
 
         <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>paciente/home/inicio')">
@@ -72,7 +98,7 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
         </button>
 
         <a class="menu-btn" href="<?= Enlaces::BASE_URL ?>paciente/logout"><i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i>SALIR</a>
-        
+
 
     </nav>
 

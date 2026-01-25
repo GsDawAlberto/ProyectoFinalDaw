@@ -26,6 +26,9 @@ class Enlaces
     public const PDF_INFORMES_URL = '/mediagend/app/imagenes_registros/informes_clinicos/';
     // Ruta absoluta en el sistema de archivos (no URL)
 
+    /**************************************URL JAVA SCRIPTS ****************************/
+    public const JS_URL = '/mediagend/app/scripts_javaScript/';
+
     /******************************** PATHS *********************************/
     public const BASE_PATH = __DIR__ . "/../../";
 
@@ -45,4 +48,6 @@ class Enlaces
 
     // Ruta a los controladores (si se necesita)
     public const CONTROLLER_PATH = self::BASE_PATH . "app/controlador/";
+
+    
 }

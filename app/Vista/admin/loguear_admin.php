@@ -59,15 +59,17 @@ use Mediagend\App\Config\Enlaces;
                 <small class="error-msg"></small>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="box_pass">
                 <label>Contraseña:</label>
                 <input type="password" name="password" id="password" placeholder="Ingresa una contraseña" required>
+                <span id="ver_pass_1">Mostrar</span>
                 <small class="error-msg"></small>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="box_pass">
                 <label>Repetir Contraseña:</label>
                 <input type="password" name="password_2" id="password_2" placeholder="Repite la contraseña" required>
+                <span id="ver_pass_2">Mostrar</span>
                 <small class="error-msg"></small>
             </div>
             <button type="reset" class="btn-reset">Borrar todo</button>
@@ -86,6 +88,28 @@ use Mediagend\App\Config\Enlaces;
 
     </div>
 
+    <!-- =====================
+     MOSTRAR CONTRASEÑA
+===================== -->
+    <script>
+        function togglePass(inputId, btnId) {
+            const input = document.getElementById(inputId);
+            const btn = document.getElementById(btnId);
+
+            btn.addEventListener("click", () => {
+                if (input.type === "password") {
+                    input.type = "text";
+                    btn.textContent = "Ocultar";
+                } else {
+                    input.type = "password";
+                    btn.textContent = "Mostrar";
+                }
+            });
+        }
+
+        togglePass("password", "ver_pass_1");
+        togglePass("password_2", "ver_pass_2");
+    </script>
     <!-- =====================
      VALIDACIÓN EN TIEMPO REAL
 ===================== -->
@@ -164,19 +188,30 @@ use Mediagend\App\Config\Enlaces;
         }
 
         function validarPasswords() {
+            let valido = true;
+
+            // Validar longitud pass1
             if (pass1.value.length < 6) {
                 setError(pass1, 'Mínimo 6 caracteres');
-                return false;
+                valido = false;
+            } else {
+                setSuccess(pass1);
             }
 
-            if (pass1.value !== pass2.value) {
-                setError(pass2, 'Las contraseñas no coinciden');
-                return false;
+            // Solo validar coincidencia si pass2 tiene algo escrito
+            if (pass2.value.length > 0) {
+                if (pass1.value !== pass2.value) {
+                    setError(pass2, 'Las contraseñas no coinciden');
+                    valido = false;
+                } else {
+                    setSuccess(pass2);
+                }
+            } else {
+                // si aún no escribió, no muestres error
+                setSuccess(pass2);
             }
 
-            setSuccess(pass1);
-            setSuccess(pass2);
-            return true;
+            return valido;
         }
 
         /* =====================

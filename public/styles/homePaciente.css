@@ -68,6 +68,41 @@ header {
 }
 
 /* ==========================
+   ESTILO COOCKIE
+========================== */
+.bienvenido-box {
+    background: #e8f3ff;
+    color: #0a3d62;
+    padding: 15px 18px;
+    margin: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    animation: fadeInBienvenido 0.4s ease;
+}
+
+@keyframes fadeInBienvenido {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-bienvenido {
+    background: none;
+    border: none;
+    font-size: 18px;
+    float: right;
+    cursor: pointer;
+    color: #0a3d62;
+}
+
+/* ==========================
    BARRA INFERIOR
 ========================== */
 .bottom-bar {
