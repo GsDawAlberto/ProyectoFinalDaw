@@ -107,6 +107,10 @@ header {
     color: #000000;
 }
 
+.logout-btn{
+    text-decoration: none;
+}
+
 /* ==========================
    FOOTER
 ========================== */

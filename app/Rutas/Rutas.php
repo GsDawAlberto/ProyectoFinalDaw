@@ -128,6 +128,11 @@ class Rutas
                 $controller->eliminar();
                 break;
 
+            case 'clinica/logout':
+                $controller = new ClinicaController();
+                $controller->logout();
+                break;
+
             /****************   VISTAS CLINICA HOME ****************/
 
             case 'clinica/home/pacientes':
@@ -254,6 +259,11 @@ class Rutas
             case 'medico/eliminar':
                 $controller = new MedicoController();
                 $controller->eliminar();
+                break;
+
+            case 'medico/logout':
+                $controller = new MedicoController();
+                $controller->logout();
                 break;
 
             /****************   VISTAS MÉDICO HOME ****************/

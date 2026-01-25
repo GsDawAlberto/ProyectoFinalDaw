@@ -98,10 +98,63 @@ class PacienteController
         $pass1      = trim($_POST['password_paciente'] ?? '');
         $pass2      = trim($_POST['password2_paciente'] ?? '');
 
-        // Validar contraseñas
-        if ($pass1 !== $pass2) {
-            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        // Validar entradas
+        if (!$nombre || !$apellidos || !$dni || !$telefono || !$email || !$usuario || !$pass1 || !$pass2) {
+            die("Todos los campos son obligatorios.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
         }
+
+        // Longitudes
+        if (strlen($nombre) < 3 || strlen($nombre) > 30) {
+            die("Nombre inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        if (strlen($apellidos) < 3 || strlen($apellidos) > 50) {
+            die("Apellidos inválidos.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+            die("Usuario inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        // DNI
+        if (!preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
+            die("Formato de DNI inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        if ($letras[intval(substr($dni, 0, 8)) % 23] !== $dni[8]) {
+            die("Letra del DNI incorrecta.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        // Teléfono
+        if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+            die("Teléfono inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        // Email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            die("Email inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        // Password
+        if (strlen($pass1) < 6) {
+            die("La contraseña debe tener al menos 6 caracteres.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
+        if ($pass1 !== $pass2) {
+            die("Las contraseñas no coinciden.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/loguear_paciente'>Volver</a>");
+        }
+
 
         // Control de la ruta de la foto introducida
         if (!empty($_FILES['foto_paciente']['name'])) {
@@ -173,7 +226,24 @@ class PacienteController
 
         //Conexión BD
         $pdo = BaseDatos::getConexion();
+        /* Validar entradas*/
+        if (!$usuario || !$password) {
+            $_SESSION['error_login'] = 'Usuario y contraseña obligatorios';
+            header("Location: " . Enlaces::BASE_URL . "paciente/login_paciente");
+            exit;
+        }
 
+        if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+            $_SESSION['error_login'] = 'Usuario inválido';
+            header("Location: " . Enlaces::BASE_URL . "paciente/login_paciente");
+            exit;
+        }
+
+        if (strlen($password) < 6) {
+            $_SESSION['error_login'] = 'Contraseña inválida';
+            header("Location: " . Enlaces::BASE_URL . "paciente/login_paciente");
+            exit;
+        }
         //Autenticar
         $paciente = new Paciente();
         $resultado = $paciente->autenticarPaciente($pdo, $usuario, $password);
@@ -183,6 +253,8 @@ class PacienteController
             echo "<a href='" . Enlaces::BASE_URL . "paciente/login_paciente'>Volver</a>";
             exit;
         }
+
+
 
         session_start();
 
@@ -318,7 +390,7 @@ class PacienteController
     ======================= */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT) ; 
+            $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
             if (!$id_paciente) {
                 die("ID inválido");
             }
@@ -341,6 +413,58 @@ class PacienteController
             $email     = trim($_POST['email_paciente']);
             $id_medico  = trim($_POST['id_medico']) ?: null;
             $usuario   = trim($_POST['usuario_paciente']);
+
+            /* Validaciones */
+
+            // Campos obligatorios
+            if (!$nombre || !$apellidos || !$dni || !$telefono || !$email || !$usuario) {
+                die("Todos los campos obligatorios deben estar completos.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
+            // Nombre
+            if (strlen($nombre) < 3 || strlen($nombre) > 30) {
+                die("Nombre inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
+            // Apellidos
+            if (strlen($apellidos) < 3 || strlen($apellidos) > 50) {
+                die("Apellidos inválidos.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
+            // Usuario
+            if (strlen($usuario) < 3 || strlen($usuario) > 15) {
+                die("Usuario inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
+            // DNI formato
+            if (!preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
+                die("Formato de DNI inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
+            // DNI letra
+            $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            if ($letras[intval(substr($dni, 0, 8)) % 23] !== $dni[8]) {
+                die("Letra del DNI incorrecta.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
+            // Teléfono
+            if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+                die("Teléfono inválido. Debe tener 9 dígitos.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
+            // Email
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                die("Email inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/modificar'>Volver</a>");
+            }
+
 
             // FOTO
             $foto = $paciente['foto_paciente'];
@@ -372,9 +496,9 @@ class PacienteController
     }
 
     /************************* MODIFICAR DATOS PACIENTE (POR PACIENTE) *************************/
-public function modificar_mis_datos()
-{
-    session_start();
+    public function modificar_mis_datos()
+    {
+        session_start();
 
         if (!isset($_SESSION['paciente'])) {
             header("Location: " . Enlaces::BASE_URL . "paciente/login_paciente");
@@ -414,7 +538,7 @@ public function modificar_mis_datos()
     ======================= */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT) ; 
+            $id_paciente = filter_input(INPUT_POST, 'id_paciente', FILTER_VALIDATE_INT);
             if (!$id_paciente) {
                 die("ID inválido");
             }
@@ -429,7 +553,19 @@ public function modificar_mis_datos()
             $telefono  = trim($_POST['telefono_paciente']);
             $email     = trim($_POST['email_paciente']);
 
-            
+            // Teléfono
+            if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+                die("Teléfono inválido. Debe tener 9 dígitos.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
+            }
+
+            // Email
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                die("Email inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
+            }
+
+
             $pacienteModel->setTelefonoPaciente($telefono);
             $pacienteModel->setEmailPaciente($email);
 
@@ -440,66 +576,66 @@ public function modificar_mis_datos()
             header("Location: " . Enlaces::BASE_URL . "paciente/home/ajustes");
             exit;
         }
-}
+    }
 
 
     public function modificar_password()
-{
-    session_start();
+    {
+        session_start();
 
-    if (!isset($_SESSION['paciente'])) {
-        header("Location: " . Enlaces::BASE_URL . "paciente/login_paciente");
+        if (!isset($_SESSION['paciente'])) {
+            header("Location: " . Enlaces::BASE_URL . "paciente/login_paciente");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: " . Enlaces::BASE_URL . "paciente/home/ajustes");
+            exit;
+        }
+
+        $id_paciente = $_SESSION['paciente']['id_paciente'];
+
+        $password_actual        = trim($_POST['password_actual'] ?? '');
+        $nueva_password         = trim($_POST['nueva_password'] ?? '');
+        $repetir_nueva_password = trim($_POST['repetir_nueva_password'] ?? '');
+
+        // Validar que las nuevas contraseñas coincidan
+        if ($nueva_password !== $repetir_nueva_password) {
+            die("Las nuevas contraseñas no coinciden.<br>
+            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
+        }
+
+        $pdo = BaseDatos::getConexion();
+        $pacienteModel = new Paciente();
+
+        // Obtener datos del paciente
+        $paciente = $pacienteModel->mostrarPacientePorId($pdo, $id_paciente);
+        if (!$paciente) {
+            die("Paciente no encontrado.<br>
+            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
+        }
+
+        // Verificar la contraseña actual
+        if (!password_verify($password_actual, $paciente['password_paciente'])) {
+            die("La contraseña actual introducida es incorrecta.<br>
+            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
+        }
+
+        // Evitar que la nueva sea igual a la actual
+        if (password_verify($nueva_password, $paciente['password_paciente'])) {
+            die("La nueva contraseña no puede ser igual a la contraseña actual.<br>
+            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
+        }
+
+        // Actualizar la contraseña usando el modelo
+        $resultado = $pacienteModel->actualizarPassword($pdo, $id_paciente, $nueva_password);
+
+        if (!$resultado) {
+            die("Error al cambiar la contraseña.<br>
+            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
+        }
+
+        header("Location: " . Enlaces::BASE_URL . "paciente/home/ajustes?msg=pass_actualizada");
         exit;
     }
-
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header("Location: " . Enlaces::BASE_URL . "paciente/home/ajustes");
-        exit;
-    }
-
-    $id_paciente = $_SESSION['paciente']['id_paciente'];
-
-    $password_actual        = trim($_POST['password_actual'] ?? '');
-    $nueva_password         = trim($_POST['nueva_password'] ?? '');
-    $repetir_nueva_password = trim($_POST['repetir_nueva_password'] ?? '');
-
-    // Validar que las nuevas contraseñas coincidan
-    if ($nueva_password !== $repetir_nueva_password) {
-        die("Las nuevas contraseñas no coinciden.<br>
-            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
-    }
-
-    $pdo = BaseDatos::getConexion();
-    $pacienteModel = new Paciente();
-
-    // Obtener datos del paciente
-    $paciente = $pacienteModel->mostrarPacientePorId($pdo, $id_paciente);
-    if (!$paciente) {
-        die("Paciente no encontrado.<br>
-            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
-    }
-
-    // Verificar la contraseña actual
-    if (!password_verify($password_actual, $paciente['password_paciente'])) {
-        die("La contraseña actual introducida es incorrecta.<br>
-            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
-    }
-
-    // Evitar que la nueva sea igual a la actual
-    if (password_verify($nueva_password, $paciente['password_paciente'])) {
-        die("La nueva contraseña no puede ser igual a la contraseña actual.<br>
-            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
-    }
-
-    // Actualizar la contraseña usando el modelo
-    $resultado = $pacienteModel->actualizarPassword($pdo, $id_paciente, $nueva_password);
-
-    if (!$resultado) {
-        die("Error al cambiar la contraseña.<br>
-            <a href='" . Enlaces::BASE_URL . "paciente/home/ajustes'>Volver</a>");
-    }
-
-    header("Location: " . Enlaces::BASE_URL . "paciente/home/ajustes?msg=pass_actualizada");
-    exit;
-}
 }

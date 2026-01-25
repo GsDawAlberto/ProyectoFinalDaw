@@ -49,6 +49,7 @@ class MedicoController
         // Sanitizar entrada
         $nombre                 = trim(filter_input(INPUT_POST, 'nombre_medico', FILTER_SANITIZE_STRING));
         $apellidos              = trim(filter_input(INPUT_POST, 'apellidos_medico', FILTER_SANITIZE_STRING));
+        $dni                    = trim(filter_input(INPUT_POST, 'dni_medico', FILTER_SANITIZE_STRING));
         $numero_colegiado       = trim(filter_input(INPUT_POST, 'numero_colegiado', FILTER_SANITIZE_STRING));
         $especialidad_medico    = trim(filter_input(INPUT_POST, 'especialidad_medico', FILTER_SANITIZE_EMAIL));
         $telefono               = trim(filter_input(INPUT_POST, 'telefono_medico', FILTER_SANITIZE_STRING));
@@ -57,10 +58,76 @@ class MedicoController
         $pass1                  = trim($_POST['password_medico'] ?? '');
         $pass2                  = trim($_POST['password2_medico'] ?? '');
 
-        // Validar contraseñas
-        if ($pass1 !== $pass2) {
-            die("Las contraseñas no coinciden.<br><a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        // Validaciones
+        if (
+            !$numero_colegiado || !$especialidad_medico || !$nombre ||
+            !$apellidos || !$dni || !$telefono || !$email || !$pass1 || !$pass2
+        ) {
+            die("Todos los campos son obligatorios.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
         }
+
+        // Número de colegiado
+        if (!preg_match('/^[0-9]{9}$/', $numero_colegiado)) {
+            die("El número de colegiado debe tener 9 dígitos.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // Especialidad
+        if (strlen($especialidad_medico) < 3 || strlen($especialidad_medico) > 50) {
+            die("Especialidad inválida.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // Nombre
+        if (strlen($nombre) < 3 || strlen($nombre) > 30) {
+            die("Nombre inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // Apellidos
+        if (strlen($apellidos) < 3 || strlen($apellidos) > 50) {
+            die("Apellidos inválidos.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // DNI formato
+        if (!preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
+            die("Formato de DNI inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // DNI letra
+        $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        if ($letras[intval(substr($dni, 0, 8)) % 23] !== $dni[8]) {
+            die("Letra del DNI incorrecta.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // Teléfono
+        if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+            die("El teléfono debe tener 9 dígitos.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // Email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            die("Email inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // Password longitud
+        if (strlen($pass1) < 6) {
+            die("La contraseña debe tener al menos 6 caracteres.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
+        // Passwords iguales
+        if ($pass1 !== $pass2) {
+            die("Las contraseñas no coinciden.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/loguear_medico'>Volver</a>");
+        }
+
 
         // Control de la ruta de la foto introducida
         if (!empty($_FILES['foto_medico']['name'])) {
@@ -135,6 +202,27 @@ class MedicoController
         $colegiado = trim(filter_input(INPUT_POST, 'numero_colegiado', FILTER_SANITIZE_STRING) ?? '');
         $password = trim(filter_input(INPUT_POST, 'password_medico', FILTER_SANITIZE_STRING) ?? '');
 
+        // Validaciones
+        
+        // Campos obligatorios
+        if (!$colegiado || !$password) {
+            die("Todos los campos son obligatorios.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/login_medico'>Volver</a>");
+        }
+
+        // Número de colegiado
+        if (!preg_match('/^[0-9]{9}$/', $colegiado)) {
+            die("El número de colegiado debe tener 9 dígitos numéricos.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/login_medico'>Volver</a>");
+        }
+
+        // Contraseña
+        if (strlen($password) < 6) {
+            die("La contraseña debe tener al menos 6 caracteres.<br>
+         <a href='" . Enlaces::BASE_URL . "medico/login_medico'>Volver</a>");
+        }
+
+
         //Conexión BD
         $pdo = BaseDatos::getConexion();
 
@@ -166,7 +254,7 @@ class MedicoController
         header("Location: " . Enlaces::BASE_URL . "medico/home_medico");
         exit;
     }
-    
+
 
     /*************************  HOME MEDICO *************************/
     public function home()
@@ -241,100 +329,158 @@ class MedicoController
     }
 
     /************************* MODIFICAR MÉDICO *************************/
-public function modificar()
-{
-    session_start();
+    public function modificar()
+    {
+        session_start();
 
-    // Verificar sesión clínica
-    if (!isset($_SESSION['clinica'])) {
-        header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
-        exit;
-    }
-
-    $pdo = BaseDatos::getConexion();
-    $medicoModel = new Medico();
-
-    /* =======================
-       MOSTRAR FORMULARIO
-    ======================= */
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-        $id_medico = filter_input(INPUT_GET, 'id_medico', FILTER_VALIDATE_INT);
-        if (!$id_medico) {
-            header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
+        // Verificar sesión clínica
+        if (!isset($_SESSION['clinica'])) {
+            header("Location: " . Enlaces::BASE_URL . "clinica/login_clinica");
             exit;
         }
 
-        $medico = $medicoModel->mostrarMedicoPorId($pdo, $id_medico);
+        $pdo = BaseDatos::getConexion();
+        $medicoModel = new Medico();
 
-        if (!$medico) {
-            die("Médico no encontrado");
+        /* =======================
+       MOSTRAR FORMULARIO
+    ======================= */
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+            $id_medico = filter_input(INPUT_GET, 'id_medico', FILTER_VALIDATE_INT);
+            if (!$id_medico) {
+                header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
+                exit;
+            }
+
+            $medico = $medicoModel->mostrarMedicoPorId($pdo, $id_medico);
+
+            if (!$medico) {
+                die("Médico no encontrado");
+            }
+
+            // Seguridad: solo la clínica propietaria
+            if ((int)$medico['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
+                die("No tienes permisos para modificar este médico");
+            }
+
+            require Enlaces::VIEW_PATH . "medico/editar_medico.php";
+            exit;
         }
 
-        // Seguridad: solo la clínica propietaria
-        if ((int)$medico['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
-            die("No tienes permisos para modificar este médico");
-        }
-
-        require Enlaces::VIEW_PATH . "medico/editar_medico.php";
-        exit;
-    }
-
-    /* =======================
+        /* =======================
        GUARDAR CAMBIOS
     ======================= */
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $id_medico = filter_input(INPUT_POST, 'id_medico', FILTER_VALIDATE_INT);
-        if (!$id_medico) {
-            die("ID inválido");
+            $id_medico = filter_input(INPUT_POST, 'id_medico', FILTER_VALIDATE_INT);
+            if (!$id_medico) {
+                die("ID inválido");
+            }
+
+            $medico = $medicoModel->mostrarMedicoPorId($pdo, $id_medico);
+
+            if (!$medico) {
+                die("Médico no encontrado");
+            }
+
+            if ((int)$medico['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
+                die("No tienes permisos");
+            }
+
+            // Sanitizar datos
+            $nombre              = trim($_POST['nombre_medico']);
+            $apellidos           = trim($_POST['apellidos_medico']);
+            $dni                 = trim($_POST['dni_medico']);
+            $numero_colegiado    = trim($_POST['numero_colegiado']);
+            $especialidad        = trim($_POST['especialidad_medico']);
+            $telefono            = trim($_POST['telefono_medico']);
+            $email               = trim($_POST['email_medico']);
+
+            // Validaciones
+
+            // Campos obligatorios
+            if (!$nombre || !$apellidos || !$numero_colegiado || !$dni) {
+                die("Todos los campos obligatorios deben estar completos.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // Nombre
+            if (strlen($nombre) < 3 || strlen($nombre) > 30) {
+                die("Nombre inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // Apellidos
+            if (strlen($apellidos) < 3 || strlen($apellidos) > 50) {
+                die("Apellidos inválidos.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // DNI formato
+            if (!preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
+                die("Formato de DNI inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // DNI letra
+            $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            if ($letras[intval(substr($dni, 0, 8)) % 23] !== $dni[8]) {
+                die("Letra del DNI incorrecta.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // Número de colegiado
+            if (!preg_match('/^[0-9]{9}$/', $numero_colegiado)) {
+                die("El número de colegiado debe tener 9 dígitos.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // Especialidad
+            if ($especialidad !== '' && (strlen($especialidad) < 3 || strlen($especialidad) > 50)) {
+                die("Especialidad inválida.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // Teléfono
+            if ($telefono !== '' && !preg_match('/^[0-9]{9}$/', $telefono)) {
+                die("El teléfono debe tener 9 dígitos.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+            // Email
+            if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                die("Email inválido.<br>
+         <a href='" . Enlaces::BASE_URL . "clinica/home/medicos'>Volver</a>");
+            }
+
+
+            // FOTO
+            $foto = $medico['foto_medico']; // Mantener foto actual por defecto
+
+            if (!empty($_FILES['foto_medico']['name'])) {
+                $foto = uniqid() . '_' . $_FILES['foto_medico']['name'];
+                move_uploaded_file(
+                    $_FILES['foto_medico']['tmp_name'],
+                    Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_medicos/" . $foto
+                );
+            }
+
+            // Setear modelo
+            $medicoModel->setNombreMedico($nombre);
+            $medicoModel->setApellidosMedico($apellidos);
+            $medicoModel->setNumeroColegiado($numero_colegiado);
+            $medicoModel->setEspecialidadMedico($especialidad);
+            $medicoModel->setTelefonoMedico($telefono);
+            $medicoModel->setEmailMedico($email);
+            $medicoModel->setFotoMedico($foto);
+
+            if (!$medicoModel->actualizarMedico($pdo, $id_medico)) {
+                die("Error al actualizar el médico");
+            }
+
+            header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
+            exit;
         }
-
-        $medico = $medicoModel->mostrarMedicoPorId($pdo, $id_medico);
-
-        if (!$medico) {
-            die("Médico no encontrado");
-        }
-
-        if ((int)$medico['id_clinica'] !== (int)$_SESSION['clinica']['id_clinica']) {
-            die("No tienes permisos");
-        }
-
-        // Sanitizar datos
-        $nombre              = trim($_POST['nombre_medico']);
-        $apellidos           = trim($_POST['apellidos_medico']);
-        $numero_colegiado    = trim($_POST['numero_colegiado']);
-        $especialidad        = trim($_POST['especialidad_medico']);
-        $telefono            = trim($_POST['telefono_medico']);
-        $email               = trim($_POST['email_medico']);
-
-        // FOTO
-        $foto = $medico['foto_medico']; // Mantener foto actual por defecto
-
-        if (!empty($_FILES['foto_medico']['name'])) {
-            $foto = uniqid() . '_' . $_FILES['foto_medico']['name'];
-            move_uploaded_file(
-                $_FILES['foto_medico']['tmp_name'],
-                Enlaces::BASE_PATH . "app/imagenes_registros/imagenes_medicos/" . $foto
-            );
-        }
-
-        // Setear modelo
-        $medicoModel->setNombreMedico($nombre);
-        $medicoModel->setApellidosMedico($apellidos);
-        $medicoModel->setNumeroColegiado($numero_colegiado);
-        $medicoModel->setEspecialidadMedico($especialidad);
-        $medicoModel->setTelefonoMedico($telefono);
-        $medicoModel->setEmailMedico($email);
-        $medicoModel->setFotoMedico($foto);
-
-        if (!$medicoModel->actualizarMedico($pdo, $id_medico)) {
-            die("Error al actualizar el médico");
-        }
-
-        header("Location: " . Enlaces::BASE_URL . "clinica/home/medicos");
-        exit;
     }
-}
-
 }

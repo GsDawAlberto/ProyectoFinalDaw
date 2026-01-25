@@ -46,6 +46,7 @@ CREATE TABLE medico (
   numero_colegiado VARCHAR(150) NOT NULL,
   nombre_medico VARCHAR(100) NOT NULL,
   apellidos_medico VARCHAR (150) NOT NULL,
+  dni_medico VARCHAR(9) NOT NULL, # ----- CAMBIO ------ #
   especialidad_medico VARCHAR(100),
   telefono_medico VARCHAR(20),
   email_medico VARCHAR(100),
@@ -65,7 +66,7 @@ CREATE TABLE paciente (
   id_paciente INT AUTO_INCREMENT PRIMARY KEY,
   id_clinica INT NOT NULL,
   id_medico INT,
-  dni_paciente VARCHAR(20) NOT NULL,
+  dni_paciente VARCHAR(9) NOT NULL,
   nombre_paciente VARCHAR(100) NOT NULL,
   apellidos_paciente VARCHAR(150),
   telefono_paciente VARCHAR(20),
@@ -104,7 +105,7 @@ CREATE TABLE informe (
   CONSTRAINT fk_informe_medico
     FOREIGN KEY (id_medico)
     REFERENCES medico(id_medico)
-    ON DELETE CASCADE,
+    # No elimina el informe, puede que el medico se de de baja de esa clinica
 
   CONSTRAINT fk_informe_paciente
     FOREIGN KEY (id_paciente)

@@ -89,6 +89,14 @@ h1{
     transform: translateX(5px);
 }
 
+.logout-btn{
+    text-decoration: none;
+}
+
+a{
+    text-decoration: none;
+}
+
 /* Contenido derecho */
 .contenido {
     width: 100%; /* 4/5 del ancho */

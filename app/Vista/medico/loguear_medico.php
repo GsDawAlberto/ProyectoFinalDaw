@@ -56,6 +56,12 @@ use Mediagend\App\Config\Enlaces;
         </div>
 
         <div class="form-group">
+            <label>DNI</label>
+            <input type="text" name="dni_medico" id="dni_medico" placeholder="00000000A" required>
+            <small class="error-msg"></small>
+        </div>
+
+        <div class="form-group">
             <label>Teléfono</label>
             <input type="text" name="telefono_medico" id="telefono_medico" placeholder="Introduce el teléfono" required>
             <small class="error-msg"></small>
@@ -95,6 +101,7 @@ const numeroColegiado = document.getElementById('numero_colegiado');
 const especialidad = document.getElementById('especialidad_medico');
 const nombre = document.getElementById('nombre_medico');
 const apellidos = document.getElementById('apellidos_medico');
+const dni = document.getElementById('dni_medico');
 const telefono = document.getElementById('telefono_medico');
 const email = document.getElementById('email_medico');
 const pass1 = document.getElementById('password_medico');
@@ -169,11 +176,34 @@ function validarPasswords() {
     return true;
 }
 
+function validarDNI(input) {
+    const value = input.value.trim().toUpperCase();
+    const dniRegex = /^[0-9]{8}[A-Z]$/;
+
+    if (!dniRegex.test(value)) {
+        setError(input, 'DNI inválido, debe contener 9 digitos seguido de una letra');
+        return false;
+    }
+
+    const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+    const numero = value.substring(0, 8);
+    const letra = value.charAt(8);
+
+    if (letras[numero % 23] !== letra) {
+        setError(input, 'Letra del DNI incorrecta');
+        return false;
+    }
+
+    setSuccess(input);
+    return true;
+}
+
 /* EVENTOS EN TIEMPO REAL */
 numeroColegiado.addEventListener('input', () => validarNumeroColegiado(numeroColegiado));
 especialidad.addEventListener('input', () => validarTexto(especialidad, 3, 50));
 nombre.addEventListener('input', () => validarTexto(nombre, 3, 30));
 apellidos.addEventListener('input', () => validarTexto(apellidos, 3, 50));
+dni.addEventListener('input', () => validarDNI(dni));
 telefono.addEventListener('input', () => validarTelefono(telefono));
 email.addEventListener('input', () => validarEmail(email));
 pass1.addEventListener('input', validarPasswords);
@@ -186,6 +216,7 @@ form.addEventListener('submit', e => {
         validarTexto(especialidad, 3, 50) &&
         validarTexto(nombre, 3, 30) &&
         validarTexto(apellidos, 3, 50) &&
+        validarDNI(dni) &&
         validarTelefono(telefono) &&
         validarEmail(email) &&
         validarPasswords();

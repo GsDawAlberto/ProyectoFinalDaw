@@ -46,7 +46,7 @@ $nombreUsuario = $_SESSION['admin']['nombre_admin'];
 
     <!-- Logout -->
     <a href="<?= Enlaces::BASE_URL ?>admin/logout" class="menu-btn logout-btn">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión
+        <i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> Cerrar sesión
     </a>
 
     <!-- Mensaje para móviles -->

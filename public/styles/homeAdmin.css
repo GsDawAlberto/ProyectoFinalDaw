@@ -83,6 +83,10 @@ h1, h2 {
     transform: translateX(5px);
 }
 
+.logout-btn{
+    text-decoration: none;
+}
+
 /* Contenido derecho */
 .contenido {
     width: 80%;

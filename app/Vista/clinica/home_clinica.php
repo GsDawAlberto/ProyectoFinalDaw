@@ -52,8 +52,10 @@ $nombreUsuario = $_SESSION['clinica']['nombre_clinica'];
                 <i class="fa-solid fa-user-doctor"></i> Acceso Médico
             </a>
 
-            <!-- <button class="menu-btn" onclick="cargar('<?= Enlaces::BASE_URL ?>clinica/home/configuracion')"><i class="fa-solid fa-gears"></i>Configuración</button> -->
-            <a href="<?= Enlaces::BASE_URL ?>clinica/login_clinica"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>
+            <!-- Logout -->
+            <a href="<?= Enlaces::BASE_URL ?>clinica/logout" class="menu-btn logout-btn">
+                <i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> Cerrar sesión
+            </a>
         </aside>
 
         <!-- Contenedor derecho -->
