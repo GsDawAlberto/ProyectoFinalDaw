@@ -41,6 +41,7 @@ $citas = $citaModel->mostrarPorPaciente($pdo, $idPaciente);
     <meta charset="UTF-8">
     <title>Mis citas</title>
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>citas_paciente.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 
 <body>

@@ -82,6 +82,7 @@ foreach ($citas as $cita) {
     <title>Inicio paciente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>inicioPaciente.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 
 <body>

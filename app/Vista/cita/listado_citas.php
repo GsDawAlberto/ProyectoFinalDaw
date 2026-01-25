@@ -8,6 +8,7 @@ use Mediagend\App\Config\Enlaces;
     <meta charset="UTF-8">
     <title>Agenda de Citas</title>
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/listadoCitas.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 
 <body>

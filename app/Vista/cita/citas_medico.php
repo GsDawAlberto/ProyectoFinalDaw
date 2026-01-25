@@ -36,6 +36,7 @@ $dias = ['Monday'=>'Lunes','Tuesday'=>'Martes','Wednesday'=>'Miércoles','Thursd
     <meta charset="UTF-8">
     <title>Agenda Clínica</title>
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>agenda_calendario.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 
 <body>

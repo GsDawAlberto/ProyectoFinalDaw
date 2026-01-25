@@ -7,7 +7,7 @@ use Mediagend\App\Config\Enlaces;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Solo_logo.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
     <title>Login Administrador</title>
 
     <!-- Estilos propios -->

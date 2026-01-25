@@ -14,6 +14,7 @@ use Mediagend\App\Config\Enlaces;
 
     <!-- Estilos reutilizados -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 
 <body>

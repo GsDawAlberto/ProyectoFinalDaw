@@ -10,6 +10,7 @@ use Mediagend\App\Config\Enlaces;
 
     <!-- Estilos reutilizados -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 <body>
 
@@ -85,6 +86,7 @@ use Mediagend\App\Config\Enlaces;
             <small class="error-msg"></small>
         </div>
 
+        <button type="reset" class="btn-reset">Borrar todo</button>
         <button type="submit" class="btn-submit">Registrar Médico</button>
     </form>
 

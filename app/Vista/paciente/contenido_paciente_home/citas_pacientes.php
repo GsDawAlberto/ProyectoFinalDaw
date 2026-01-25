@@ -36,6 +36,7 @@ $hoy = date('Y-m-d');
     <title>Mis citas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>citas_paciente.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 
 <body>

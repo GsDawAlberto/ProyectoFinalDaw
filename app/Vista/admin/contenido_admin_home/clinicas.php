@@ -30,6 +30,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= Enlaces::STYLES_URL ?>tablas.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
     <title>Clínicas</title>
 </head>
 

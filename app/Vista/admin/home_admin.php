@@ -2,6 +2,10 @@
 
 use Mediagend\App\Config\Enlaces;
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['admin'])) {
     header("Location: " . Enlaces::BASE_URL . "admin/login");
     exit;

@@ -9,6 +9,7 @@ use Mediagend\App\Config\Enlaces;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/ajustesPacientes.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 
     <title>Document</title>
 </head>
