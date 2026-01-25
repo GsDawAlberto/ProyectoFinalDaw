@@ -25,6 +25,7 @@ $nombrePaciente = $_SESSION['paciente']['nombre_paciente'] . ' ' . $_SESSION['pa
 
     <!-- Estilos -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/homePaciente.css">
+    <link rel="icon" type="image/png" sizes="180x180" href="<?= Enlaces::IMG_ICONO_URL ?>Icono.png">
 </head>
 
 <body>

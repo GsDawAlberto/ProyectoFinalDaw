@@ -11,12 +11,9 @@ html, body {
     background-color: #f4f8fb;
 }
 
-/* TITULOS */
-h1, h2 {
-    color: #fff;
-}
-
-/* Layout principal */
+/* ======================
+   ESCRITORIO
+====================== */
 .layout {
     display: flex;
     height: 100vh;
@@ -24,7 +21,12 @@ h1, h2 {
     overflow: hidden;
 }
 
-/* Sidebar izquierda */
+.layout_header {
+    display: flex;
+    justify-content: center;
+}
+
+/* SIDEBAR */
 .sidebar {
     width: 20%;
     min-width: 200px;
@@ -37,7 +39,6 @@ h1, h2 {
     align-items: center;
 }
 
-/* Títulos dentro del sidebar */
 .sidebar h1 {
     color: #ffffff;
     text-align: center;
@@ -50,7 +51,7 @@ h1, h2 {
     font-weight: 600;
 }
 
-/* Botones del menú y logout */
+/* BOTONES */
 .menu-btn,
 .sidebar a.menu-btn {
     display: flex;
@@ -75,7 +76,6 @@ h1, h2 {
     padding-right: 20px;
 }
 
-/* Hover y animación suave */
 .menu-btn:hover,
 .sidebar a.menu-btn:hover {
     background-color: white;
@@ -83,11 +83,7 @@ h1, h2 {
     transform: translateX(5px);
 }
 
-a{
-    text-decoration: none;
-}
-
-/* Contenido derecho */
+/* CONTENIDO */
 .contenido {
     width: 80%;
     height: 100%;
@@ -95,7 +91,6 @@ a{
     padding: 10px;
 }
 
-/* Iframe */
 #visor {
     width: 100%;
     height: 100%;
@@ -104,66 +99,52 @@ a{
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-/* Mensaje para móviles */
-.mobile-warning {
+/* ======================
+   VISTA MÓVIL
+====================== */
+.mobile-view {
     display: none;
-    color: #ffffff;
-    text-align: center;
-    font-weight: 700;
-    padding: 20px;
-    font-size: 1.2rem;
 }
 
-/* =====================
-   MEDIA QUERIES PARA MOVILES
-===================== */
+/* BLOQUEO EN MÓVILES */
 @media (max-width: 1000px) {
-    /* Ocultar todos los botones excepto logout, mensaje y títulos */
-    .sidebar .menu-btn:not(.logout-btn),
-    .layout_header,
-    .welcome-msg,
-    main.contenido {
+
+    /* Ocultar panel completo */
+    .layout,
+    footer {
         display: none;
     }
 
-    /* Mostrar mensaje */
-    .mobile-warning {
-        display: block;
-    }
-
-    /* Sidebar centrado */
-    .sidebar {
-        width: 100%;
-        height: auto;
+    /* Mostrar solo mensaje + logout */
+    .mobile-view {
+        display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        padding: 20px;
-        background: #0d6efd;
-    }
-
-    /* Logout centrado y más pequeño */
-    .logout-btn {
-        width: 80%;
-        height: 60px;
-        font-size: 18px;
-    }
-
-    #visor {
-        display: none;
-    }
-}
-
-/* Ajustes para móviles pequeños (<500px) */
-@media (max-width: 500px) {
-    .logout-btn {
+        gap: 30px;
+        height: 100vh;
         width: 100%;
-        height: 50px;
-        font-size: 16px;
+        background: #0d6efd;
+        color: white;
+        font-size: 1.3rem;
+        font-weight: bold;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
     }
 
-    .mobile-warning {
-        font-size: 1rem;
-        padding: 15px;
+    .mobile-view .logout-btn {
+        width: 80%;
+        max-width: 300px;
+        background: white;
+        color: #0d6efd;
+        border-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-view .logout-btn:hover {
+        background: #e6e6e6;
+        transform: none;
     }
 }
