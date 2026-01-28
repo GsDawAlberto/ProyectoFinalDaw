@@ -21,12 +21,21 @@ $horas = ['08:00','09:00','10:00','11:00','12:00','13:00','15:00','16:00','17:00
 /* SEMANA (L–V) */
 $semana = [];
 $dia = new DateTime('monday this week');
-for ($i = 0; $i < 5; $i++) {
+for ($i = 0; $i < 10; $i++) {
     $semana[] = (clone $dia)->modify("+$i day");
 }
 
 /* FORMATEO DE LOS DÍAS EN ESPAÑOL */
-$dias = ['Monday'=>'Lunes','Tuesday'=>'Martes','Wednesday'=>'Miércoles','Thursday'=>'Jueves','Friday'=>'Viernes'];
+/* DÍAS EN ESPAÑOL */
+$dias = [
+    'Monday'    => 'Lunes',
+    'Tuesday'   => 'Martes',
+    'Wednesday' => 'Miércoles',
+    'Thursday'  => 'Jueves',
+    'Friday'    => 'Viernes',
+    'Saturday'  => 'Sábado',
+    'Sunday'    => 'Domingo'
+];
 ?>
 
 <!DOCTYPE html>

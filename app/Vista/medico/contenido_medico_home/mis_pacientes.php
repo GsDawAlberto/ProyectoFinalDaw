@@ -58,7 +58,7 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
                         <th>DNI</th>
                         <th>Telefono</th>
                         <th>Email</th>
-                        <th>Citar</th>
+                        <th>Citas</th>
                         <th>Ver informes</th>
                         <th>Crear informe</th>
                     </tr>
