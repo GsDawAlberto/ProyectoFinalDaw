@@ -65,8 +65,8 @@ class ClinicaController
         $email      = trim(filter_input(INPUT_POST, 'email_clinica', FILTER_SANITIZE_EMAIL));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_clinica', FILTER_SANITIZE_SPECIAL_CHARS));
         $fotoRuta   = trim($_FILES['foto_clinica']['name'] ?? '');
-        $pass1      = trim($_POST['password_clinica'] ?? '');
-        $pass2      = trim($_POST['password2_clinica'] ?? '');
+        $pass1      = trim($_POST['password'] ?? '');
+        $pass2      = trim($_POST['password_2'] ?? '');
 
 
         //   VALIDACIONES

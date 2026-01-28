@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediagend</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            /* Blanco inicial */
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+            transition: background-color 1s ease;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            /*padding: 20px;*/
+        }
+
+        /* Logo wrapper */
+        .logo-wrapper {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Ambas imágenes absolutas */
+        .logo-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            /* Escala en móvil */
+            max-width: 350px;
+            height: auto;
+            opacity: 0;
+        }
+
+        /* GIF al inicio */
+        #gif {
+            opacity: 1;
+            z-index: 2;
+            animation: fadeOutGif 1s ease forwards;
+            animation-delay: 3s;
+            /* empieza a desaparecer después de 3s */
+        }
+
+        /* Logo fijo */
+        #static {
+            z-index: 1;
+            animation: fadeInStatic 1s ease forwards;
+            animation-delay: 4s;
+            /* aparece después del GIF */
+            filter: drop-shadow(1px 5px 5px rgb(75, 168, 255));
+        }
+
+        /* Animaciones GIF y logo fijo */
+        @keyframes fadeOutGif {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInStatic {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* TEXTO */
+        .text {
+            margin-top: 20px;
+            font-size: 18px;
+            opacity: 0;
+            color: blue;
+            animation: fadeInText 1.5s ease forwards;
+            animation-delay: 4.5s;
+            /* aparece después del GIF y logo */
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* BOTÓN */
+        .form-container {
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: slideUpButton 1.5s ease forwards;
+            animation-delay: 5.2s;
+            /* después del texto */
+        }
+
+        @keyframes slideUpButton {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Botón estilo */
+        button {
+            padding: 14px 28px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: blue;
+            color: white;
+            width: 100%;
+            max-width: 260px;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        /* Cambiar background del body con animación */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-color: rgb(255, 255, 255);
+            opacity: 0;
+            animation: bgChange 1s ease forwards;
+            animation-delay: 4s;
+            /* coincide con el final del GIF */
+            z-index: -1;
+        }
+
+        @keyframes bgChange {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive móvil */
+        @media (max-width: 480px) {
+            .text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-wrapper"> <img id="static" src="Logo.png" alt="Logo Mediagend"> <img id="gif"
+                src="Gif_logo.gif" alt="Logo animado"> </div>
+        <div class="text">
+            <h2>Bienvenido a Mediagend</h2>
+            <p>Tu gestor de clinicas, medicos y pacientes</p>
+        </div>
+        <form class="form-container" action="mediagend/public/index.php" method="get"> <button type="submit">Entrar
+                a Mediagend</button> </form>
+    </div>
+</body>
+
+</html>

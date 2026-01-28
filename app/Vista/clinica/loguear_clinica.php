@@ -141,8 +141,8 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
         const telefono = document.getElementById('telefono_clinica');
         const email = document.getElementById('email_clinica');
         const usuario = document.getElementById('usuario_clinica');
-        const pass1 = document.getElementById('password_clinica');
-        const pass2 = document.getElementById('password2_clinica');
+        const pass1 = document.getElementById('password');
+        const pass2 = document.getElementById('password_2');
 
         /* =====================
            HELPERS UI

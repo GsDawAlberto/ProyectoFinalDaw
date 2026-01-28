@@ -1,0 +1,78 @@
+USE mediagend;
+
+-- =====================================================
+-- DESACTIVAR TEMPORALMENTE CHECKS DE FK
+-- =====================================================
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- =====================================================
+-- LIMPIAR TABLAS (orden correcto para FK)
+-- =====================================================
+DELETE FROM cita;
+DELETE FROM informe;
+DELETE FROM paciente;
+DELETE FROM medico;
+DELETE FROM clinica;
+DELETE FROM administrador;
+
+-- =====================================================
+-- REINICIAR AUTO_INCREMENT
+-- =====================================================
+ALTER TABLE administrador AUTO_INCREMENT = 1;
+ALTER TABLE clinica AUTO_INCREMENT = 1;
+ALTER TABLE medico AUTO_INCREMENT = 1;
+ALTER TABLE paciente AUTO_INCREMENT = 1;
+ALTER TABLE cita AUTO_INCREMENT = 1;
+ALTER TABLE informe AUTO_INCREMENT = 1;
+
+-- =====================================================
+-- ACTIVAR CHECKS DE FK
+-- =====================================================
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- =====================================================
+-- ADMINISTRADORES
+-- =====================================================
+INSERT INTO administrador
+(id_admin, nombre_admin, apellidos_admin, dni_admin, email_admin, usuario_admin, password_admin)
+VALUES
+(1,'Alberto','González','12345678Z','alberto@admin.com','ALBERTO','$2y$10$ZQfbCBNFSnphsPwTwT3KGe9E234fk5VH6rd0NA28forZg9lODAbpO'), # checkeado
+(2,'Carlos','Martínez','23456789D','carlos@admin.com','CARLOS','$2y$10$nvhPTEuXDtJFR4dWFwOHbOMBodlediMUDDUx5QMAIrjZCDebXEV6G'), # checkeado
+(3,'Cristina','López','34567890V','cristina@admin.com','CRISTINA','$2y$10$nza7yhVM32tVtFJJyIFFGu2BlHEU3q39aDZTbHaP7JTd7u9jHOn6C');  # checkeado
+
+-- =====================================================
+-- CLÍNICAS
+-- =====================================================
+INSERT INTO clinica
+(id_admin,foto_clinica,usuario_admin_clinica,nombre_clinica,nif_clinica,direccion_clinica,telefono_clinica,email_clinica,usuario_clinica,password_clinica)
+VALUES
+(1,'imagen_clinica_por_defecto.png','ALBERTO','Clínica Pulso','A12345678','Calle Mayor 10, Madrid','910000001','info@clinicapulso.com','CPS','$2y$10$Flg2XleYuDlTzvm7qIYwNO6IudtiZjT8lk2DqeNhoxAAM62zpCOBu'),  # checkeado
+(1,'imagen_clinica_por_defecto.png','ALBERTO','Clínica Fisio Hand','B12345678','Calle Secundaria 5, Madrid','910000002','info@fisiohand.com','CFH','$2y$10$qzU5TvsKSBYa3tfLGfTvRe33f88AGaQvJpI1km5GXLtjVfC1xliW.'),  # checkeado
+(1,'imagen_clinica_por_defecto.png','ALBERTO','Clínica Body Flow','C12345678','Av. Salud 20, Madrid','910000003','info@bodyflow.com','CBF','$2y$10$4YGeuQBWEckG89AXKpdbTO5gMB8AHzplVgaHVM4wNTy5G8aPwszqa'),  # checkeado
+(2,'imagen_clinica_por_defecto.png','CARLOS','Hospital Name','D12345678','Calle Hospital 1, Barcelona','920000001','info@hospitalname.com','HNM','$2y$10$xa0fM0IWlpSwqjtywvtY7.UytD0qO89y.cs7gVboHONKj0AM6cWx6'),  # checkeado
+(2,'imagen_clinica_por_defecto.png','CARLOS','Clínica Animal Care','E12345678','Calle Mascotas 2, Barcelona','920000002','info@animalcare.com','CAC','$2y$10$5Up0OzYzIMD3Z6saNnxal.SWQFr2eXfKdlEJo6wf7mdRLbPygFPB2'),  # checkeado
+(3,'imagen_clinica_por_defecto.png','CRISTINA','Clínica Santa María','F12345678','Calle Salud 50, Sevilla','930000001','info@santamaria.com','CSM','$2y$10$Qa.AEzFkPQSYIzCF2RqWX.UsPOK9dhUNMJUdsFgXRYHmeadqoGLcC');  # checkeado
+
+-- =====================================================
+-- MÉDICOS
+-- =====================================================
+INSERT INTO medico
+(id_clinica,numero_colegiado,nombre_medico,apellidos_medico,dni_medico,especialidad_medico,telefono_medico,email_medico,foto_medico,password_medico)
+VALUES
+(1,'412362001','Carlos','Pérez','11111111H','Cardiología','910000101','carlos@clinicapulso.com','imagen_medico_por_defecto.jpg','$2y$10$cu4ho63dI1DSYVRBZ9tXY.9h25B0FUx06495tYdcMJKwChXGTDy/a'),  # checkeado
+(1,'41112359','Lucía','Martínez','22222222J','Fisioterapia','910000102','lucia@clinicapulso.com','imagen_medico_por_defecto.jpg','$2y$10$EHJD8mLEe6l9X241HPt3DeP73R/v.8aMswMfKHVqzlnQJ3AS4DmzS'),  # checkeado
+(6,'412789996','Marta','Gómez','33333333P','Pediatría','930000101','marta@santamaria.com','imagen_medico_por_defecto.jpg','$2y$10$iyzKsJhHOLjnu8Fswmr9S.Pj.FTPnHuLbKz/RYdfOh.sBtYlW9qoe'),   # checkeado
+(6,'445520001','Javier','Ruiz','44444444A','Dermatología','930000102','javier@santamaria.com','imagen_medico_por_defecto.jpg','$2y$10$QvzpUjdn3cOe2M/SOJ6zzO4nHlr.QuNDrSiU.0aKS.yjzhJaalZ2S');  # checkeado
+
+-- =====================================================
+-- PACIENTES
+-- =====================================================
+INSERT INTO paciente
+(id_clinica,id_medico,dni_paciente,nombre_paciente,apellidos_paciente,telefono_paciente,password_paciente,usuario_paciente,email_paciente,foto_paciente)
+VALUES
+(1,1,'55555555K','Ana','García','910001001','$2y$10$Fx.ZSNFaGiJSGiq.CEHPZulZGM7pYK0kDHRaCEZN9lMTq1BZqvP2G','CPS123A','ana@gmail.com','imagen_paciente_por_defecto.jpg'), # chequado
+(1,2,'66666666Q','Pedro','López','910001002','$2y$10$tYqSBKAysIVAc4dpi.jjxeqbtTlksUnp9jzr3XQPvrOmuTd6ctKoe','CPS123B','pedro@gmail.com','imagen_paciente_por_defecto.jpg'),  # chequado
+(1,1,'77777777B','Laura','Sánchez','910001003','$2y$10$36Iryz4ROsybfcStD7v1zOYhC1YxX6sYoxDkaSJRIWcq8X5kxhY9y','CPS123C','laura@gmail.com','imagen_paciente_por_defecto.jpg'), # chequado
+(6,3,'88888888Y','Mario','Fernández','930001001','$2y$10$zJ2T7HxJ49SvGEMVeE0qOOPsxAlkUEDa/HOhuUiezk5uHzxxQXuom','CSM123A','mario@gmail.com','imagen_paciente_por_defecto.jpg'),  # chequado
+(6,4,'99999999R','Sofía','Morales','930001002','$2y$10$RjqD3N2OUpaLueJhkPMLL.LKF8ah88.h4K.7iuJ0i92s3jf2e3Wjq','CSM123B','sofia@gmail.com','imagen_paciente_por_defecto.jpg'),  # chequado
+(6,3,'10101010P','Alba','Vega','930001003','$2y$10$BmqhmRddnPjnSDdwOM9rveMRAipGNcg9b4ip9CX/DXC5C5KBvsNwS','CSM123C','alba@gmail.com','imagen_paciente_por_defecto.jpg');   # chequado

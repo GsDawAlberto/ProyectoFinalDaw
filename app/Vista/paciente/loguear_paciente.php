@@ -128,8 +128,8 @@ use Mediagend\App\Config\Enlaces;
         const telefono = document.getElementById('telefono_paciente');
         const email = document.getElementById('email_paciente');
         const usuario = document.getElementById('usuario_paciente');
-        const pass1 = document.getElementById('password_paciente');
-        const pass2 = document.getElementById('password2_paciente');
+        const pass1 = document.getElementById('password');
+        const pass2 = document.getElementById('password_2');
 
         /* =====================
            FUNCIONES UI

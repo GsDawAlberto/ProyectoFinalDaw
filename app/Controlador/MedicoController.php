@@ -55,8 +55,8 @@ class MedicoController
         $telefono               = trim(filter_input(INPUT_POST, 'telefono_medico', FILTER_SANITIZE_STRING));
         $email                  = trim(filter_input(INPUT_POST, 'email_medico', FILTER_SANITIZE_EMAIL));
         $fotoRuta               = trim($_FILES['foto_medico']['name']);
-        $pass1                  = trim($_POST['password_medico'] ?? '');
-        $pass2                  = trim($_POST['password2_medico'] ?? '');
+        $pass1                  = trim($_POST['password'] ?? '');
+        $pass2                  = trim($_POST['password_2'] ?? '');
 
         // Validaciones
         if (
@@ -245,6 +245,7 @@ class MedicoController
             'id_clinica'            => $resultado['id_clinica'],
             'nombre_medico'         => $resultado['nombre_medico'],
             'apellidos_medico'      => $resultado['apellidos_medico'],
+            'dni_medico'            => $resultado['dni_medico'],
             'numero_colegiado'      => $resultado['numero_colegiado'],
             'telefono_medico'       => $resultado['telefono_medico'],
             'email_medico'          => $resultado['email_medico'],

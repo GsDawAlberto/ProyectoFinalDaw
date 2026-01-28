@@ -94,8 +94,8 @@ class PacienteController
         $email      = trim(filter_input(INPUT_POST, 'email_paciente', FILTER_SANITIZE_EMAIL));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_paciente', FILTER_SANITIZE_STRING));
         $fotoRuta = trim($_FILES['foto_paciente']['name']);
-        $pass1      = trim($_POST['password_paciente'] ?? '');
-        $pass2      = trim($_POST['password2_paciente'] ?? '');
+        $pass1      = trim($_POST['password'] ?? '');
+        $pass2      = trim($_POST['password_2'] ?? '');
 
         // Validar entradas
         if (!$nombre || !$apellidos || !$dni || !$telefono || !$email || !$usuario || !$pass1 || !$pass2) {

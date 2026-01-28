@@ -377,7 +377,7 @@ class Paciente
                 email_paciente      = :email,
                 usuario_paciente    = :usuario,
                 foto_paciente       = :foto
-            WHERE id_paciente = :id_paciente";
+            WHERE id_paciente       = :id_paciente";
 
             $stmt = $pdo->prepare($sql);
 

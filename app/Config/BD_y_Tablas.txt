@@ -9,8 +9,8 @@ USE mediagend;
 CREATE TABLE administrador (
   id_admin INT AUTO_INCREMENT PRIMARY KEY,
   nombre_admin VARCHAR(100) NOT NULL,
-  apellidos_admin VARCHAR(100) NOT NULL, # ----- CAMBIO ------ #
-  dni_admin VARCHAR(9) NOT NULL, # ----- CAMBIO ------ #
+  apellidos_admin VARCHAR(100) NOT NULL, 
+  dni_admin VARCHAR(9) NOT NULL, 
   email_admin VARCHAR(100) UNIQUE NOT NULL,
   usuario_admin VARCHAR(50) UNIQUE NOT NULL,
   password_admin VARCHAR(255) NOT NULL
@@ -24,7 +24,7 @@ CREATE TABLE clinica (
   foto_clinica VARCHAR(150),
   usuario_admin_clinica VARCHAR(50),
   nombre_clinica VARCHAR(150) NOT NULL,
-  nif_clinica VARCHAR(9) NOT NULL, # ----- CAMBIO ------ #
+  nif_clinica VARCHAR(9) NOT NULL, 
   direccion_clinica VARCHAR(200),
   telefono_clinica VARCHAR(20),
   email_clinica VARCHAR(100),
@@ -46,7 +46,7 @@ CREATE TABLE medico (
   numero_colegiado VARCHAR(150) NOT NULL,
   nombre_medico VARCHAR(100) NOT NULL,
   apellidos_medico VARCHAR (150) NOT NULL,
-  dni_medico VARCHAR(9) NOT NULL, # ----- CAMBIO ------ #
+  dni_medico VARCHAR(9) NOT NULL, 
   especialidad_medico VARCHAR(100),
   telefono_medico VARCHAR(20),
   email_medico VARCHAR(100),
@@ -104,9 +104,8 @@ CREATE TABLE informe (
 
   CONSTRAINT fk_informe_medico
     FOREIGN KEY (id_medico)
-    REFERENCES medico(id_medico)
-    # No elimina el informe, puede que el medico se de de baja de esa clinica
-
+    REFERENCES medico(id_medico),
+    
   CONSTRAINT fk_informe_paciente
     FOREIGN KEY (id_paciente)
     REFERENCES paciente(id_paciente)

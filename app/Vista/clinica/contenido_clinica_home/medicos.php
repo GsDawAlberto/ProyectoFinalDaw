@@ -55,6 +55,7 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
                         <th>Especialidad</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
+                        <th>DNI</th>
                         <th>Telefono</th>
                         <th>Email</th>
                         <th>Modificar</th>
@@ -78,6 +79,7 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
                                 <td><?= htmlspecialchars($medico['especialidad_medico']) ?></td>
                                 <td><?= htmlspecialchars($medico['nombre_medico']) ?></td>
                                 <td><?= htmlspecialchars($medico['apellidos_medico']) ?></td>
+                                <td><?= htmlspecialchars($medico['dni_medico']) ?></td>
                                 <td><?= htmlspecialchars($medico['telefono_medico']) ?></td>
                                 <td><?= htmlspecialchars($medico['email_medico']) ?></td>
 

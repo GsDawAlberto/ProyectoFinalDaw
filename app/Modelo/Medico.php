@@ -12,6 +12,7 @@ class Medico
     private ?int $id_clinica = null;
     private ?string $nombre_medico = null;
     private ?string $apellidos_medico = null;
+    private ?string $dni_medico = null;
     private ?string $especialidad_medico = null;
     private ?string $numero_colegiado = null;
     private ?string $foto_medico = null;
@@ -51,6 +52,14 @@ class Medico
     public function getApellidosMedico(): ?string
     {
         return $this->apellidos_medico;
+    }
+    /**
+     * Método para obtener el DNI del médico
+     * @return string|null
+     */
+    public function getDniMedico(): ?string
+    {
+        return $this->dni_medico;
     }
     /**
      * Método para obtener la especialidad del médico
@@ -101,7 +110,7 @@ class Medico
         return $this->password_medico;
     }
 
-    //Setters
+    ////////////////////////////////////////////  Setters    //////////////////////////////
     /**
      * Método para establecer el ID del médico
      * @param int $id_medico
@@ -133,6 +142,14 @@ class Medico
     public function setApellidosMedico(string $apellidos_medico): void
     {
         $this->apellidos_medico = $apellidos_medico;
+    }
+    /**
+     * Método para establecer el DNI del médico
+     * @param string $dni_medico
+     */
+    public function setDniMedico(string $dni_medico): void
+    {
+        $this->dni_medico = $dni_medico;
     }
     /**
      * Método para establecer la especialidad del médico
@@ -192,8 +209,8 @@ class Medico
     public function guardarMedico(PDO $pdo): string|int
     {
         try {
-            $sql = "INSERT INTO medico (id_clinica, nombre_medico, apellidos_medico, numero_colegiado, especialidad_medico, telefono_medico, email_medico, password_medico, foto_medico)
-                    VALUES (:id_clinica, :nombre_medico, :apellidos_medico, :numero_colegiado, :especialidad_medico, :telefono_medico, :email_medico, :password_medico, :foto_medico)";
+            $sql = "INSERT INTO medico (id_clinica, nombre_medico, apellidos_medico, dni_medico, numero_colegiado, especialidad_medico, telefono_medico, email_medico, password_medico, foto_medico)
+                    VALUES (:id_clinica, :nombre_medico, :apellidos_medico, :dni_medico, :numero_colegiado, :especialidad_medico, :telefono_medico, :email_medico, :password_medico, :foto_medico)";
 
             $stmt = $pdo->prepare($sql);
 
@@ -201,6 +218,7 @@ class Medico
                 ':id_clinica' => $this->id_clinica,
                 ':nombre_medico' => $this->nombre_medico,
                 ':apellidos_medico' =>$this->apellidos_medico,
+                ':dni_medico' => $this->dni_medico,
                 ':numero_colegiado' =>$this->numero_colegiado,
                 ':especialidad_medico' => $this->especialidad_medico,
                 ':telefono_medico' => $this->telefono_medico,
@@ -254,6 +272,7 @@ class Medico
                 $this->nombre_medico = $medico['nombre_medico'];
                 $this->apellidos_medico = $medico['apellidos_medico'];
                 $this->numero_colegiado = $medico['numero_colegiado'];
+                $this->dni_medico = $medico['dni_medico'];
                 $this->foto_medico = $medico['foto_medico'];
                 $this->especialidad_medico = $medico['especialidad_medico'];
                 $this->telefono_medico = $medico['telefono_medico'];
@@ -293,6 +312,7 @@ class Medico
         $sql = "SELECT * FROM medico
             WHERE nombre_medico       LIKE :busqueda
                OR apellidos_medico    LIKE :busqueda
+               OR dni_medico          LIKE :busqueda
                OR numero_colegiado    LIKE :busqueda
                OR telefono_medico     LIKE :busqueda
                OR email_medico        LIKE :busqueda
@@ -340,26 +360,28 @@ class Medico
     try {
 
         $sql = "UPDATE medico SET
-                    nombre_medico = :nombre_medico,
-                    apellidos_medico = :apellidos_medico,
-                    numero_colegiado = :numero_colegiado,
-                    especialidad_medico = :especialidad_medico,
-                    telefono_medico = :telefono_medico,
-                    email_medico = :email_medico,
-                    foto_medico = :foto_medico
-                WHERE id_medico = :id_medico";
+                    nombre_medico           = :nombre_medico,
+                    apellidos_medico        = :apellidos_medico,
+                    dni_medico              = :dni_medico,
+                    numero_colegiado        = :numero_colegiado,
+                    especialidad_medico     = :especialidad_medico,
+                    telefono_medico         = :telefono_medico,
+                    email_medico            = :email_medico,
+                    foto_medico             = :foto_medico
+                WHERE id_medico             = :id_medico";
 
         $stmt = $pdo->prepare($sql);
 
         return $stmt->execute([
-            ':nombre_medico' => $this->nombre_medico,
-            ':apellidos_medico' => $this->apellidos_medico,
-            ':numero_colegiado' => $this->numero_colegiado,
-            ':especialidad_medico' => $this->especialidad_medico,
-            ':telefono_medico' => $this->telefono_medico,
-            ':email_medico' => $this->email_medico,
-            ':foto_medico' => $this->foto_medico,
-            ':id_medico' => $id_medico
+            ':nombre_medico'        => $this->nombre_medico,
+            ':apellidos_medico'     => $this->apellidos_medico,
+            ':dni_medico'           => $this->dni_medico,
+            ':numero_colegiado'     => $this->numero_colegiado,
+            ':especialidad_medico'  => $this->especialidad_medico,
+            ':telefono_medico'      => $this->telefono_medico,
+            ':email_medico'         => $this->email_medico,
+            ':foto_medico'          => $this->foto_medico,
+            ':id_medico'            => $id_medico
         ]);
 
     } catch (PDOException $e) {
