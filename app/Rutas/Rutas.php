@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * Clase Rutas
+ *
+ * Gestiona las rutas del sistema y llama al controlador
+ * correspondiente según la URL solicitada.
+ *
+ * Cada ruta corresponde a un controlador y método específico,
+ * permitiendo separar la lógica de negocio según el tipo de usuario
+ * (Administrador, Clínica, Paciente, Médico) o funcionalidad
+ * (Informes, Citas, Lobby, etc.).
+ *
+ * @package Mediagend\App\Rutas
+ */
+
 namespace Mediagend\App\Rutas;
 
 use Mediagend\App\Controlador\LobbyController;
@@ -10,9 +24,108 @@ use Mediagend\App\Controlador\MedicoController;
 use Mediagend\App\Controlador\InformeController;
 use Mediagend\App\Controlador\CitaController;
 
-
+/**
+ * Clase Rutas
+ *
+ * Gestiona las rutas del sistema y llama al controlador
+ * correspondiente según la URL solicitada.
+ *
+ * Cada ruta corresponde a un controlador y método específico,
+ * permitiendo separar la lógica de negocio según el tipo de usuario
+ * (Administrador, Clínica, Paciente, Médico) o funcionalidad
+ * (Informes, Citas, Lobby, etc.).
+ *
+ * @package Mediagend\App\Rutas
+ */
 class Rutas
 {
+    /**
+     * Procesa la URL actual y redirige al controlador y método correspondiente.
+     *
+     * Este método obtiene el parámetro 'url' de la solicitud GET
+     * y realiza un switch para determinar qué controlador y método
+     * ejecutar. Si la URL no coincide con ninguna ruta definida,
+     * se llama al método error404 del LobbyController.
+     *
+     * Rutas definidas incluyen:
+     * 
+     * ---------- LOBBY ----------
+     * - 'lobby/index' => LobbyController::index()
+     * 
+     * ---------- ADMINISTRADOR ----------
+     * - 'admin/login_admin' => AdminController::login()
+     * - 'admin/home_admin' => AdminController::home()
+     * - 'admin/loguear_admin' => AdminController::loguear()
+     * - 'admin/registrar' => AdminController::registrar()
+     * - 'admin/acceder' => AdminController::acceder()
+     * - 'admin/logout' => AdminController::logout()
+     * - 'admin/home/clinicas' => AdminController::home_clinicas()
+     * - 'admin/home/insertar' => AdminController::home_insertar()
+     * 
+     * ---------- CLINICA ----------
+     * - 'clinica/login_clinica' => ClinicaController::login()
+     * - 'clinica/home_clinica' => ClinicaController::home()
+     * - 'clinica/registrar_clinica' => ClinicaController::registrar()
+     * - 'clinica/loguear_clinica' => ClinicaController::loguear()
+     * - 'clinica/acceder' => ClinicaController::acceder()
+     * - 'clinica/modificar' => ClinicaController::modificar()
+     * - 'clinica/eliminar' => ClinicaController::eliminar()
+     * - 'clinica/logout' => ClinicaController::logout()
+     * - 'clinica/home/pacientes' => ClinicaController::home_pacientes()
+     * - 'clinica/home/insertar' => AdminController::home_insertar()
+     * - 'clinica/home/medicos' => ClinicaController::home_medicos()
+     * 
+     * ---------- PACIENTE ----------
+     * - 'paciente/login_paciente' => PacienteController::login()
+     * - 'paciente/home_paciente' => PacienteController::home()
+     * - 'paciente/loguear_paciente' => PacienteController::loguear()
+     * - 'paciente/registrar_paciente' => PacienteController::registrar()
+     * - 'paciente/acceder' => PacienteController::acceder()
+     * - 'paciente/modificar' => PacienteController::modificar()
+     * - 'paciente/modificar_mis_datos' => PacienteController::modificar_mis_datos()
+     * - 'paciente/modificar_password' => PacienteController::modificar_password()
+     * - 'paciente/eliminar' => PacienteController::eliminar()
+     * - 'paciente/logout' => PacienteController::logout()
+     * - 'paciente/home/citas' => PacienteController::home_mis_citas()
+     * - 'paciente/home/informes' => PacienteController::home_mis_informes()
+     * - 'paciente/home/ajustes' => PacienteController::home_mis_ajustes()
+     * - 'paciente/home/inicio' => PacienteController::home_inicio()
+     * 
+     * ---------- MÉDICO ----------
+     * - 'medico/login_medico' => MedicoController::login()
+     * - 'medico/home_medico' => MedicoController::home()
+     * - 'medico/loguear_medico' => MedicoController::loguear()
+     * - 'medico/registrar_medico' => MedicoController::registrar()
+     * - 'medico/acceder' => MedicoController::acceder()
+     * - 'medico/modificar' => MedicoController::modificar()
+     * - 'medico/eliminar' => MedicoController::eliminar()
+     * - 'medico/logout' => MedicoController::logout()
+     * - 'medico/home/pacientes' => MedicoController::home_mis_pacientes()
+     * 
+     * ---------- INFORMES ----------
+     * - 'informe/crear' => InformeController::crear()
+     * - 'informe/guardar' => InformeController::guardar()
+     * - 'informe/listar' => InformeController::listar()
+     * - 'informe/ver' => InformeController::ver()
+     * - 'informe/eliminar' => InformeController::eliminar()
+     * 
+     * ---------- CITAS ----------
+     * - 'citas/form_editar' => CitaController::formEditar()
+     * - 'citas/modificar' => CitaController::modificar()
+     * - 'citas/crear_hueco' => CitaController::crearHueco()
+     * - 'citas/asignar_paciente' => CitaController::asignarPaciente()
+     * - 'citas/pacientes' => CitaController::agendaPaciente()
+     * - 'citas/ver_agenda' => CitaController::agendaClinica()
+     * - 'citas/ver_agenda_medico' => CitaController::agendaMedico()
+     * - 'citas/form_crear' => CitaController::formCrear()
+     * - 'citas/eliminar' => CitaController::eliminar()
+     * 
+     * ---------- ERROR ----------
+     * - Cualquier otra URL => LobbyController::error404()
+     *
+     * @return void
+     */
+
 
     public function getRuta()
     {
@@ -302,7 +415,7 @@ class Rutas
 
             /****************************** CITAS ******************************/
 
-            /* case 'citas/indice':
+                /* case 'citas/indice':
                 $controller = new CitaController();
                 $controller->index();
                 break; */

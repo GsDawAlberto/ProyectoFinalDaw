@@ -1,4 +1,12 @@
 <?php
+/**
+ * Controlador del módulo Cita
+ *
+ * Gestiona la creación, edición, asignación y visualización
+ * de citas para clínicas, médicos y pacientes.
+ *
+ * @package Mediagend\App\Controlador
+ */
 
 namespace Mediagend\App\Controlador;
 
@@ -6,9 +14,21 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Config\BaseDatos;
 use Mediagend\App\Modelo\Cita;
 
+/**
+ * Clase CitaController
+ *
+ * Controlador encargado de manejar la lógica de citas, incluyendo
+ * la visualización de agendas, formularios, creación, modificación,
+ * asignación y eliminación de citas.
+ */
 class CitaController
 {
-    public function agendaClinica() // Ver agenda semanal (agenda_calendario)
+    /**
+     * Muestra la agenda semanal de la clínica
+     *
+     * @return void
+     */
+    public function agendaClinica()
     {
         session_start();
 
@@ -27,7 +47,12 @@ class CitaController
         require Enlaces::VIEW_PATH . 'cita/agenda_calendario.php';
     }
 
-    public function agendaMedico() // Ver agenda semanal médico (citas_medico)
+    /**
+     * Muestra la agenda semanal del médico
+     *
+     * @return void
+     */
+    public function agendaMedico()
     {
         session_start();
 
@@ -38,15 +63,23 @@ class CitaController
         if (!isset($_SESSION['clinica'])) {
             exit('Acceso denegado');
         }
+
         $pdo = BaseDatos::getConexion();
         $citaModel = new Cita();
+
         $citas = $citaModel->mostrarPorMedico(
             $pdo,
             $_SESSION['medico']['id_medico']
         );
+
         require Enlaces::VIEW_PATH . 'cita/citas_medico.php';
     }
 
+    /**
+     * Muestra la agenda de un paciente
+     *
+     * @return void
+     */
     public function agendaPaciente()
     {
         session_start();
@@ -59,12 +92,8 @@ class CitaController
         $citaModel = new Cita();
 
         if (isset($_SESSION['paciente'])) {
-
-            // Paciente ve SUS citas
             $idPaciente = (int) $_SESSION['paciente']['id_paciente'];
         } elseif (isset($_SESSION['medico']) && isset($_GET['id_paciente'])) {
-
-            // Médico ve las citas del paciente
             $idPaciente = (int) $_GET['id_paciente'];
         } else {
             exit('Paciente no especificado');
@@ -75,6 +104,11 @@ class CitaController
         require Enlaces::VIEW_PATH . 'cita/citas_paciente.php';
     }
 
+    /**
+     * Muestra el formulario para crear una cita
+     *
+     * @return void
+     */
     public function formCrear()
     {
         session_start();
@@ -90,6 +124,11 @@ class CitaController
         require Enlaces::VIEW_PATH . 'cita/crear_cita.php';
     }
 
+    /**
+     * Muestra el formulario para editar una cita existente
+     *
+     * @return void
+     */
     public function formEditar()
     {
         session_start();
@@ -115,6 +154,12 @@ class CitaController
 
         require Enlaces::VIEW_PATH . 'cita/editar_cita.php';
     }
+
+    /**
+     * Crea un hueco de cita pendiente
+     *
+     * @return void
+     */
     public function crearHueco()
     {
         session_start();
@@ -141,8 +186,12 @@ class CitaController
         exit;
     }
 
-
-    public function asignarPaciente() // Asignar paciente
+    /**
+     * Asigna un paciente a una cita
+     *
+     * @return void
+     */
+    public function asignarPaciente()
     {
         session_start();
 
@@ -165,8 +214,11 @@ class CitaController
         header('Location: ' . Enlaces::BASE_URL . 'citas');
     }
 
-
-
+    /**
+     * Modifica una cita existente
+     *
+     * @return void
+     */
     public function modificar()
     {
         session_start();
@@ -181,7 +233,6 @@ class CitaController
             exit('ID de cita inválido');
         }
 
-        // Validación básica
         $fecha  = $_POST['fecha']  ?? null;
         $hora   = $_POST['hora']   ?? null;
         $estado = $_POST['estado'] ?? null;
@@ -194,17 +245,14 @@ class CitaController
         $pdo = BaseDatos::getConexion();
         $citaModel = new Cita();
 
-        // 🔹 CARGAMOS LOS DATOS EN EL MODELO
         $citaModel->setFechaCita($fecha);
         $citaModel->setHoraCita($hora);
         $citaModel->setEstadoCita($estado);
         $citaModel->setMotivoCita($motivo);
-        $citaModel->setIdInforme(null); // o el valor que corresponda
+        $citaModel->setIdInforme(null);
 
-        // 🔹 ACTUALIZAMOS
         $resultado = $citaModel->actualizarCita($pdo, $id_cita);
 
-        // (opcional) comprobar resultado
         if ($resultado === 'ERR_CITA_04') {
             exit('Error al actualizar la cita');
         }
@@ -213,6 +261,11 @@ class CitaController
         exit;
     }
 
+    /**
+     * Muestra las citas del médico
+     *
+     * @return void
+     */
     public function citasMedico()
     {
         session_start();
@@ -232,6 +285,11 @@ class CitaController
         require Enlaces::VIEW_PATH . 'citas/home_medico.php';
     }
 
+    /**
+     * Elimina una cita existente
+     *
+     * @return void
+     */
     public function eliminar()
     {
         session_start();
@@ -250,10 +308,6 @@ class CitaController
         $citaModel = new Cita();
 
         $resultado = $citaModel->eliminarCita($pdo, $id_cita);
-
-        /* if ($resultado === 'ERR_CITA_05') {
-            exit('Error al eliminar la cita');
-        } */
 
         header('Location: ' . Enlaces::BASE_URL . 'citas/ver_agenda');
         exit;

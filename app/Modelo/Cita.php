@@ -1,10 +1,23 @@
 <?php
-
+/**
+ * Método del módulo Cita
+ *
+ * Gestiona los registros, accesos, modificaciones y eliminciones de la BD
+ *
+ * @package Mediagend\App\Controlador
+ */
 namespace Mediagend\App\Modelo;
 
 use PDO;
 use PDOException;
-
+/**
+ * Clase Cita
+ *
+ * Representa una cita médica y proporciona métodos
+ * para gestionar sus datos y operaciones en la base de datos.
+ *
+ * @package Mediagend\App\Modelo
+ */
 class Cita
 {
     // Propiedades
@@ -18,7 +31,7 @@ class Cita
     private ?string $estado_cita = null;
     private ?string $motivo_cita = null;
 
-    // Getters
+    ///////////////////////////////////////////  Getters //////////////////////////////////////////////////
     /**
      * Método para obtener el ID de la cita
      * @return int|null
@@ -100,7 +113,7 @@ class Cita
         return $this->motivo_cita;
     }
 
-    // Setters
+    /////////////////////////////////////////////////////////  Setters ////////////////////////////////////////////////////
     /**
      * Método para establecer el ID de la cita
      * @param int $id_cita

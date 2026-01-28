@@ -1,4 +1,12 @@
 <?php
+/**
+ * Controlador del módulo Administrador
+ *
+ * Gestiona las acciones relacionadas con el administrador:
+ * vistas, registro, autenticación, sesión y cierre de sesión.
+ *
+ * @package Mediagend\App\Controlador
+ */
 
 namespace Mediagend\App\Controlador;
 
@@ -7,13 +15,19 @@ use Mediagend\App\Modelo\Administrador;
 use Mediagend\App\Config\BaseDatos;
 
 /**
- * Controlador para las acciones del Administrador
+ * Clase AdminController
+ *
+ * Controlador encargado de manejar las acciones del administrador,
+ * incluyendo la carga de vistas, el registro, el login y la gestión
+ * de la sesión.
  */
 class AdminController
 {
     /***********************************************   RUTA DE VISTAS ***********************************/
+
     /**
-     * Método para mostrar la vista de gestión de clínicas
+     * Muestra la vista de gestión de clínicas
+     *
      * @return void
      */
     public function home_clinicas(): void
@@ -22,7 +36,8 @@ class AdminController
     }
 
     /**
-     * Método para mostrar la vista de configuración del administrador
+     * Muestra la vista de configuración del administrador
+     *
      * @return void
      */
     public function home_configuracion(): void
@@ -31,7 +46,8 @@ class AdminController
     }
 
     /**
-     * Método para mostrar la vista de inserción de datos
+     * Muestra la vista de inserción de datos
+     *
      * @return void
      */
     public function home_insertar(): void
@@ -40,8 +56,10 @@ class AdminController
     }
 
     /************************************************  FORMULARIOS **********************************************/
+
     /**
-     * Método para mostrar la vista de login del administrador
+     * Muestra la vista de login del administrador
+     *
      * @return void
      */
     public function login(): void
@@ -50,7 +68,8 @@ class AdminController
     }
 
     /**
-     * Método para mostrar la vista de registro del administrador
+     * Muestra la vista de registro (loguear) del administrador
+     *
      * @return void
      */
     public function loguear(): void
@@ -58,11 +77,15 @@ class AdminController
         require Enlaces::VIEW_PATH . "admin/loguear_admin.php";
     }
 
-
     /********************************************** PROCESAR REGISTRO *************************************************/
+
     /**
-     * Método para procesar el registro de un nuevo administrador
-     * @return never
+     * Procesa el registro de un nuevo administrador
+     *
+     * Valida los datos recibidos por POST, crea el administrador
+     * y lo guarda en la base de datos.
+     *
+     * @return never Finaliza la ejecución mediante redirección o die()
      */
     public function registrar()
     {
@@ -82,7 +105,7 @@ class AdminController
         $pass1      = trim($_POST['password'] ?? '');
         $pass2      = trim($_POST['password_2'] ?? '');
 
-        // VALIDACIONES
+        // Validaciones
         if (strlen($nombre) < 3 || strlen($nombre) > 20) {
             die("El nombre debe tener entre 3 y 20 caracteres.<br><a href='" . Enlaces::BASE_URL . "admin/loguear_admin'>Volver</a>");
         }
@@ -131,15 +154,17 @@ class AdminController
         exit;
     }
 
+    /************************************************* PROCESAR ACCESO A LOGIN ********************************************************/
 
-    /************************************************* PROCESAR ACESO A LOGIN ********************************************************/
     /**
-     * Método para procesar el acceso del administrador
+     * Procesa el acceso (login) del administrador
+     *
+     * Valida credenciales, autentica al usuario y crea la sesión.
+     *
      * @return void
      */
     public function acceder(): void
     {
-
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
             exit;
@@ -148,6 +173,8 @@ class AdminController
         // Sanitizar entrada
         $usuario = trim(filter_input(INPUT_POST, 'usuario_admin', FILTER_SANITIZE_STRING));
         $password = trim($_POST['password_admin'] ?? '');
+
+        // Validaciones
 
         if ($usuario === '' || $password === '') {
             die("Todos los campos son obligatorios.<br><a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>");
@@ -173,7 +200,7 @@ class AdminController
             echo "<a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>";
             exit;
         }
-        
+
         session_start();
 
         // Guardar sesión
@@ -190,10 +217,13 @@ class AdminController
         exit;
     }
 
-
     /*******************************************  HOME ADMINISTRADOR *****************************************************/
+
     /**
-     * Método para mostrar la vista principal del administrador
+     * Muestra la vista principal del administrador
+     *
+     * Verifica que exista una sesión activa antes de mostrar la vista.
+     *
      * @return void
      */
     public function home(): void
@@ -207,17 +237,20 @@ class AdminController
         require Enlaces::VIEW_PATH . "admin/home_admin.php";
     }
 
-
     /*************************************************** CERRAR SESIÓN *********************************************************/
+
     /**
-     * Método para cerrar la sesión del administrador
+     * Cierra la sesión del administrador
+     *
+     * Elimina los datos de sesión y redirige al login.
+     *
      * @return void
      */
     public function logout(): void
     {
-        session_start(); // Reanudar sesión
-        session_unset(); // Eliminar todas las variables de sesión
-        session_destroy(); // Destruir la sesión
+        session_start();
+        session_unset();
+        session_destroy();
         header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
         exit;
     }

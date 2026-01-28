@@ -1,10 +1,23 @@
 <?php
-
+/**
+ * Método del módulo Administrador
+ *
+ * Gestiona los registros, accesos, modificaciones y eliminciones de la BD
+ *
+ * @package Mediagend\App\Controlador
+ */
 namespace Mediagend\App\Modelo;
 
 use PDO;
 use PDOException;
-
+/**
+ * Clase Administrador
+ *
+ * Representa a un administrador del sistema y proporciona métodos
+ * para gestionar sus datos y operaciones en la base de datos.
+ *
+ * @package Mediagend\App\Modelo
+ */
 class Administrador
 {
     // Propiedades
@@ -16,7 +29,7 @@ class Administrador
     private ?string $usuario_admin = null;
     private ?string $password_admin = null;
 
-    // Getters
+    //////////////////////////////////// Getters  /////////////////////////////
     /**
      * método para obtener el ID del administrador
      * @return int|null

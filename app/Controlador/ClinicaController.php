@@ -6,38 +6,75 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Modelo\Clinica;
 use Mediagend\App\Config\BaseDatos;
 
+/**
+ * Controlador de Clínicas
+ *
+ * Gestiona vistas, registro, login, modificación, eliminación
+ * y sesión de clínicas en la aplicación.
+ *
+ * @package Mediagend\App\Controlador
+ */
 class ClinicaController
 {
     /**********************   RUTA DE VISTAS ***********************************/
 
+    /**
+     * Muestra la vista de gestión de citas
+     *
+     * @return void
+     */
     public function home_citas()
     {
         require Enlaces::VIEW_CONTENT_ADMIN_PATH . "citas.php";
     }
-
+    /**
+     * Muestra la vista de gestión de pacientes
+     *
+     * @return void
+     */
     public function home_pacientes()
     {
         require Enlaces::VIEW_CONTENT_CLINICA_PATH . "pacientes.php";
     }
-
+    /**
+     * Muestra la vista de gestión de médicos
+     *
+     * @return void
+     */
     public function home_medicos()
     {
         require Enlaces::VIEW_CONTENT_CLINICA_PATH . "medicos.php";
     }
     /********************* FORMULARIO LOGIN ***********************/
-
+    /**
+     * Muestra la vista de login de la clínica
+     *
+     * @return void
+     */
     public function login()
     {
         require Enlaces::VIEW_PATH . "clinica/login_clinica.php";
     }
 
     /********************* FORMULARIO REGISTRO *********************/
+    /**
+     * Muestra la vista de registro de la clínica
+     *
+     * @return void
+     */
     public function loguear()
     {
         require Enlaces::VIEW_PATH . "clinica/loguear_clinica.php";
     }
 
     /********************* PROCESAR REGISTRO *********************/
+    /**
+     * Procesa el registro de una nueva clínica
+     *
+     * Valida datos, maneja la subida de imagen y guarda la clínica en la base de datos.
+     *
+     * @return void
+     */
     public function registrar()
     {
         session_start();
@@ -162,6 +199,11 @@ class ClinicaController
     }
 
     /***************************** PROCESAR LOGIN  *************************************/
+    /**
+     * Procesa el login de la clínica
+     *
+     * @return void
+     */
     public function acceder()
     {
         session_start();
@@ -216,6 +258,11 @@ class ClinicaController
     }
 
     /*************************  HOME CLINICA *************************/
+    /**
+     * Muestra la vista principal de la clínica
+     *
+     * @return void
+     */
     public function home()
     {
         session_start();
@@ -230,6 +277,11 @@ class ClinicaController
     }
 
     /*************************  CERRAR SESIÓN *************************/
+    /**
+     * Cierra la sesión de la clínica
+     *
+     * @return void
+     */
     public function logout()
     {
         session_start();
@@ -241,6 +293,13 @@ class ClinicaController
     }
 
     /************************* ELIMINAR CLINICA *************************/
+    /**
+     * Elimina una clínica
+     *
+     * Solo el admin creador puede eliminar la clínica.
+     *
+     * @return void
+     */
     public function eliminar()
     {
         session_start();
@@ -286,6 +345,13 @@ class ClinicaController
     }
 
     /************************* MODIFICAR CLINICA *************************/
+    /**
+     * Modifica los datos de una clínica
+     *
+     * Soporta mostrar formulario por GET y guardar cambios por POST.
+     *
+     * @return void
+     */
     public function modificar()
     {
         session_start();

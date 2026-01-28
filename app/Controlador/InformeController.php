@@ -9,9 +9,22 @@ use Mediagend\App\Modelo\Paciente;
 // PDF
 use TCPDF;
 
+/**
+ * Controlador de Informes Médicos
+ *
+ * Gestiona la creación, guardado, listado, visualización y eliminación
+ * de informes clínicos, incluyendo la generación de PDFs.
+ *
+ * @package Mediagend\App\Controlador
+ */
 class InformeController
 {
     /******************** FORMULARIO CREAR INFORME ********************/
+    /**
+     * Muestra el formulario para crear un nuevo informe médico.
+     *
+     * @return void
+     */
     public function crear()
     {
         session_start();
@@ -28,6 +41,14 @@ class InformeController
     }
 
     /******************** GUARDAR INFORME + PDF ********************/
+    /**
+     * Procesa y guarda un informe médico, generando un PDF
+     *
+     * Valida datos, genera el PDF, guarda los datos en base de datos
+     * y redirige al listado de pacientes.
+     *
+     * @return void
+     */
     public function guardar()
     {
         session_start();
@@ -115,6 +136,19 @@ class InformeController
     }
 
     /************************************ GENERAR PDF *******************************************/
+    /**
+     * Genera un PDF del informe médico
+     *
+     * @param string $rutaFinal Ruta completa del archivo PDF a generar
+     * @param string $diagnostico Texto del diagnóstico
+     * @param string $tratamiento Texto del tratamiento
+     * @param array $clinica Datos de la clínica
+     * @param array $medico Datos del médico
+     * @param array $paciente Datos del paciente
+     * @param string $horaVisita Fecha y hora de creación del informe
+     *
+     * @return void
+     */
     private function generarPDF(
         string $rutaFinal,
         string $diagnostico,
@@ -188,8 +222,11 @@ class InformeController
         $pdf->writeHTML($html, true, false, true, false, '');
         $pdf->Output($rutaFinal, 'F');
     }
-
-    public function listar()
+    /**
+     * Lista todos los informes de un paciente
+     *
+     * @return void
+     */    public function listar()
     {
         session_start();
 
@@ -217,8 +254,11 @@ class InformeController
         // Pasamos los datos reales a la vista
         require Enlaces::VIEW_PATH . 'informe/listar_informes.php';
     }
-
-    public function ver()
+    /**
+     * Muestra un informe médico en PDF
+     *
+     * @return void
+     */    public function ver()
     {
         session_start();
 
@@ -242,8 +282,8 @@ class InformeController
             exit('Informe no encontrado');
         }
 
-        
-       // SEGURIDAD
+
+        // SEGURIDAD
 
         //  PACIENTE
         if (isset($_SESSION['paciente'])) {
@@ -261,8 +301,8 @@ class InformeController
             }
         }
 
-        
-       // MOSTRAR PDF
+
+        // MOSTRAR PDF
 
         $rutaPDF = Enlaces::BASE_PATH . 'app/imagenes_registros/informes_clinicos/' . $informe['archivo_pdf_informe'];
 
@@ -277,7 +317,11 @@ class InformeController
         readfile($rutaPDF);
         exit;
     }
-
+    /**
+     * Elimina un informe médico y su archivo PDF asociado
+     *
+     * @return void
+     */
     public function eliminar()
     {
         session_start();

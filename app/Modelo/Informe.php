@@ -1,10 +1,23 @@
 <?php
-
+/**
+ * Método del módulo Informe
+ *
+ * Gestiona los registros, accesos, modificaciones y eliminciones de la BD
+ *
+ * @package Mediagend\App\Controlador
+ */
 namespace Mediagend\App\Modelo;
 
 use PDO;
 use PDOException;
-
+/**
+ * Clase Informe
+ *
+ * Representa un informe médico y proporciona métodos
+ * para gestionar sus datos y operaciones en la base de datos.
+ *
+ * @package Mediagend\App\Modelo
+ */
 class Informe
 {
     // Propiedades
@@ -18,7 +31,7 @@ class Informe
     private ?string $fecha_generacion_informe = null;
     private ?string $archivo_pdf_informe = null;
 
-    //Getters
+    ///////////////////////////////////////////////   Getters   ///////////////////////////////////////////////////////////////
     /**
      * Método para obtener el ID del informe
      * @return int|null
@@ -92,7 +105,7 @@ class Informe
         return $this->archivo_pdf_informe;
     }
 
-    // Setters
+    ////////////////////////////////////////////////////   Setters   ////////////////////////////////////////////////////////////////
     /**
      * Método para establecer el id del informe
      * @param int $id_informe

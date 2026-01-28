@@ -6,23 +6,46 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Modelo\Paciente;
 use Mediagend\App\Config\BaseDatos;
 
+/**
+ * Controlador de Pacientes
+ *
+ * Gestiona todas las acciones relacionadas con los pacientes,
+ * incluyendo registro, login, modificación, eliminación y vistas de home.
+ *
+ * @package Mediagend\App\Controlador
+ */
 class PacienteController
 {
     /**************************** RUTA DE VISTAS **************************/
 
     /**************************** FORMULARIO LOGIN *************************/
+    /**
+     * Muestra el formulario de login para pacientes
+     *
+     * @return void
+     */
     public function login()
     {
         require Enlaces::VIEW_PATH . "paciente/login_paciente.php";
     }
 
     /**************************** FORMULARIO REGISTRO *************************/
+    /**
+     * Muestra el formulario de registro de pacientes
+     *
+     * @return void
+     */
     public function loguear()
     {
         require Enlaces::VIEW_PATH . "paciente/loguear_paciente.php";
     }
 
     /**************************** VISTA HOME PACIENTE *************************/
+    /**
+     * Muestra las citas del paciente
+     *
+     * @return void
+     */
     public function home_mis_citas()
     {
         session_start();
@@ -33,7 +56,11 @@ class PacienteController
 
         require Enlaces::VIEW_CONTENT_PACIENTE_PATH . "citas_pacientes.php";
     }
-
+    /**
+     * Muestra los informes del paciente
+     *
+     * @return void
+     */
     public function home_mis_informes()
     {
         session_start();
@@ -44,7 +71,11 @@ class PacienteController
 
         require Enlaces::VIEW_CONTENT_PACIENTE_PATH . "mis_informes.php";
     }
-
+    /**
+     * Muestra los ajustes del paciente
+     *
+     * @return void
+     */
     public function home_mis_ajustes()
     {
         session_start();
@@ -55,7 +86,11 @@ class PacienteController
 
         require Enlaces::VIEW_CONTENT_PACIENTE_PATH . "ajustes_pacientes.php";
     }
-
+    /**
+     * Muestra la pantalla de inicio del paciente
+     *
+     * @return void
+     */
     public function home_inicio()
     {
         session_start();
@@ -68,6 +103,14 @@ class PacienteController
     }
 
     /**************************** PROCESAR REGISTRO *************************/
+    /**
+     * Procesa el registro de un nuevo paciente
+     *
+     * Valida todos los campos, gestiona subida de imagen,
+     * guarda el paciente en la base de datos y redirige al home de la clínica.
+     *
+     * @return void
+     */
     public function registrar()
     {
         session_start();
@@ -218,6 +261,13 @@ class PacienteController
     }
 
     /*********************************** PROCESAR LOGIN *************************************/
+    /**
+     * Procesa el login de un paciente
+     *
+     * Valida usuario y contraseña, inicia sesión y redirige al home del paciente.
+     *
+     * @return void
+     */
     public function acceder()
     {
         //Sanitizar entrada
@@ -277,6 +327,11 @@ class PacienteController
     }
 
     /*************************  HOME PACIENTE *************************/
+    /**
+     * Muestra la vista principal del paciente
+     *
+     * @return void
+     */
     public function home()
     {
         session_start();
@@ -290,6 +345,11 @@ class PacienteController
     }
 
     /*************************  CERRAR SESIÓN *************************/
+    /**
+     * Cierra la sesión del paciente
+     *
+     * @return void
+     */
     public function logout()
     {
         session_start();
@@ -301,6 +361,14 @@ class PacienteController
     }
 
     /******************************* ELIMINAR PACIENTE ***********************************/
+    /**
+     * Elimina un paciente de la clínica
+     *
+     * Verifica permisos, valida ID y elimina tanto la imagen como
+     * el registro en la base de datos.
+     *
+     * @return void
+     */
     public function eliminar()
     {
         session_start();
@@ -349,6 +417,14 @@ class PacienteController
     }
 
     /************************* MODIFICAR PACIENTE *************************/
+    /**
+     * Modifica los datos de un paciente (por clínica)
+     *
+     * Muestra el formulario con GET y procesa los cambios con POST,
+     * incluyendo validaciones y gestión de foto.
+     *
+     * @return void
+     */
     public function modificar()
     {
         session_start();
@@ -524,6 +600,14 @@ class PacienteController
     }
 
     /************************* MODIFICAR DATOS PACIENTE (POR PACIENTE) *************************/
+    /**
+     * Permite al paciente modificar sus propios datos
+     *
+     * Muestra el formulario con GET y procesa los cambios con POST,
+     * validando teléfono y email.
+     *
+     * @return void
+     */
     public function modificar_mis_datos()
     {
         session_start();
@@ -606,7 +690,13 @@ class PacienteController
         }
     }
 
-
+    /**
+     * Permite al paciente cambiar su contraseña
+     *
+     * Valida la contraseña actual, verifica coincidencia y actualiza la nueva contraseña.
+     *
+     * @return void
+     */
     public function modificar_password()
     {
         session_start();

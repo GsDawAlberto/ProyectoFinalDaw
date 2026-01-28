@@ -6,9 +6,25 @@ use Mediagend\App\Config\Enlaces;
 use Mediagend\App\Modelo\Medico;
 use Mediagend\App\Config\BaseDatos;
 
+/**
+ * Controlador de Médicos
+ *
+ * Gestiona todas las acciones relacionadas con los médicos,
+ * incluyendo registro, login, modificación, eliminación y vistas de home.
+ *
+ * @package Mediagend\App\Controlador
+ */
 class MedicoController
 {
     /**************************** RUTA DE VISTAS **************************/
+    /**
+     * Controlador de Médicos
+     *
+     * Gestiona todas las acciones relacionadas con los médicos,
+     * incluyendo registro, login, modificación, eliminación y vistas de home.
+     *
+     * @package Mediagend\App\Controlador
+     */
     public function home_mis_pacientes()
     {
 
@@ -16,18 +32,36 @@ class MedicoController
     }
 
     /**************************** FORMULARIO LOGIN *************************/
+    /**
+     * Muestra el formulario de login para médicos
+     *
+     * @return void
+     */
     public function login()
     {
         require Enlaces::VIEW_PATH . "medico/login_medico.php";
     }
 
     /**************************** FORMULARIO REGISTRO *************************/
+    /**
+     * Muestra el formulario de registro de médicos
+     *
+     * @return void
+     */
     public function loguear()
     {
         require Enlaces::VIEW_PATH . "medico/loguear_medico.php";
     }
 
     /**************************** PROCESAR REGISTRO *************************/
+    /**
+     * Procesa el registro de un nuevo médico
+     *
+     * Valida campos, gestiona subida de imagen, guarda el médico en BD
+     * y redirige al home de la clínica.
+     *
+     * @return void
+     */
     public function registrar()
     {
         session_start();
@@ -192,6 +226,14 @@ class MedicoController
     }
 
     /*********************************** PROCESAR LOGIN *************************************/
+    /**
+     * Procesa el login de un médico
+     *
+     * Valida número de colegiado y contraseña, inicia sesión y redirige
+     * al home del médico.
+     *
+     * @return void
+     */
     public function acceder()
     {
         session_start();
@@ -260,6 +302,11 @@ class MedicoController
 
 
     /*************************  HOME MEDICO *************************/
+    /**
+     * Muestra la vista principal del médico
+     *
+     * @return void
+     */
     public function home()
     {
         session_start();
@@ -273,6 +320,11 @@ class MedicoController
     }
 
     /*************************  CERRAR SESIÓN *************************/
+    /**
+     * Cierra la sesión del médico
+     *
+     * @return void
+     */
     public function logout()
     {
         session_start();
@@ -284,6 +336,14 @@ class MedicoController
     }
 
     /******************************* ELIMINAR MEDICO ***********************************/
+    /**
+     * Elimina un médico de la clínica
+     *
+     * Comprueba permisos, valida ID y elimina tanto la imagen
+     * como el registro en la base de datos.
+     *
+     * @return void
+     */
     public function eliminar()
     {
         session_start();
@@ -332,6 +392,14 @@ class MedicoController
     }
 
     /************************* MODIFICAR MÉDICO *************************/
+    /**
+     * Modifica los datos de un médico
+     *
+     * Muestra el formulario por GET y procesa cambios por POST,
+     * incluyendo validaciones y subida de foto.
+     *
+     * @return void
+     */
     public function modificar()
     {
         session_start();

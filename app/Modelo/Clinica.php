@@ -1,10 +1,23 @@
 <?php
-
+/**
+ * Método del módulo Clinica
+ *
+ * Gestiona los registros, accesos, modificaciones y eliminciones de la BD
+ *
+ * @package Mediagend\App\Controlador
+ */
 namespace Mediagend\App\Modelo;
 
 use PDO;
 use PDOException;
-
+/**
+ * Clase Clinica
+ *
+ * Representa una clínica médica y proporciona métodos
+ * para gestionar sus datos y operaciones en la base de datos.
+ *
+ * @package Mediagend\App\Modelo
+ */
 class Clinica
 {
     // Propiedades
@@ -21,7 +34,7 @@ class Clinica
     private ?string $foto_clinica = null;
     
 
-    // Getters
+    ////////////////////////////////////////////////////////////   Getters  //////////////////////////////////////////////////
     /**
      * método para obtener el ID de la clínica
      * @return int|null

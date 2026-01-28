@@ -1,11 +1,24 @@
 <?php
-
+/**
+ * Método del módulo Paciente
+ *
+ * Gestiona los registros, accesos, modificaciones y eliminciones de la BD
+ *
+ * @package Mediagend\App\Controlador
+ */
 namespace Mediagend\App\Modelo;
 use Mediagend\App\Controlador\Helper;
 
 use PDO;
 use PDOException;
-
+/**
+ * Clase Paciente
+ *
+ * Representa a un paciente del sistema y proporciona métodos
+ * para gestionar sus datos y operaciones en la base de datos.
+ *
+ * @package Mediagend\App\Modelo
+ */
 class Paciente
 {
     //Propiedades
@@ -21,7 +34,7 @@ class Paciente
     private ?string $password_paciente = null;
     private ?string $foto_paciente = null;
     
-    //Getters
+    ///////////////////////////////////////////////////////    Getters    ////////////////////////////////////////////////////////////
     /**
      * Método para obtener el ID del paciente
      * @return int|null
@@ -111,7 +124,7 @@ class Paciente
         return $this->foto_paciente;
     }
 
-    //////////////////////////// Setters //////////////////////////
+    /////////////////////////////////////////////////   Setters    /////////////////////////////////////////////////////////
     /**
      * Método para establecer el ID del paciente
      * @param int|null $id_paciente

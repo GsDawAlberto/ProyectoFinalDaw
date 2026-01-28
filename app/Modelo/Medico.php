@@ -1,10 +1,24 @@
 <?php
-
+/**
+ * Método del módulo Medico
+ *
+ * Gestiona los registros, accesos, modificaciones y eliminciones de la BD
+ *
+ * @package Mediagend\App\Controlador
+ */
 namespace Mediagend\App\Modelo;
 
 use PDO;
 use PDOException;
 
+/**
+ * Clase Medico
+ *
+ * Representa a un médico del sistema y proporciona métodos
+ * para gestionar sus datos y operaciones en la base de datos.
+ *
+ * @package Mediagend\App\Modelo
+ */
 class Medico
 {
     //Propiedades
@@ -20,7 +34,7 @@ class Medico
     private ?string $email_medico = null;
     private ?string $password_medico = null;
 
-    //Getters
+    /////////////////////////////////////////////////   Getters   ////////////////////////////////////////////////////////////////
     /**
      * Método para obener el ID del médico
      * @return int|null
@@ -110,7 +124,7 @@ class Medico
         return $this->password_medico;
     }
 
-    ////////////////////////////////////////////  Setters    //////////////////////////////
+    /////////////////////////////////////////////////////////  Setters    //////////////////////////////////////////
     /**
      * Método para establecer el ID del médico
      * @param int $id_medico
