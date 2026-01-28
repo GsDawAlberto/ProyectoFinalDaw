@@ -44,9 +44,10 @@ use Mediagend\App\Config\Enlaces;
             <label>Contraseña</label>
             <input type="password"
                    name="password_clinica"
-                   id="password_clinica"
+                   id="password"
                    placeholder="Ingresa tu contraseña"
                    required>
+                   <span id="ver_pass_1">Mostrar</span>
             <small class="error-msg"></small>
         </div>
 
@@ -61,6 +62,28 @@ use Mediagend\App\Config\Enlaces;
 </div>
 
 <!-- =====================
+     MOSTRAR CONTRASEÑA
+===================== -->
+    <script>
+        function togglePass(inputId, btnId) {
+            const input = document.getElementById(inputId);
+            const btn = document.getElementById(btnId);
+
+            btn.addEventListener("click", () => {
+                if (input.type === "password") {
+                    input.type = "text";
+                    btn.textContent = "Ocultar";
+                } else {
+                    input.type = "password";
+                    btn.textContent = "Mostrar";
+                }
+            });
+        }
+
+        togglePass("password", "ver_pass_1");
+    </script>
+
+<!-- =====================
      VALIDACIÓN EN TIEMPO REAL
 ===================== -->
 <script>
@@ -68,7 +91,7 @@ const form = document.getElementById('formLoginClinica');
 const errorGlobal = document.getElementById('formErrorGlobal');
 
 const usuario = document.getElementById('usuario_clinica');
-const password = document.getElementById('password_clinica');
+const password = document.getElementById('password');
 
 /* =====================
    UI HELPERS

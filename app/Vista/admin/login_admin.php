@@ -38,7 +38,8 @@ use Mediagend\App\Config\Enlaces;
 
         <div class="form-group">
             <label>Contraseña</label>
-            <input type="password" name="password_admin" id="password_admin" placeholder="Ingresa tu contraseña" required>
+            <input type="password" name="password_admin" id="password" placeholder="Ingresa tu contraseña" required>
+            <span id="ver_pass_1">Mostrar</span>
             <small class="error-msg"></small>
         </div>
 
@@ -57,6 +58,27 @@ use Mediagend\App\Config\Enlaces;
     </footer>
 
 </div>
+<!-- =====================
+     MOSTRAR CONTRASEÑA
+===================== -->
+    <script>
+        function togglePass(inputId, btnId) {
+            const input = document.getElementById(inputId);
+            const btn = document.getElementById(btnId);
+
+            btn.addEventListener("click", () => {
+                if (input.type === "password") {
+                    input.type = "text";
+                    btn.textContent = "Ocultar";
+                } else {
+                    input.type = "password";
+                    btn.textContent = "Mostrar";
+                }
+            });
+        }
+
+        togglePass("password", "ver_pass_1");
+    </script>
 
 <!-- =====================
      VALIDACIÓN EN TIEMPO REAL
@@ -66,7 +88,7 @@ const form = document.getElementById('formLogin');
 const errorGlobal = document.getElementById('formErrorGlobal');
 
 const usuario = document.getElementById('usuario_admin');
-const password = document.getElementById('password_admin');
+const password = document.getElementById('password');
 
 function setError(input, message) {
     const group = input.parentElement;
