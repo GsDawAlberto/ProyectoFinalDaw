@@ -76,7 +76,7 @@ class AdminController
         // Sanitizar entrada
         $nombre     = trim(filter_input(INPUT_POST, 'nombre_admin', FILTER_SANITIZE_STRING));
         $apellidos  = trim(filter_input(INPUT_POST, 'apellidos_admin', FILTER_SANITIZE_STRING));
-        $dni        = trim(filter_input(INPUT_POST, 'dni_admin', FILTER_SANITIZE_STRING));
+        $dni        = strtoupper(trim(filter_input(INPUT_POST, 'dni_admin', FILTER_SANITIZE_STRING)));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_admin', FILTER_SANITIZE_STRING));
         $email      = trim(filter_input(INPUT_POST, 'email_admin', FILTER_SANITIZE_EMAIL));
         $pass1      = trim($_POST['password'] ?? '');

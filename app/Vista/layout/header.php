@@ -13,7 +13,9 @@ use Mediagend\App\Config\Enlaces;
 <body>
 
 <header class="main-header">
-    <img src="<?= Enlaces::BASE_URL ?>img/Logo.png" alt="Logo Mediagend" class="logo">
+    <a href="<?= Enlaces::BASE_URL ?>">
+        <img src="<?= Enlaces::BASE_URL ?>img/Logo.png" alt="Logo Mediagend" class="logo">
+    </a>
 </header>
 
 <main>

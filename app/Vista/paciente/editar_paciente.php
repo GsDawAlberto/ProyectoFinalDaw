@@ -162,14 +162,26 @@ function validarTexto(input, min, max) {
 }
 
 function validarDNI(input) {
-    const regex = /^[0-9]{8}[A-Za-z]$/;
-    if (!regex.test(input.value.trim())) {
-        setError(input, 'DNI no válido. Formato: 8 números y letra');
-        return false;
-    }
-    setSuccess(input);
-    return true;
-}
+            const value = input.value.trim().toUpperCase();
+            const dniRegex = /^[0-9]{8}[A-Z]$/;
+
+            if (!dniRegex.test(value)) {
+                setError(input, 'DNI inválido, debe contener 9 digitos seguido de una letra');
+                return false;
+            }
+
+            const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            const numero = value.substring(0, 8);
+            const letra = value.charAt(8);
+
+            if (letras[numero % 23] !== letra) {
+                setError(input, 'Letra del DNI incorrecta');
+                return false;
+            }
+
+            setSuccess(input);
+            return true;
+        }
 
 function validarTelefono(input) {
     if(input.value.trim() === '') {

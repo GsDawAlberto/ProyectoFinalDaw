@@ -49,7 +49,7 @@ class MedicoController
         // Sanitizar entrada
         $nombre                 = trim(filter_input(INPUT_POST, 'nombre_medico', FILTER_SANITIZE_STRING));
         $apellidos              = trim(filter_input(INPUT_POST, 'apellidos_medico', FILTER_SANITIZE_STRING));
-        $dni                    = trim(filter_input(INPUT_POST, 'dni_medico', FILTER_SANITIZE_STRING));
+        $dni                    = strtoupper(trim(filter_input(INPUT_POST, 'dni_medico', FILTER_SANITIZE_STRING)));
         $numero_colegiado       = trim(filter_input(INPUT_POST, 'numero_colegiado', FILTER_SANITIZE_STRING));
         $especialidad_medico    = trim(filter_input(INPUT_POST, 'especialidad_medico', FILTER_SANITIZE_EMAIL));
         $telefono               = trim(filter_input(INPUT_POST, 'telefono_medico', FILTER_SANITIZE_STRING));
@@ -170,6 +170,7 @@ class MedicoController
         $medico->setIdClinica($idClinica);
         $medico->setNombreMedico($nombre);
         $medico->setApellidosMedico($apellidos);
+        $medico->setDniMedico($dni);
         $medico->setNumeroColegiado($numero_colegiado);
         $medico->setEspecialidadMedico($especialidad_medico);
         $medico->setTelefonoMedico($telefono);
@@ -389,10 +390,10 @@ class MedicoController
                 die("No tienes permisos");
             }
 
-            // eNTRADA DE DATOS MEDIANTE POST
+            // ENTRADA DE DATOS MEDIANTE POST
             $nombre              = trim($_POST['nombre_medico']);
             $apellidos           = trim($_POST['apellidos_medico']);
-            $dni                 = trim($_POST['dni_medico']);
+            $dni                 = strtoupper(trim($_POST['dni_medico']));
             $numero_colegiado    = trim($_POST['numero_colegiado']);
             $especialidad        = trim($_POST['especialidad_medico']);
             $telefono            = trim($_POST['telefono_medico']);
@@ -494,6 +495,7 @@ class MedicoController
             // Entrada de datos al modelo
             $medicoModel->setNombreMedico($nombre);
             $medicoModel->setApellidosMedico($apellidos);
+            $medicoModel->setDniMedico($dni);
             $medicoModel->setNumeroColegiado($numero_colegiado);
             $medicoModel->setEspecialidadMedico($especialidad);
             $medicoModel->setTelefonoMedico($telefono);

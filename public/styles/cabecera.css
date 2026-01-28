@@ -11,3 +11,6 @@
     margin: -50px;
 }
 
+.main-header a {
+    display: inline-block;
+}

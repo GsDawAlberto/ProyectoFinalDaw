@@ -89,7 +89,7 @@ class PacienteController
         // Sanitizar entrada
         $nombre     = trim(filter_input(INPUT_POST, 'nombre_paciente', FILTER_SANITIZE_STRING));
         $apellidos  = trim(filter_input(INPUT_POST, 'apellidos_paciente', FILTER_SANITIZE_STRING));
-        $dni        = trim(filter_input(INPUT_POST, 'dni_paciente', FILTER_SANITIZE_STRING));
+        $dni        = strtoupper(trim(filter_input(INPUT_POST, 'dni_paciente', FILTER_SANITIZE_STRING)));
         $telefono   = trim(filter_input(INPUT_POST, 'telefono_paciente', FILTER_SANITIZE_STRING));
         $email      = trim(filter_input(INPUT_POST, 'email_paciente', FILTER_SANITIZE_EMAIL));
         $usuario    = trim(filter_input(INPUT_POST, 'usuario_paciente', FILTER_SANITIZE_STRING));
@@ -409,7 +409,7 @@ class PacienteController
             // Datos
             $nombre    = trim($_POST['nombre_paciente']);
             $apellidos = trim($_POST['apellidos_paciente']);
-            $dni       = trim($_POST['dni_paciente']);
+            $dni       = strtoupper(trim($_POST['dni_paciente']));
             $telefono  = trim($_POST['telefono_paciente']);
             $email     = trim($_POST['email_paciente']);
             $id_medico  = trim($_POST['id_medico']) ?: null;

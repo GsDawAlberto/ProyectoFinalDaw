@@ -19,6 +19,7 @@ use Mediagend\App\Config\Enlaces;
 <div class="container">
 
     <header>
+        <?php include_once Enlaces::LAYOUT_PATH . 'header.php';?>
         <h1>Paciente</h1>
         <p>Acceso al panel de control</p>
     </header>
