@@ -1278,7 +1278,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Mediagend\\App\\Modelo\\Medico\u003A\u003AautenticarMedico\u0028\u0029",
             "name": "autenticarMedico",
-            "summary": "",
+            "summary": "Metodo\u0020para\u0020autenticar\u0020un\u0020m\u00E9dico",
             "url": "classes/Mediagend-App-Modelo-Medico.html#method_autenticarMedico"
         },                {
             "fqsen": "\\Mediagend\\App\\Modelo\\Medico\u003A\u003AmostrarMedico\u0028\u0029",
@@ -1303,7 +1303,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Mediagend\\App\\Modelo\\Medico\u003A\u003AlistarPorClinica\u0028\u0029",
             "name": "listarPorClinica",
-            "summary": "",
+            "summary": "M\u00E9todo\u0020para\u0020mostrar\u0020un\u0020m\u00E9dico\u0020por\u0020id\u0020clinica",
             "url": "classes/Mediagend-App-Modelo-Medico.html#method_listarPorClinica"
         },                {
             "fqsen": "\\Mediagend\\App\\Modelo\\Medico\u003A\u003A\u0024id_medico",
@@ -1513,7 +1513,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Mediagend\\App\\Modelo\\Paciente\u003A\u003AlistarPorClinica\u0028\u0029",
             "name": "listarPorClinica",
-            "summary": "",
+            "summary": "M\u00E9todo\u0020para\u0020mostrar\u0020pacientes\u0020por\u0020clinica",
             "url": "classes/Mediagend-App-Modelo-Paciente.html#method_listarPorClinica"
         },                {
             "fqsen": "\\Mediagend\\App\\Modelo\\Paciente\u003A\u003A\u0024id_paciente",
