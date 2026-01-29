@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Método del módulo Medico
  *
@@ -6,6 +7,7 @@
  *
  * @package Mediagend\App\Controlador
  */
+
 namespace Mediagend\App\Modelo;
 
 use PDO;
@@ -231,9 +233,9 @@ class Medico
             $stmt->execute([
                 ':id_clinica' => $this->id_clinica,
                 ':nombre_medico' => $this->nombre_medico,
-                ':apellidos_medico' =>$this->apellidos_medico,
+                ':apellidos_medico' => $this->apellidos_medico,
                 ':dni_medico' => $this->dni_medico,
-                ':numero_colegiado' =>$this->numero_colegiado,
+                ':numero_colegiado' => $this->numero_colegiado,
                 ':especialidad_medico' => $this->especialidad_medico,
                 ':telefono_medico' => $this->telefono_medico,
                 ':foto_medico' => $this->foto_medico,
@@ -250,12 +252,16 @@ class Medico
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
             //Devolvemos el mensaje de error
-            /* $error = 'ERR_MEDICO_01'; // Error al guardar médico
-            return $error; */
-            die($e->getMessage());
+            die('ERR_MEDICO_01' . $e->getMessage()); // Error al guardar médico
         }
     }
-
+    /**
+     * Metodo para autenticar un médico
+     * @param PDO $pdo. Conexión PDO a la base de datos
+     * @param string $numero_colegiado. Entrada del número de colegiado
+     * @param string $password_medico. Entrada de password
+     * @return string|array|bool. Retorna el valor de los parámetros del médico o ERR_MEDICO_02 en caso de no poder autenticar el médico
+     */
     public function autenticarMedico(PDO $pdo, string $numero_colegiado, string $password_medico): string|array|bool
     {
         // Intentamos capturar errores de PDO
@@ -281,49 +287,47 @@ class Medico
             }
 
             // Cargamos los datos del médico en el objeto
-                $this->id_medico = (int)$medico['id_medico'];
-                $this->id_clinica = (int)$medico['id_clinica'];
-                $this->nombre_medico = $medico['nombre_medico'];
-                $this->apellidos_medico = $medico['apellidos_medico'];
-                $this->numero_colegiado = $medico['numero_colegiado'];
-                $this->dni_medico = $medico['dni_medico'];
-                $this->foto_medico = $medico['foto_medico'];
-                $this->especialidad_medico = $medico['especialidad_medico'];
-                $this->telefono_medico = $medico['telefono_medico'];
-                $this->email_medico = $medico['email_medico'];
-                $this->password_medico = $medico['password_medico'];
+            $this->id_medico = (int)$medico['id_medico'];
+            $this->id_clinica = (int)$medico['id_clinica'];
+            $this->nombre_medico = $medico['nombre_medico'];
+            $this->apellidos_medico = $medico['apellidos_medico'];
+            $this->numero_colegiado = $medico['numero_colegiado'];
+            $this->dni_medico = $medico['dni_medico'];
+            $this->foto_medico = $medico['foto_medico'];
+            $this->especialidad_medico = $medico['especialidad_medico'];
+            $this->telefono_medico = $medico['telefono_medico'];
+            $this->email_medico = $medico['email_medico'];
+            $this->password_medico = $medico['password_medico'];
 
-                // Retornamos el array con los datos del médico
-                return $medico;
+            // Retornamos el array con los datos del médico
+            return $medico;
 
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            /* $error = 'ERR_MEDICO_02'; // Error al autenticar médico
-            return $error; */
-            die($e->getMessage());
+            die('ERR_MEDICO_02' . $e->getMessage()); // Error al autenticar médico
         }
     }
     /**
      * Método para mostrar un médico por su ID o todos los médicos si no se proporciona ID
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int|null $id_medico. ID del médico a buscar (opcional)
-     * @return string|array|null Retorna un array asociativo con los datos del médico, un array de médicos o ERR_MEDICO_03 en caso de error
+     * @return string|array|null Retorna un array asociativo con los datos del médico, un array de médicos o ERR_MEDICO_03 en caso de no poder buscar un médico
      */
     public function mostrarMedico(PDO $pdo, ?string $busqueda = null): array|string|null
-{
-    try {
+    {
+        try {
 
-        // SIN BÚSQUEDA → TODOS
-        if ($busqueda === null || trim($busqueda) === '') {
-            $sql = "SELECT * FROM medico";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
+            // SIN BÚSQUEDA → TODOS
+            if ($busqueda === null || trim($busqueda) === '') {
+                $sql = "SELECT * FROM medico";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute();
 
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
 
-        // CON BÚSQUEDA
-        $sql = "SELECT * FROM medico
+            // CON BÚSQUEDA
+            $sql = "SELECT * FROM medico
             WHERE nombre_medico       LIKE :busqueda
                OR apellidos_medico    LIKE :busqueda
                OR dni_medico          LIKE :busqueda
@@ -332,48 +336,45 @@ class Medico
                OR email_medico        LIKE :busqueda
                OR especialidad_medico LIKE :busqueda";
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ':busqueda' => '%' . $busqueda . '%'
-        ]);
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':busqueda' => '%' . $busqueda . '%'
+            ]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    } catch (PDOException $e) {
-        /* return 'ERR_MEDICO_03'; */
-        die($e->getMessage());
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            die('ERR_MEDICO_03' . $e->getMessage()); //Error al mostrar un médico por busqueda
+        }
     }
-}
-/**
+    /**
      * Método para mostrar un médico por su ID (Este método es para el formulario de modificación y eliminación)
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_medico. ID del médico a buscar
-     * @return array|null Retorna un array asociativo con los datos del médico o null en caso de no encontrarlo
+     * @return array|null Retorna un array asociativo con los datos del médico, null en caso de no encontrarlo o ERR_MEDICO_04 si hay un error
      */
     public function mostrarMedicoPorId(PDO $pdo, int $id_medico): array|null
-{
-    try {
-        $sql = "SELECT * FROM medico WHERE id_medico = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':id' => $id_medico]);
+    {
+        try {
+            $sql = "SELECT * FROM medico WHERE id_medico = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id' => $id_medico]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
-
-    } catch (PDOException $e) {
-        return null;
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        } catch (PDOException $e) {
+            die('ERR_MEDICO_04' . $e->getMessage()); //Error al mostrar un médico por su ID
+        }
     }
-}
     /**
      * Método para actualizar un médico en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_medico. ID del médico a actualizar
-     * @return bool Retorna true si la actualización fue exitosa, false en caso contrario
+     * @return bool Retorna true si la actualización fue exitosa, false en caso contrario o ERR_MEDICO_05, si no puede actualizar médico
      */
     public function actualizarMedico(PDO $pdo, int $id_medico): bool
-{
-    try {
+    {
+        try {
 
-        $sql = "UPDATE medico SET
+            $sql = "UPDATE medico SET
                     nombre_medico           = :nombre_medico,
                     apellidos_medico        = :apellidos_medico,
                     dni_medico              = :dni_medico,
@@ -384,29 +385,28 @@ class Medico
                     foto_medico             = :foto_medico
                 WHERE id_medico             = :id_medico";
 
-        $stmt = $pdo->prepare($sql);
+            $stmt = $pdo->prepare($sql);
 
-        return $stmt->execute([
-            ':nombre_medico'        => $this->nombre_medico,
-            ':apellidos_medico'     => $this->apellidos_medico,
-            ':dni_medico'           => $this->dni_medico,
-            ':numero_colegiado'     => $this->numero_colegiado,
-            ':especialidad_medico'  => $this->especialidad_medico,
-            ':telefono_medico'      => $this->telefono_medico,
-            ':email_medico'         => $this->email_medico,
-            ':foto_medico'          => $this->foto_medico,
-            ':id_medico'            => $id_medico
-        ]);
-
-    } catch (PDOException $e) {
-        return false;
+            return $stmt->execute([
+                ':nombre_medico'        => $this->nombre_medico,
+                ':apellidos_medico'     => $this->apellidos_medico,
+                ':dni_medico'           => $this->dni_medico,
+                ':numero_colegiado'     => $this->numero_colegiado,
+                ':especialidad_medico'  => $this->especialidad_medico,
+                ':telefono_medico'      => $this->telefono_medico,
+                ':email_medico'         => $this->email_medico,
+                ':foto_medico'          => $this->foto_medico,
+                ':id_medico'            => $id_medico
+            ]);
+        } catch (PDOException $e) {
+            die('ERR_MEDICO_05' . $e->getMessage()); //Error al actualizar el médico
+        }
     }
-}
     /**
      * Método para eliminar un médico de la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_medico. ID del médico a eliminar
-     * @return string|int Retorna el número de filas afectadas o ERR_MEDICO_05 en caso de no poder eliminar el médico
+     * @return string|int Retorna el número de filas afectadas o ERR_MEDICO_06 en caso de no poder eliminar el médico
      */
     public function eliminarMedico(PDO $pdo, int $id_medico): string|int
     {
@@ -423,27 +423,34 @@ class Medico
 
             // Retornamos la cantidad de filas afectadas
             return $stmt->rowCount();
-
         } catch (PDOException $e) {
             //Devolvemos el mensaje de error
-            /* $error = 'ERR_MEDICO_05'; // Error al eliminar médico
-            return $error; */
-            die($e->getMessage());
+            die('ERR_MEDICO_06' . $e->getMessage()); //Error al mostrar un médico por busqueda// Error al eliminar médico
         }
     }
 
     /***************************************************************************************************/
     /***************************************  OTROS MÉTODOS ************************************************/
+    /**
+     * Método para mostrar un médico por id clinica
+     * @param PDO $pdo .Conexión PDO a la base de datos 
+     * @param int $id_clinica. ID de la clínica 
+     * @return array Retorna un array con los datos de un médico por ID de clinica o ERR_MEDICO_ 07, en caso de no poder
+     */
     public function listarPorClinica(PDO $pdo, int $id_clinica): array
-{
-    $sql = "SELECT id_medico, nombre_medico, apellidos_medico
+    {
+        try{
+        $sql = "SELECT id_medico, nombre_medico, apellidos_medico
             FROM medico
             WHERE id_clinica = :id_clinica
             ORDER BY nombre_medico";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['id_clinica' => $id_clinica]);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id_clinica' => $id_clinica]);
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch(PDOException $e){
+            die('ERR_MEDICO_07' . $e->getMessage()); //Error intentar listar medico por clinica
+        }
+    }
 }

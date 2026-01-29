@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Método del módulo Informe
  *
@@ -6,10 +7,12 @@
  *
  * @package Mediagend\App\Controlador
  */
+
 namespace Mediagend\App\Modelo;
 
 use PDO;
 use PDOException;
+
 /**
  * Clase Informe
  *
@@ -216,9 +219,7 @@ class Informe
 
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error =  'ERR_INFORME_01'; // Error al guardar informe
-            return $error; */
+            die('ERR_INFORME_01' . $e->getMessage()); // Error al guardar informe
         }
     }
 
@@ -256,38 +257,42 @@ class Informe
                 return $informe ?: null;
             }
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* return 'ERR_INFORME_02'; // Error al mostrar informe */
+            die('ERR_INFORME_02' . $e->getMessage()); // Error al mostrar informe */
         }
     }
     /**
      * Método para listar los informes de un paciente
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_paciente. ID del paciente
-     * @return array Retornamos un array con los informes del paciente
+     * @return array Retornamos un array con los informes del paciente o ERR_INFORME_03 si no se puede listar por paciente
      */
     public function listarPorPaciente(PDO $pdo, int $id_paciente): array
     {
-        $sql = "SELECT id_informe, archivo_pdf_informe, fecha_generacion_informe
+        try {
+            $sql = "SELECT id_informe, archivo_pdf_informe, fecha_generacion_informe
             FROM informe
             WHERE id_paciente = :id_paciente
             ORDER BY fecha_generacion_informe DESC";
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([':id_paciente' => $id_paciente]);
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':id_paciente' => $id_paciente]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            die('ERR_INFORME_03' . $e->getMessage()); // Error al listar por paciente
+        }
     }
 
     /**
      * Método para obtener un informe por su ID, incluyendo el ID de la clínica
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $idInforme. ID del informe
-     * @return array|false Retornamos un array con los datos del informe o false si no se encuentra
+     * @return array|false Retornamos un array con los datos del informe, false si no se encuentra o ERR_INFORME_04 si no se puede listar por ID
      */
     public function listarPorId(PDO $pdo, int $idInforme)
-{
-    $sql = "
+    {
+        try{
+        $sql = "
         SELECT i.*, p.id_clinica
         FROM informe i
         INNER JOIN paciente p ON i.id_paciente = p.id_paciente
@@ -295,17 +300,20 @@ class Informe
         LIMIT 1
     ";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idInforme]);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idInforme]);
 
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        }catch(PDOException $e){
+            die('ERR_INFORME_04' . $e->getMessage()); // Error al listar por ID
+        }
+    }
 
     /**
      * Método para actualizar los datos del informe en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_informe. ID del informe a actualizar
-     * @return string|int Retornamos el número de filas afectadas o ERR_INFORME_04 en caso de no poder actualizar el informe
+     * @return string|int Retornamos el número de filas afectadas o ERR_INFORME_05 en caso de no poder actualizar el informe
      */
     public function actualizarInforme(PDO $pdo, int $id_informe): string|int
     {
@@ -333,9 +341,7 @@ class Informe
             return $stmt->rowCount();
             //Capturamos errores de PDO
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error =  'ERR_INFORME_04'; //Error al actualizar informe
-            return $error; */
+            die('ERR_INFORME_05' . $e->getMessage());//Error al actualizar informe
         }
     }
 
@@ -343,7 +349,7 @@ class Informe
      * Método para eliminar un informe por su ID
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_informe. ID del informe a eliminar
-     * @return int|string. Retorna el número de filas afectadas o 'ERR_INFORME_05' en caso de error al eliminar informe
+     * @return int|string. Retorna el número de filas afectadas o 'ERR_INFORME_06' en caso de error al eliminar informe
      */
     public function eliminarInforme(PDO $pdo, int $id_informe): string|int
     {
@@ -360,9 +366,7 @@ class Informe
             return $stmt->rowCount();
             //Capturamos el mensaje de error
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /*  $error = 'ERR_INFORME_05'; //Error al eliminar informe
-            return $error; */
+            die('ERR_INFORME_06' . $e->getMessage());//Error al eliminar informe
         }
     }
 }

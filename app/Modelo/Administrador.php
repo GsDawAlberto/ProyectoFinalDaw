@@ -180,8 +180,7 @@ class Administrador
 
             // Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_ADMIN_01'; // Error al guardar administrador
-            return $error;
+            die('ERR_ADMIN_1' . $e->getMessage());// Error al guardar administrador
         }
     }
 
@@ -228,8 +227,7 @@ class Administrador
 
             // Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_ADMIN_02'; // Error al autenticar administrador
-            return $error;
+            die('ERR_ADMIN_2' . $e->getMessage());// Error al autenticar administrador
         }
     }
 
@@ -268,8 +266,7 @@ class Administrador
             return $admin ?: null;
         }
         } catch (PDOException $e) {
-            $error = 'ERR_ADMIN_03'; // Error al mostrar administrador
-            return $error;
+            die('ERR_ADMIN_3' . $e->getMessage());// Error al mostrar administrador
         }
     }
 
@@ -312,8 +309,7 @@ class Administrador
 
             // Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_ADMIN_04'; // Error al actualizar administrador
-            return $error;
+            die('ERR_ADMIN_4' . $e->getMessage());// Error al actualizar administrador
         }
     }
 
@@ -332,8 +328,7 @@ class Administrador
 
             return $stmt->rowCount();
         } catch (PDOException $e) {
-            $error = 'ERR_ADMIN_05'; // Error al eliminar administrador
-            return $error;
+            die('ERR_ADMIN_5' . $e->getMessage()); // Error al eliminar administrador
         }
     }
    

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Método del módulo Clinica
  *
@@ -6,10 +7,12 @@
  *
  * @package Mediagend\App\Controlador
  */
+
 namespace Mediagend\App\Modelo;
 
 use PDO;
 use PDOException;
+
 /**
  * Clase Clinica
  *
@@ -245,9 +248,7 @@ class Clinica
 
             //Capturamos errores de PDO
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error = 'ERR_CLINICA_01'. $e; // Error al guardar clínica
-            return $error; */
+            die('ERR_CLINICA_01' . $e->getMessage()); // Error al guardar clínica
         }
     }
 
@@ -299,9 +300,7 @@ class Clinica
 
             // Capturamos errores de PDO
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error = 'ERR_CLINICA_02'; // Error al autenticar clínica
-            return $error; */
+            die('ERR_CLINICA_2' . $e->getMessage()); // Error al guardar clínica// Error al autenticar clínica
         }
     }
 
@@ -339,9 +338,7 @@ class Clinica
                 return $clinica ?: null;
             }
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error = 'ERR_CLINICA_03'; // Error al mostrar clínica
-            return $error; */
+            die('ERR_CLINICA_03' . $e->getMessage()); // Error al guardar clínica // Error al mostrar clínica
         }
     }
 
@@ -371,9 +368,9 @@ class Clinica
      * @return string|int Retorna el número de filas afectadas o ERR_CLINICA_04 en caso de error al actualizar clínica
      */
     public function actualizarClinica(PDO $pdo, int $id_clinica): string|int
-{
-    try {
-        $sql = "UPDATE clinica 
+    {
+        try {
+            $sql = "UPDATE clinica 
                 SET nombre_clinica = :nombre_clinica, 
                     nif_clinica = :nif_clinica,
                     direccion_clinica = :direccion_clinica, 
@@ -384,27 +381,25 @@ class Clinica
                     usuario_admin_clinica = :usuario_admin_clinica
                 WHERE id_clinica = :id_clinica";
 
-        $stmt = $pdo->prepare($sql);
+            $stmt = $pdo->prepare($sql);
 
-        $stmt->execute([
-            ':nombre_clinica'        => $this->nombre_clinica,
-            ':nif_clinica'           => $this->nif_clinica,
-            ':direccion_clinica'     => $this->direccion_clinica,
-            ':telefono_clinica'      => $this->telefono_clinica,
-            ':email_clinica'         => $this->email_clinica,
-            ':usuario_clinica'       => $this->usuario_clinica,
-            ':foto_clinica'          => $this->foto_clinica,
-            ':usuario_admin_clinica' => $this->usuario_admin_clinica,
-            ':id_clinica'            => $id_clinica
-        ]);
+            $stmt->execute([
+                ':nombre_clinica'        => $this->nombre_clinica,
+                ':nif_clinica'           => $this->nif_clinica,
+                ':direccion_clinica'     => $this->direccion_clinica,
+                ':telefono_clinica'      => $this->telefono_clinica,
+                ':email_clinica'         => $this->email_clinica,
+                ':usuario_clinica'       => $this->usuario_clinica,
+                ':foto_clinica'          => $this->foto_clinica,
+                ':usuario_admin_clinica' => $this->usuario_admin_clinica,
+                ':id_clinica'            => $id_clinica
+            ]);
 
-         return true;
-
-    } catch (PDOException $e) {
-        error_log($e->getMessage());
-        return false; 
+            return true;
+        } catch (PDOException $e) {
+            die('ERR_CLINICA_04' . $e->getMessage());// Error al actualicar clínica
+        }
     }
-}
 
 
     /**
@@ -430,10 +425,7 @@ class Clinica
 
             //Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            die($e->getMessage());
-            //Devolvemos el mensaje de error
-            /* $error = 'ERR_ADMIN_05'; // Error al eliminar clínica
-            return $error; */
+            die('ERR_CLINICA_05' . $e->getMessage());// Error al eliminar clínica
         }
     }
 }

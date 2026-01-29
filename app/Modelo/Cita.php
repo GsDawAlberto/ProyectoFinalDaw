@@ -231,9 +231,7 @@ class Cita
 
             // Capturamos cualquier error de PDO
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error =  'ERR_CITA_01'; // Error al guardar cita
-            return $error; */
+            die('ERR_CITA_01' . $e->getMessage()); // Error al guardar cita
         }
     }
 
@@ -270,7 +268,7 @@ class Cita
                 return $cita ?: null;
             }
         } catch (PDOException $e) {
-            return 'ERR_CITA_02'; //Error al mostar cita
+            die('ERR_CITA_02' . $e->getMessage()); //Error al mostar cita
         }
     }
 
@@ -314,8 +312,7 @@ class Cita
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* return 'ERR_CITA_03'; //Error al mostar citas por clínica */
+            die('ERR_CITA_03' . $e->getMessage());//Error al mostar citas por clínica */
         }
     }
     /**
@@ -326,6 +323,7 @@ class Cita
      */
     public function mostrarPorMedico(PDO $pdo, int $id_medico)
 {
+    try{
     $sql = "SELECT c.*, 
                    m.nombre_medico, m.apellidos_medico,
                    p.nombre_paciente, p.apellidos_paciente
@@ -339,6 +337,9 @@ class Cita
     $stmt->execute(['id_medico' => $id_medico]);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }catch(PDOException $e){
+        die('ERR_CITA_04' . $e->getMessage());//Error al mostar citas por Médico */
+    }
 }
     /**
      * Método para mostrar todas las citas de un paciente por su ID
@@ -348,6 +349,7 @@ class Cita
      */
     public function mostrarPorPaciente(PDO $pdo, int $idPaciente): array
 {
+    try{
     $sql = "
         SELECT
             c.id_cita,
@@ -371,13 +373,16 @@ class Cita
     ]);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }catch (PDOException $e){
+        die('ERR_CITA_05' . $e->getMessage());//Error al mostar citas por paciente */
+    }
 }
 
     /**
      * Método para actualizar los datos de la cita en la base de datos
      * @param PDO $pdo. Conexión PDO a la base de datos
      * @param int $id_cita. ID de la cita a actualizar
-     * @return string|int Retornamos el número de filas afectadas o ERR_CITA_04 en caso de no poder actualizar la cita
+     * @return string|int Retornamos el número de filas afectadas o ERR_CITA_06 en caso de no poder actualizar la cita
      */
     public function actualizarCita(PDO $pdo, int $id_cita): string|int
     {
@@ -409,8 +414,7 @@ class Cita
             return $stmt->rowCount();
             //Capturamos errores de PDO
         } catch (PDOException $e) {
-            $error = 'ERR_CITA_04'; //Error al actualizar cita
-            return $error;
+            die('ERR_CITA_06' . $e->getMessage());//Error al actualizar cita
         }
     }
     /**
@@ -421,6 +425,7 @@ class Cita
      */
     public function actualizarAsignacion(PDO $pdo, int $id_cita)
     {
+        try{
         $sql = "UPDATE cita
             SET id_paciente = :id_paciente,
                 motivo_cita = :motivo,
@@ -434,6 +439,9 @@ class Cita
             ':estado' => $this->estado_cita,
             ':id_cita' => $id_cita
         ]);
+        }catch(PDOException $e){
+            die('ERR_CITA_07' . $e->getMessage());//Error al actualizar la asignación de una cita 
+        }
     }
 
     /**
@@ -444,6 +452,7 @@ class Cita
      */
     public function actualizarEstado(PDO $pdo, int $id_cita): bool
     {
+        try{
         $sql = "UPDATE cita 
             SET estado_cita = :estado
             WHERE id_cita = :id_cita";
@@ -453,6 +462,9 @@ class Cita
             ':estado'  => $this->estado_cita,
             ':id_cita' => $id_cita
         ]);
+        }catch(PDOException $e){
+            die('ERR_CITA_08' . $e->getMessage());//Error al actualizar el estado de una cita 
+        }
     }
 
     /**
@@ -475,9 +487,7 @@ class Cita
             return $stmt->rowCount();
             //Capturamos el mensaje de error
         } catch (PDOException $e) {
-            die($e->getMessage());
-            /* $error =  'ERR_CITA_05'; //Error al eliminar la cita
-            return $error; */
+            die('ERR_CITA_09' . $e->getMessage());//Error al eliminar la cita
         }
     }
 }
