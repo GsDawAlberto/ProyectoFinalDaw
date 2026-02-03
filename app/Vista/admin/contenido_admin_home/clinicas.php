@@ -36,7 +36,7 @@ $admins = $adminModel->mostrarAdmin($pdo, null);
 
 <body>
 
-<h1>HOME DE CLÍNICAS</h1>
+<h1>PORTAL DE CLÍNICAS</h1>
 
 <form method="GET">
     <label>Buscar clínica por Administrador:</label>

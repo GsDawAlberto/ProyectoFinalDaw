@@ -30,7 +30,7 @@ $resultado = $pacienteModel->mostrarPaciente($pdo, $busqueda);
 </head>
 
 <body>
-    <h1> HOME DE USUARIOS.PHP</h1>
+    <h1>PORTAL DE PACIENTES</h1>
     <form method="GET">
         <label for="buscar">Buscar un paciente</label>
         <input type="text" name="buscar"

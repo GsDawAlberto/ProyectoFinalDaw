@@ -29,7 +29,7 @@ $resultado = $medicoModel->mostrarMedico($pdo, $busqueda);
 </head>
 
 <body>
-    <h1> HOME DE MEDICOS.PHP</h1>
+    <h1>PORTAL DE MEDICOS</h1>
     <form method="GET">
         <label for="buscar">Buscar un medico</label>
         <input type="text" name="buscar"
