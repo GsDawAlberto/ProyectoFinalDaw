@@ -135,6 +135,19 @@ footer {
     transition: 0.3s ease;
 }
 
+.btn-inicio {
+    margin-top: 10px;
+    padding: 14px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: #004bbd;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
 .btn-reset{
     background: #f19b9b;
     color: black;
@@ -146,6 +159,11 @@ footer {
 }
 .btn-submit:hover {
     background: #005f87;
+}
+
+.btn-inicio:hover {
+    background: #f9aa00;
+    color: black;
 }
 
 /* LINKS ADICIONALES */

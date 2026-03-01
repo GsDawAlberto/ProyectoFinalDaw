@@ -53,6 +53,10 @@ use Mediagend\App\Config\Enlaces;
         <h3><a href="<?= Enlaces::BASE_URL ?>admin/loguear_admin">Crear una cuenta</a></h3>
     </div>
 
+    <div>
+        <input type="button" value="Volver a inicio" class="btn-inicio" onclick="window.location.href='<?= Enlaces::BASE_URL ?>'">
+    </div>
+
     <footer>
         <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
     </footer>

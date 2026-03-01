@@ -230,7 +230,7 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
                     setSuccess(pass2);
                 }
             } else {
-                // si aún no escribió, no muestres error
+                // si aún no se escribió, no se muestra error
                 setSuccess(pass2);
             }
 

@@ -48,6 +48,10 @@ use Mediagend\App\Config\Enlaces;
 
     </form>
 
+    <div>
+        <input type="button" value="Volver a inicio" class="btn-inicio" onclick="window.location.href='<?= Enlaces::BASE_URL ?>'">
+    </div>
+
     <footer>
         <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
     </footer>
