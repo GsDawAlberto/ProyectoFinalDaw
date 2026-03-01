@@ -6,9 +6,15 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-html, body {
+html{
     height: 100%;
     background-color: #f4f8fb;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* ======================
@@ -16,13 +22,19 @@ html, body {
 ====================== */
 .layout {
     display: flex;
-    height: 100vh;
+    flex: 1; /* Ocupa todo el espacio disponible */
     width: 100%;
 }
 
 .layout_header {
     display: flex;
     justify-content: center;
+}
+
+footer {
+    background: #f4f8fb;
+    text-align: center;
+    padding: 15px;
 }
 
 /* SIDEBAR */

@@ -37,25 +37,25 @@ use Mediagend\App\Config\Enlaces;
 
             <div class="form-group">
                 <label>Número de Colegiado</label>
-                <input type="text" name="numero_colegiado" id="numero_colegiado" placeholder="Introduce los 9 digitos del colegiado" required>
+                <input type="text" name="numero_colegiado" id="numero_colegiado" placeholder="Ingresa los 9 digitos del colegiado" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Especialidad</label>
-                <input type="text" name="especialidad_medico" id="especialidad_medico" placeholder="Introduce la especialidad" required>
+                <input type="text" name="especialidad_medico" id="especialidad_medico" placeholder="Ingresa una especialidad" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" name="nombre_medico" id="nombre_medico" placeholder="Introduce el nombre" required>
+                <input type="text" name="nombre_medico" id="nombre_medico" placeholder="Ingresa el nombre" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Apellidos</label>
-                <input type="text" name="apellidos_medico" id="apellidos_medico" placeholder="Introduce los apellidos" required>
+                <input type="text" name="apellidos_medico" id="apellidos_medico" placeholder="Ingresa los apellidos" required>
                 <small class="error-msg"></small>
             </div>
 
@@ -67,13 +67,13 @@ use Mediagend\App\Config\Enlaces;
 
             <div class="form-group">
                 <label>Teléfono</label>
-                <input type="text" name="telefono_medico" id="telefono_medico" placeholder="Introduce el teléfono" required>
+                <input type="text" name="telefono_medico" id="telefono_medico" placeholder="Ingresa un teléfono" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email_medico" id="email_medico" placeholder="Introduce el email" required>
+                <input type="email" name="email_medico" id="email_medico" placeholder="Ingresa un email" required>
                 <small class="error-msg"></small>
             </div>
 
@@ -132,8 +132,8 @@ use Mediagend\App\Config\Enlaces;
         const dni = document.getElementById('dni_medico');
         const telefono = document.getElementById('telefono_medico');
         const email = document.getElementById('email_medico');
-        const pass1 = document.getElementById('password_medico');
-        const pass2 = document.getElementById('password2_medico');
+        const pass1 = document.getElementById('password');
+        const pass2 = document.getElementById('password_2');
 
         /* FUNCIONES DE VALIDACIÓN */
         function setError(input, message) {

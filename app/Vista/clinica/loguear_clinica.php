@@ -47,8 +47,14 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
             </div>
 
             <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" name="usuario_clinica" id="usuario_clinica" placeholder="Crea un usuario clave de inicio" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
                 <label>Nombre de la clínica</label>
-                <input type="text" name="nombre_clinica" id="nombre_clinica" required>
+                <input type="text" name="nombre_clinica" id="nombre_clinica" placeholder="Ingresa un nombre de clinica" required>
                 <small class="error-msg"></small>
             </div>
 
@@ -57,32 +63,26 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
                 <input type="text"
                     name="nif_clinica"
                     id="nif_clinica"
-                    placeholder="12345678Z o A12345678"
+                    placeholder="12345678Z o B12345678"
                     required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Dirección</label>
-                <input type="text" name="direccion_clinica" id="direccion_clinica" required>
+                <input type="text" name="direccion_clinica" id="direccion_clinica" placeholder="Ingresa una dirección para la clinica" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Teléfono</label>
-                <input type="text" name="telefono_clinica" id="telefono_clinica" required>
+                <input type="text" name="telefono_clinica" id="telefono_clinica" placeholder="Ingresa un número de teléfono" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email_clinica" id="email_clinica" required>
-                <small class="error-msg"></small>
-            </div>
-
-            <div class="form-group">
-                <label>Usuario</label>
-                <input type="text" name="usuario_clinica" id="usuario_clinica" required>
+                <input type="email" name="email_clinica" id="email_clinica" placeholder="Ingresa un email" required>
                 <small class="error-msg"></small>
             </div>
 
@@ -143,6 +143,7 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
         const usuario = document.getElementById('usuario_clinica');
         const pass1 = document.getElementById('password');
         const pass2 = document.getElementById('password_2');
+
 
         /* =====================
            HELPERS UI
@@ -230,7 +231,7 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
                     setSuccess(pass2);
                 }
             } else {
-                // si aún no se escribió, no se muestra error
+                // si aún no escribió, no muestres error
                 setSuccess(pass2);
             }
 
@@ -246,8 +247,8 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
         telefono.addEventListener('input', () => validarTelefono(telefono));
         email.addEventListener('input', () => validarEmail(email));
         usuario.addEventListener('input', () => validarTexto(usuario, 3, 15));
-        pass1.addEventListener('input', validarPassword);
-        pass2.addEventListener('input', validarPassword);
+        pass1.addEventListener('input', validarPasswords);
+        pass2.addEventListener('input', validarPasswords);
 
         /* =====================
            SUBMIT
@@ -260,7 +261,7 @@ $nombreAdmin = $_SESSION['admin']['usuario_admin'] ?? 'admin_default';
                 validarTelefono(telefono) &&
                 validarEmail(email) &&
                 validarTexto(usuario, 3, 15) &&
-                validarPassword();
+                validarPasswords();
 
             if (!valido) {
                 e.preventDefault();

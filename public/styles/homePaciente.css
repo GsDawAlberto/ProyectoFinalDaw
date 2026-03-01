@@ -82,6 +82,15 @@ header {
     animation: fadeInBienvenido 0.4s ease;
 }
 
+/* ==========================
+   FOOTER
+========================== */
+footer {
+    background: #f4f8fb;
+    text-align: center;
+    padding: 15px;
+}
+
 @keyframes fadeInBienvenido {
     from {
         opacity: 0;

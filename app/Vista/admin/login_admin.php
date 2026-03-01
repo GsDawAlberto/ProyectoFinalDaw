@@ -51,8 +51,8 @@ use Mediagend\App\Config\Enlaces;
         </form>
 
         <div class="extra-links">
-            <fieldset>
-                <legend>¿No tienes cuenta?</legend>
+            <fieldset class="fieldset">
+                <legend>¿Aún no tienes cuenta?</legend>
                 <h3><a href="<?= Enlaces::BASE_URL ?>admin/loguear_admin">Crear una cuenta</a></h3>
             </fieldset>
         </div>

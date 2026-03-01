@@ -92,8 +92,8 @@ header p {
     user-select: none;
     opacity: 0;
 }
-#password:focus-within + #ver_pass_1,
-#password_2:focus-within + #ver_pass_2 {
+#password:focus + #ver_pass_1,
+#password_2:focus + #ver_pass_2 {
     opacity: 1;
 }
 
@@ -185,15 +185,17 @@ footer {
     color: #0077b6;
 }
 
-.extra-links a:hover {
-    color: #014a72;
-}
-
-fieldset {
+.fieldset {
     border: 2px solid #0077b6;
     border-radius: 10px;
     padding: 15px;
 }
+
+.extra-links a:hover {
+    color: #014a72;
+}
+
+
 
 /* MENSAJE GLOBAL DE ERROR */
 .form-error-global {

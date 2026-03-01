@@ -29,6 +29,12 @@ use Mediagend\App\Config\Enlaces;
 
         <form action="<?= Enlaces::BASE_URL ?>admin/registrar" method="POST" class="form" id="formAdmin">
 
+        <div class="form-group">
+                <label>Usuario:</label>
+                <input type="text" name="usuario_admin" id="usuario" placeholder="Crea un usuario clave de inicio" required>
+                <small class="error-msg"></small>
+            </div>
+
             <div class="form-group">
                 <label>Nombre:</label>
                 <input type="text" name="nombre_admin" id="nombre" placeholder="Ingresa tu nombre" required>
@@ -53,12 +59,6 @@ use Mediagend\App\Config\Enlaces;
                 <small class="error-msg"></small>
             </div>
 
-            <div class="form-group">
-                <label>Usuario:</label>
-                <input type="text" name="usuario_admin" id="usuario" placeholder="Ingresa tu usuario" required>
-                <small class="error-msg"></small>
-            </div>
-
             <div class="form-group" id="box_pass">
                 <label>Contraseña:</label>
                 <input type="password" name="password" id="password" placeholder="Ingresa una contraseña" required>
@@ -72,6 +72,7 @@ use Mediagend\App\Config\Enlaces;
                 <span id="ver_pass_2">Mostrar</span>
                 <small class="error-msg"></small>
             </div>
+            
             <button type="reset" class="btn-reset">Borrar todo</button>
             <button type="submit" class="btn-submit">Registrar Administrador</button>
 

@@ -37,14 +37,25 @@ use Mediagend\App\Config\Enlaces;
             id="formPaciente">
 
             <div class="form-group">
+                <label>Foto del Paciente</label>
+                <input type="file" name="foto_paciente" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" name="usuario_paciente" id="usuario_paciente" placeholder="Crea un usuario clave de inicio" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
                 <label>Nombre del Paciente</label>
-                <input type="text" name="nombre_paciente" id="nombre_paciente" required>
+                <input type="text" name="nombre_paciente" id="nombre_paciente" placeholder="Ingresa el nombre del paciente" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Apellidos Paciente</label>
-                <input type="text" name="apellidos_paciente" id="apellidos_paciente" required>
+                <input type="text" name="apellidos_paciente" id="apellidos_paciente" placeholder="Ingresa los apellidos del paciente" required>
                 <small class="error-msg"></small>
             </div>
 
@@ -55,25 +66,14 @@ use Mediagend\App\Config\Enlaces;
             </div>
 
             <div class="form-group">
-                <label>Foto del Paciente</label>
-                <input type="file" name="foto_paciente" accept="image/*">
-            </div>
-
-            <div class="form-group">
                 <label>Teléfono</label>
-                <input type="text" name="telefono_paciente" id="telefono_paciente" required>
+                <input type="text" name="telefono_paciente" id="telefono_paciente" placeholder="Ingresa el teléfono del paciente" required>
                 <small class="error-msg"></small>
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email_paciente" id="email_paciente" required>
-                <small class="error-msg"></small>
-            </div>
-
-            <div class="form-group">
-                <label>Usuario</label>
-                <input type="text" name="usuario_paciente" id="usuario_paciente" required>
+                <input type="email" name="email_paciente" id="email_paciente" placeholder="Ingresa el email del paciente" required>
                 <small class="error-msg"></small>
             </div>
 
@@ -90,6 +90,7 @@ use Mediagend\App\Config\Enlaces;
                 <span id="ver_pass_2">Mostrar</span>
                 <small class="error-msg"></small>
             </div>
+
             <button type="reset" class="btn-reset">Borrar todo</button>
             <button type="submit" class="btn-submit">Registrar Paciente</button>
         </form>
@@ -118,6 +119,9 @@ use Mediagend\App\Config\Enlaces;
         togglePass("password_2", "ver_pass_2");
     </script>
 
+    <!-- =====================
+     VALIDACIÓN EN TIEMPO REAL
+===================== -->
     <script>
         const form = document.getElementById('formPaciente');
         const errorGlobal = document.getElementById('formErrorGlobal');
@@ -181,7 +185,7 @@ use Mediagend\App\Config\Enlaces;
             return true;
         }
 
-        function validarPasswords() {
+         function validarPasswords() {
             let valido = true;
 
             // Validar longitud pass1
@@ -239,8 +243,8 @@ use Mediagend\App\Config\Enlaces;
         telefono.addEventListener('input', () => validarTelefono(telefono));
         email.addEventListener('input', () => validarEmail(email));
         usuario.addEventListener('input', () => validarTexto(usuario, 3, 15));
-        pass1.addEventListener('input', validarPassword);
-        pass2.addEventListener('input', validarPassword);
+        pass1.addEventListener('input', validarPasswords);
+        pass2.addEventListener('input', validarPasswords);
 
         /* =====================
            ENVÍO
@@ -253,7 +257,7 @@ use Mediagend\App\Config\Enlaces;
                 validarTelefono(telefono) &&
                 validarEmail(email) &&
                 validarTexto(usuario, 3, 15) &&
-                validarPassword();
+                validarPasswords();
 
             if (!valido) {
                 e.preventDefault();
