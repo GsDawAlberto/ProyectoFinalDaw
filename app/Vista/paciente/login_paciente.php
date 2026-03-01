@@ -48,8 +48,8 @@ use Mediagend\App\Config\Enlaces;
 
     </form>
 
-    <div>
-        <input type="button" value="Volver a inicio" class="btn-inicio" onclick="window.location.href='<?= Enlaces::BASE_URL ?>'">
+    <div class="extra-links">
+        <h3><a href="<?= Enlaces::BASE_URL ?>">Volver a inicio</a></h3>
     </div>
 
     <footer>

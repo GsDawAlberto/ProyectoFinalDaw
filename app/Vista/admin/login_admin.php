@@ -1,9 +1,11 @@
 <?php
+
 use Mediagend\App\Config\Enlaces;
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,56 +15,59 @@ use Mediagend\App\Config\Enlaces;
     <!-- Estilos propios -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <header>
-        <?php include_once Enlaces::LAYOUT_PATH . 'header.php';?>
-        <h1>Administrador</h1>
-        <p>Acceso al panel de control</p>
-    </header>
+        <header>
+            <?php include_once Enlaces::LAYOUT_PATH . 'header.php'; ?>
+            <h1>Administrador</h1>
+            <p>Acceso al panel de control</p>
+        </header>
 
-    <!-- MENSAJE GLOBAL -->
-    <div id="formErrorGlobal" class="form-error-global">
-        Todas las entradas deben ser validadas
-    </div>
-
-    <form action="<?= Enlaces::BASE_URL ?>admin/acceder" method="POST" class="form" id="formLogin">
-
-        <div class="form-group">
-            <label>Usuario</label>
-            <input type="text" name="usuario_admin" id="usuario_admin" placeholder="Ingresa tu usuario" required>
-            <small class="error-msg"></small>
+        <!-- MENSAJE GLOBAL -->
+        <div id="formErrorGlobal" class="form-error-global">
+            Todas las entradas deben ser validadas
         </div>
 
-        <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password_admin" id="password" placeholder="Ingresa tu contraseña" required>
-            <span id="ver_pass_1">Mostrar</span>
-            <small class="error-msg"></small>
+        <form action="<?= Enlaces::BASE_URL ?>admin/acceder" method="POST" class="form" id="formLogin">
+
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" name="usuario_admin" id="usuario_admin" placeholder="Ingresa tu usuario" required>
+                <small class="error-msg"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" name="password_admin" id="password" placeholder="Ingresa tu contraseña" required>
+                <span id="ver_pass_1">Mostrar</span>
+                <small class="error-msg"></small>
+            </div>
+
+            <button type="submit" class="btn-submit">Ingresar</button>
+
+        </form>
+
+        <div class="extra-links">
+            <fieldset>
+                <legend>¿No tienes cuenta?</legend>
+                <h3><a href="<?= Enlaces::BASE_URL ?>admin/loguear_admin">Crear una cuenta</a></h3>
+            </fieldset>
         </div>
 
-        <button type="submit" class="btn-submit">Ingresar</button>
 
-    </form>
-    
-    <div class="extra-links">
-        <p>¿Aun no tienes cuenta?</p>
-        <br>
-        <h3><a href="<?= Enlaces::BASE_URL ?>admin/loguear_admin">Crear una cuenta</a></h3>
+        <div class="extra-links">
+            <h3><a href="<?= Enlaces::BASE_URL ?>">Volver a inicio</a></h3>
+        </div>
+
+        <footer>
+            <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
+        </footer>
+
     </div>
-
-    <div>
-        <input type="button" value="Volver a inicio" class="btn-inicio" onclick="window.location.href='<?= Enlaces::BASE_URL ?>'">
-    </div>
-
-    <footer>
-        <?php include_once Enlaces::LAYOUT_PATH . 'footer.php'; ?>
-    </footer>
-
-</div>
-<!-- =====================
+    <!-- =====================
      MOSTRAR CONTRASEÑA
 ===================== -->
     <script>
@@ -84,68 +89,68 @@ use Mediagend\App\Config\Enlaces;
         togglePass("password", "ver_pass_1");
     </script>
 
-<!-- =====================
+    <!-- =====================
      VALIDACIÓN EN TIEMPO REAL
 ===================== -->
-<script>
-const form = document.getElementById('formLogin');
-const errorGlobal = document.getElementById('formErrorGlobal');
+    <script>
+        const form = document.getElementById('formLogin');
+        const errorGlobal = document.getElementById('formErrorGlobal');
 
-const usuario = document.getElementById('usuario_admin');
-const password = document.getElementById('password');
+        const usuario = document.getElementById('usuario_admin');
+        const password = document.getElementById('password');
 
-function setError(input, message) {
-    const group = input.parentElement;
-    group.classList.add('error');
-    group.classList.remove('success');
-    group.querySelector('.error-msg').innerText = message;
-}
+        function setError(input, message) {
+            const group = input.parentElement;
+            group.classList.add('error');
+            group.classList.remove('success');
+            group.querySelector('.error-msg').innerText = message;
+        }
 
-function setSuccess(input) {
-    const group = input.parentElement;
-    group.classList.remove('error');
-    group.classList.add('success');
-    group.querySelector('.error-msg').innerText = '';
-}
+        function setSuccess(input) {
+            const group = input.parentElement;
+            group.classList.remove('error');
+            group.classList.add('success');
+            group.querySelector('.error-msg').innerText = '';
+        }
 
-function validarTexto(input, min, max) {
-    const value = input.value.trim();
-    if (value.length < min || value.length > max) {
-        setError(input, `Debe tener entre ${min} y ${max} caracteres`);
-        return false;
-    }
-    setSuccess(input);
-    return true;
-}
+        function validarTexto(input, min, max) {
+            const value = input.value.trim();
+            if (value.length < min || value.length > max) {
+                setError(input, `Debe tener entre ${min} y ${max} caracteres`);
+                return false;
+            }
+            setSuccess(input);
+            return true;
+        }
 
-function validarPasswords() {
-    if (password.value.length < 6) {
-        setError(password, 'Mínimo 6 caracteres');
-        return false;
-    }
-    setSuccess(password);
-    return true;
-}
+        function validarPasswords() {
+            if (password.value.length < 6) {
+                setError(password, 'Mínimo 6 caracteres');
+                return false;
+            }
+            setSuccess(password);
+            return true;
+        }
 
-/* Validación en tiempo real */
-usuario.addEventListener('input', () => validarTexto(usuario, 3, 15));
-password.addEventListener('input', validarPasswords); // <-- corregido
+        /* Validación en tiempo real */
+        usuario.addEventListener('input', () => validarTexto(usuario, 3, 15));
+        password.addEventListener('input', validarPasswords); // <-- corregido
 
-/* Envío */
-form.addEventListener('submit', e => {
-    const valido =
-        validarTexto(usuario, 3, 15) &&
-        validarPasswords();
+        /* Envío */
+        form.addEventListener('submit', e => {
+            const valido =
+                validarTexto(usuario, 3, 15) &&
+                validarPasswords();
 
-    if (!valido) {
-        e.preventDefault();
-        errorGlobal.classList.add('visible');
-    } else {
-        errorGlobal.classList.remove('visible');
-    }
-});
-
-</script>
+            if (!valido) {
+                e.preventDefault();
+                errorGlobal.classList.add('visible');
+            } else {
+                errorGlobal.classList.remove('visible');
+            }
+        });
+    </script>
 
 </body>
+
 </html>

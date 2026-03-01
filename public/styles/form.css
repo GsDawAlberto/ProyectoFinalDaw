@@ -189,6 +189,12 @@ footer {
     color: #014a72;
 }
 
+fieldset {
+    border: 2px solid #0077b6;
+    border-radius: 10px;
+    padding: 15px;
+}
+
 /* MENSAJE GLOBAL DE ERROR */
 .form-error-global {
     display: none;
