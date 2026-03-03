@@ -212,3 +212,27 @@ footer {
 .form-error-global.visible {
     display: block;
 }
+
+/* MODAL DE ERROR */
+.toast {
+    position: absolute;       /* Fijo en la ventana */
+    top: 50%;              /* 50% desde arriba */
+    left: 50%;             /* 50% desde la izquierda */
+    transform: translate(-50%, -50%) scale(0.8); /* centra y aplica zoom */
+    background-color: #f44336; /* rojo para error */
+    color: white;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 15px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+    z-index: 9999;        /* muy arriba para que no lo tape nada */
+    text-align: center;
+    max-width: 80%;
+    pointer-events: none;  /* para que no bloquee clicks */
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); /* mantiene centrado */
+}

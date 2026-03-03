@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controlador del módulo Administrador
  *
@@ -195,9 +196,16 @@ class AdminController
         $admin = new Administrador();
         $resultado = $admin->autenticarAdmin($pdo, $usuario, $password);
 
-        if (!$resultado) {
+        /* if (!$resultado) {
             echo "Credenciales incorrectas<br>";
             echo "<a href='" . Enlaces::BASE_URL . "admin/login_admin'>Volver</a>";
+            exit;
+        } */
+
+        if (!$resultado) {
+            session_start();
+            $_SESSION['error_login'] = "Credenciales incorrectas";
+            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
             exit;
         }
 

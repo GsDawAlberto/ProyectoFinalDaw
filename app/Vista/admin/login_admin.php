@@ -1,6 +1,21 @@
 <?php
 
 use Mediagend\App\Config\Enlaces;
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['error_login'])) {
+    $mensaje = htmlspecialchars($_SESSION['error_login']);
+    unset($_SESSION['error_login']);
+    echo "<script>
+            window.addEventListener('DOMContentLoaded', function() {
+                mostrarToast(" . json_encode($mensaje) . ");
+            });
+          </script>";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +29,40 @@ use Mediagend\App\Config\Enlaces;
 
     <!-- Estilos propios -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
+
+    <!-- CSS para mensaje emergente (toast) -->
+    <style>
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #f44336; /* rojo para error */
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s, transform 0.5s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #formErrorGlobal.visible {
+            display: block;
+        }
+
+        #formErrorGlobal {
+            display: none;
+            color: #f44336;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,10 +75,13 @@ use Mediagend\App\Config\Enlaces;
             <p>Acceso al panel de control</p>
         </header>
 
-        <!-- MENSAJE GLOBAL -->
+        <!-- MENSAJE GLOBAL DE VALIDACIÓN -->
         <div id="formErrorGlobal" class="form-error-global">
             Todas las entradas deben ser validadas
         </div>
+
+        <!-- Mensaje emergente -->
+        <div id="toast" class="toast"></div>
 
         <form action="<?= Enlaces::BASE_URL ?>admin/acceder" method="POST" class="form" id="formLogin">
 
@@ -57,7 +109,6 @@ use Mediagend\App\Config\Enlaces;
             </fieldset>
         </div>
 
-
         <div class="extra-links">
             <h3><a href="<?= Enlaces::BASE_URL ?>">Volver a inicio</a></h3>
         </div>
@@ -67,9 +118,8 @@ use Mediagend\App\Config\Enlaces;
         </footer>
 
     </div>
-    <!-- =====================
-     MOSTRAR CONTRASEÑA
-===================== -->
+
+    <!-- ===================== MOSTRAR CONTRASEÑA ===================== -->
     <script>
         function togglePass(inputId, btnId) {
             const input = document.getElementById(inputId);
@@ -89,9 +139,7 @@ use Mediagend\App\Config\Enlaces;
         togglePass("password", "ver_pass_1");
     </script>
 
-    <!-- =====================
-     VALIDACIÓN EN TIEMPO REAL
-===================== -->
+    <!-- ===================== VALIDACIÓN EN TIEMPO REAL ===================== -->
     <script>
         const form = document.getElementById('formLogin');
         const errorGlobal = document.getElementById('formErrorGlobal');
@@ -132,11 +180,9 @@ use Mediagend\App\Config\Enlaces;
             return true;
         }
 
-        /* Validación en tiempo real */
         usuario.addEventListener('input', () => validarTexto(usuario, 3, 15));
-        password.addEventListener('input', validarPasswords); // <-- corregido
+        password.addEventListener('input', validarPasswords);
 
-        /* Envío */
         form.addEventListener('submit', e => {
             const valido =
                 validarTexto(usuario, 3, 15) &&
@@ -149,6 +195,18 @@ use Mediagend\App\Config\Enlaces;
                 errorGlobal.classList.remove('visible');
             }
         });
+
+        // Función para mostrar toast
+        function mostrarToast(mensaje) {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensaje;
+            toast.classList.add('show');
+
+            // Se oculta automáticamente después de 3 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
     </script>
 
 </body>
