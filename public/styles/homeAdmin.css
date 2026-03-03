@@ -6,15 +6,9 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-html{
+html, body {
     height: 100%;
     background-color: #f4f8fb;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 /* ======================
@@ -22,19 +16,12 @@ body {
 ====================== */
 .layout {
     display: flex;
-    flex: 1; /* Ocupa todo el espacio disponible */
-    width: 100%;
+    min-height: 100vh;
 }
 
 .layout_header {
     display: flex;
     justify-content: center;
-}
-
-footer {
-    background: #f4f8fb;
-    text-align: center;
-    padding: 15px;
 }
 
 /* SIDEBAR */
@@ -96,10 +83,10 @@ footer {
 
 /* CONTENIDO */
 .contenido {
-    width: 80%;
-    height: 100%;
-    background-color: #ffffff;
+    flex: 1;
+    display: flex;
     padding: 10px;
+    background-color: #ffffff;
 }
 
 #visor {
