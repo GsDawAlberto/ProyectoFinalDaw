@@ -283,7 +283,7 @@ class MedicoController
          if (!$resultado) {
             session_start();
             $_SESSION['error_login'] = "Número de colegiado o contraseña incorrectos.";
-            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
+            header("Location: " . Enlaces::BASE_URL . "admin/login_medico");
             exit;
         }   
 

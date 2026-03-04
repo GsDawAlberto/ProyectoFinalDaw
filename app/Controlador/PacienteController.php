@@ -307,7 +307,7 @@ class PacienteController
         if (!$resultado) {
             session_start();
             $_SESSION['error_login'] = "Usuario o contraseña incorrectos.";
-            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
+            header("Location: " . Enlaces::BASE_URL . "admin/login_paciente");
             exit;
         }
 
