@@ -30,39 +30,6 @@ if (isset($_SESSION['error_login'])) {
     <!-- Estilos propios -->
     <link rel="stylesheet" href="<?= Enlaces::BASE_URL ?>styles/form.css">
 
-    <!-- CSS para mensaje emergente (toast) -->
-    <style>
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f44336; /* rojo para error */
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: opacity 0.5s, transform 0.5s;
-            z-index: 1000;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #formErrorGlobal.visible {
-            display: block;
-        }
-
-        #formErrorGlobal {
-            display: none;
-            color: #f44336;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
@@ -80,7 +47,7 @@ if (isset($_SESSION['error_login'])) {
             Todas las entradas deben ser validadas
         </div>
 
-        <!-- Mensaje emergente -->
+        <!-- Contenedor de toast -->
         <div id="toast" class="toast"></div>
 
         <form action="<?= Enlaces::BASE_URL ?>admin/acceder" method="POST" class="form" id="formLogin">

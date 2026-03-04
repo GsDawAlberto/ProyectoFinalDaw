@@ -274,11 +274,18 @@ class MedicoController
         $medico = new Medico();
         $resultado = $medico->autenticarMedico($pdo, $colegiado, $password);
 
-        if (!$resultado) {
+       /*  if (!$resultado) {
             echo "Error al autenticar el medico.<br> ";
             echo "<a href='" . Enlaces::BASE_URL . "medico/login_medico'>Volver</a>";
             exit;
-        }
+        } */
+
+         if (!$resultado) {
+            session_start();
+            $_SESSION['error_login'] = "Número de colegiado o contraseña incorrectos.";
+            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
+            exit;
+        }   
 
         session_start();
 

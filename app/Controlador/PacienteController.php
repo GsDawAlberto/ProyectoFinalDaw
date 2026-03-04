@@ -298,13 +298,18 @@ class PacienteController
         $paciente = new Paciente();
         $resultado = $paciente->autenticarPaciente($pdo, $usuario, $password);
 
-        if (!$resultado) {
+        /* if (!$resultado) {
             echo "Error al autenticar el paciente.<br> ";
             echo "<a href='" . Enlaces::BASE_URL . "paciente/login_paciente'>Volver</a>";
             exit;
+        } */
+
+        if (!$resultado) {
+            session_start();
+            $_SESSION['error_login'] = "Usuario o contraseña incorrectos.";
+            header("Location: " . Enlaces::BASE_URL . "admin/login_admin");
+            exit;
         }
-
-
 
         session_start();
 

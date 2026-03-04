@@ -84,8 +84,7 @@ header p {
     position: absolute;
     right: 10px;
     top: 50%;
-    transform: translateY(-50%);
-    transform: translateX(1%);
+    transform: translateY(-50%) translateX(1%);
     cursor: pointer;
     font-size: 14px;
     color: #0078ff;
@@ -121,7 +120,6 @@ footer {
 }
 
 /* BOTÓN */
-
 .btn-submit, .btn-reset {
     margin-top: 10px;
     padding: 14px;
@@ -195,8 +193,6 @@ footer {
     color: #014a72;
 }
 
-
-
 /* MENSAJE GLOBAL DE ERROR */
 .form-error-global {
     display: none;
@@ -213,26 +209,27 @@ footer {
     display: block;
 }
 
-/* MODAL DE ERROR */
+/* TOAST CENTRAL DE ERROR */
 .toast {
-    position: absolute;       /* Fijo en la ventana */
+    position: fixed;       /* Fijo en la ventana para centrarlo correctamente */
     top: 50%;              /* 50% desde arriba */
     left: 50%;             /* 50% desde la izquierda */
-    transform: translate(-50%, -50%) scale(0.8); /* centra y aplica zoom */
-    background-color: #f44336; /* rojo para error */
+    transform: translate(-50%, -50%) scale(0.8); /* centra y aplica zoom inicial */
+    background-color: #bb0f02; /* rojo para error */
     color: white;
     padding: 20px 30px;
+    border: 3px solid #000000;
     border-radius: 8px;
     box-shadow: 0px 2px 15px rgba(0,0,0,0.3);
     opacity: 0;
     transition: opacity 0.5s, transform 0.5s;
     z-index: 9999;        /* muy arriba para que no lo tape nada */
     text-align: center;
-    max-width: 80%;
-    pointer-events: none;  /* para que no bloquee clicks */
+    max-width: 100%;
+    pointer-events: none;  /* no bloquea clicks debajo */
 }
 
 .toast.show {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1); /* mantiene centrado */
+    transform: translate(-50%, -50%) scale(1); /* mantiene centrado con zoom de aparición */
 }

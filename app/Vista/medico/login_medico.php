@@ -1,5 +1,19 @@
 <?php
 use Mediagend\App\Config\Enlaces;
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['error_login'])) {
+    $mensaje = htmlspecialchars($_SESSION['error_login']);
+    unset($_SESSION['error_login']);
+    echo "<script>
+            window.addEventListener('DOMContentLoaded', function() {
+                mostrarToast(" . json_encode($mensaje) . ");
+            });
+          </script>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +41,9 @@ use Mediagend\App\Config\Enlaces;
     <div id="formErrorGlobal" class="form-error-global">
         Todos los campos son obligatorios y deben ser válidos
     </div>
+
+    <!-- Contenedor de toast -->
+        <div id="toast" class="toast"></div>
 
     <form action="<?= Enlaces::BASE_URL ?>medico/acceder" method="POST" class="form" id="formLoginMedico">
 
@@ -140,6 +157,18 @@ form.addEventListener('submit', e => {
         errorGlobal.classList.remove('visible');
     }
 });
+
+ // Función para mostrar toast
+        function mostrarToast(mensaje) {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensaje;
+            toast.classList.add('show');
+
+            // Se oculta automáticamente después de 3 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
 </script>
 
 </body>
